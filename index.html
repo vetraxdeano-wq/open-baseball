@@ -335,9 +335,10 @@ body{
   letter-spacing:.12em;
   text-transform:uppercase;
   color:var(--cyan);
-  padding:.6rem 0 .4rem;
+  padding:.6rem 0 .5rem;
   border-bottom:1px solid var(--border);
-  margin-bottom:8px;
+  margin-bottom:14px;
+  margin-top:4px;
   display:flex;
   align-items:center;
   gap:8px;
@@ -1284,6 +1285,33 @@ body{
   font-size:9px;
   padding:1px 4px;
 }
+/* SCROLL HINT */
+.scroll-hint-wrap{position:relative;}
+.scroll-hint-wrap::after{
+  content:'';
+  position:absolute;
+  top:0;right:0;bottom:0;
+  width:40px;
+  background:linear-gradient(to right,transparent,var(--card) 85%);
+  pointer-events:none;
+  border-radius:0 0 0 0;
+}
+.scroll-hint-bar{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  padding:.35rem .5rem .45rem;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  border-top:1px solid var(--border);
+  background:var(--card2);
+}
+.scroll-hint-bar span{font-size:10px;}
 /* PLAYER PHOTO REAL */
 .trc-player-img{
   width:100%;height:100%;
@@ -1338,24 +1366,21 @@ footer{
 .ffbs-flag{display:flex;gap:2px;}
 .ffbs-flag span{display:block;width:8px;height:14px;}
 
-/* ── POOLS LAYOUT ── */
+/* ── POOLS LAYOUT — flat grid, rows align across columns ── */
 .pools-layout{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
   margin-top:.2rem;
-  align-items:start;
+  align-items:stretch;
 }
-.pool-col{
-  display:flex;
-  flex-direction:column;
-}
+/* pool-col/pool-col-cards removed from accueil but kept for other pages */
 .pool-col-head{
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:.45rem .5rem .5rem;
-  margin-bottom:8px;
+  padding:.45rem .5rem .6rem;
+  margin-bottom:0;
 }
 .pool-col-label{
   font-family:'Anton',sans-serif;
@@ -1363,17 +1388,12 @@ footer{
   letter-spacing:.12em;
   text-transform:uppercase;
 }
-.pool-col-cards{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-.pool-col-cards .home-team-card{
-  flex:1;
+/* Cards in the flat grid stretch to fill their row */
+.pools-layout > .home-team-card{
   display:flex;
   flex-direction:column;
 }
-.pool-col-cards .home-team-body{
+.pools-layout > .home-team-card .home-team-body{
   flex:1;
 }
 </style>
@@ -1456,14 +1476,14 @@ footer{
         <span class="palmares-link">↗</span>
       </a>
 
-      <a href="http://www.stats.ffbs.fr/2023/feminin_challenge/resultats.php" target="_blank" rel="noopener" class="palmares-row">
+      <a href="https://www.stats.ffbs.fr/2023/feminin_challenge/resultats.php" target="_blank" rel="noopener" class="palmares-row">
         <span class="palmares-year">2023</span>
         <span class="palmares-trophy">🥇</span>
         <span class="palmares-winner">Pharaons d'Évry-Courcouronnes</span>
         <span class="palmares-link">↗</span>
       </a>
 
-      <a href="http://www.stats.ffbs.fr/2022/feminin_challenge/resultats.php" target="_blank" rel="noopener" class="palmares-row">
+      <a href="https://www.stats.ffbs.fr/2022/feminin_challenge/resultats.php" target="_blank" rel="noopener" class="palmares-row">
         <span class="palmares-year">2022</span>
         <span class="palmares-trophy">🥇</span>
         <span class="palmares-winner">Grenoble Grizzlys</span>
@@ -1501,14 +1521,19 @@ footer{
     </div>
   </div>
 
-  <!-- Poules -->
-  <div class="pools-layout">
-<div class="pool-col">
-  <div class="pool-col-head" style="color:var(--blue2);border-bottom:2px solid rgba(74,155,255,0.4);">
-    <span class="pool-col-label">POULE A</span>
-  </div>
-  <div class="pool-col-cards">
-    <div class="home-team-card" style="border-color:rgba(113,122,213,0.5);">
+  <!-- Poules — flat grid: les rangées s'alignent naturellement entre colonnes -->
+  <div class="pools-layout" style="align-items:stretch;">
+
+    <!-- ── En-têtes ── -->
+    <div class="pool-col-head" style="color:var(--blue2);border-bottom:2px solid rgba(74,155,255,0.4);">
+      <span class="pool-col-label">POULE A</span>
+    </div>
+    <div class="pool-col-head" style="color:var(--cyan);border-bottom:2px solid rgba(0,212,255,0.4);">
+      <span class="pool-col-label">POULE B</span>
+    </div>
+
+    <!-- ── Rangée 1 ── -->
+    <div class="home-team-card" style="border-color:rgba(113,122,213,0.5);height:100%;">
       <div class="home-team-head" style="background:linear-gradient(135deg,#717ad5ee 0%,#717ad599 100%);border-bottom:2px solid #e8a00160;">
         <div class="home-team-logo" style="background:#fff;border-color:rgba(113,122,213,0.5);padding:2px;"><img src="https://static.wbsc.org/upload/00c226d7-a309-43bf-2e34-cf074ffb6e4c.png" style="width:100%;height:100%;object-fit:contain;border-radius:50%;display:block;"></div>
         <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Wildcats</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Colombes · Poule A</div></div>
@@ -1520,37 +1545,7 @@ footer{
       </div>
     </div>
 
-    <div class="home-team-card" style="border-color:rgba(176,183,197,0.5);">
-      <div class="home-team-head" style="background:linear-gradient(135deg,#20212bee 0%,#20212b99 100%);border-bottom:2px solid #b0b7c560;">
-        <div class="home-team-logo" style="background:#20212b;border-color:rgba(176,183,197,0.5);padding:2px;"><img src="https://static.wbsc.org/assets/cms/teams/logo/229a41eb-e61a-7ab8-e29f-3100fc34a2ce.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
-        <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Comanches</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Saint-Raphaël · Poule A</div></div>
-      </div>
-      <div class="home-team-body">
-        <div class="home-team-line"><span class="home-team-k">Historique</span><span class="home-team-v">2025 : 1er · 2024 : 2e · 2023 : 2e</span></div>
-        <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">🏆 Challenge 2025 · finales 2023-24</span></div>
-        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong style="color:#b0b7c5;">4e</strong> <span style="font-size:10px;color:var(--muted);">(5V · 5D)</span></span></div>
-      </div>
-    </div>
-
-    <div class="home-team-card" style="border-color:rgba(216,226,252,0.4);">
-      <div class="home-team-head" style="background:linear-gradient(135deg,#26314fee 0%,#26314f99 100%);border-bottom:2px solid #d8e2fc60;">
-        <div class="home-team-logo" style="background:#fff;border-color:rgba(216,226,252,0.4);padding:2px;"><img src="https://static.wbsc.org/upload/c6f45770-2b34-bfcf-33e8-1909b6ef7bae.jpg" style="width:100%;height:100%;object-fit:contain;border-radius:50%;display:block;"></div>
-        <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Grizzlys</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Grenoble · Poule A</div></div>
-      </div>
-      <div class="home-team-body">
-        <div class="home-team-line"><span class="home-team-k">Historique</span><span class="home-team-v">2025 : 6e · 2024 : 5e · 2023 : 3e</span></div>
-        <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">🏆 Challenge 2022 · podium 2023</span></div>
-        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong style="color:#d8e2fc;">5e</strong> <span style="font-size:10px;color:var(--muted);">(4V · 6D)</span></span></div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="pool-col">
-  <div class="pool-col-head" style="color:var(--cyan);border-bottom:2px solid rgba(0,212,255,0.4);">
-    <span class="pool-col-label">POULE B</span>
-  </div>
-  <div class="pool-col-cards">
-    <div class="home-team-card" style="border-color:rgba(165,0,22,0.6);">
+    <div class="home-team-card" style="border-color:rgba(165,0,22,0.6);height:100%;">
       <div class="home-team-head" style="background:linear-gradient(135deg,#a50016ee 0%,#a5001699 100%);border-bottom:2px solid #ff6b7a60;">
         <div class="home-team-logo" style="background:#fff;border-color:rgba(165,0,22,0.6);padding:2px;"><img src="https://static.wbsc.org/upload/9299e180-0639-6ae2-e61d-a4faf42b7b27.jpg" style="width:100%;height:100%;object-fit:contain;border-radius:50%;display:block;"></div>
         <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Cavigal</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Nice · Poule B</div></div>
@@ -1562,7 +1557,20 @@ footer{
       </div>
     </div>
 
-    <div class="home-team-card" style="border-color:rgba(248,205,92,0.5);">
+    <!-- ── Rangée 2 ── -->
+    <div class="home-team-card" style="border-color:rgba(176,183,197,0.5);height:100%;">
+      <div class="home-team-head" style="background:linear-gradient(135deg,#20212bee 0%,#20212b99 100%);border-bottom:2px solid #b0b7c560;">
+        <div class="home-team-logo" style="background:#20212b;border-color:rgba(176,183,197,0.5);padding:2px;"><img src="https://static.wbsc.org/assets/cms/teams/logo/229a41eb-e61a-7ab8-e29f-3100fc34a2ce.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
+        <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Comanches</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Saint-Raphaël · Poule A</div></div>
+      </div>
+      <div class="home-team-body">
+        <div class="home-team-line"><span class="home-team-k">Historique</span><span class="home-team-v">2025 : 1er · 2024 : 2e · 2023 : 2e</span></div>
+        <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">🏆 Challenge 2025 · finales 2023-24</span></div>
+        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong style="color:#b0b7c5;">4e</strong> <span style="font-size:10px;color:var(--muted);">(5V · 5D)</span></span></div>
+      </div>
+    </div>
+
+    <div class="home-team-card" style="border-color:rgba(248,205,92,0.5);height:100%;">
       <div class="home-team-head" style="background:linear-gradient(135deg,#1a1a1aee 0%,#1a1a1a99 100%);border-bottom:2px solid #f8cd5c60;">
         <div class="home-team-logo" style="background:#1a1a1a;border-color:rgba(248,205,92,0.5);padding:2px;"><img src="https://static.wbsc.org/upload/77e94058-ac4d-db29-8258-7b792b239dbc.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
         <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Panthères</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Pessac · Poule B</div></div>
@@ -1574,7 +1582,20 @@ footer{
       </div>
     </div>
 
-    <div class="home-team-card" style="border-color:rgba(248,205,92,0.45);">
+    <!-- ── Rangée 3 ── -->
+    <div class="home-team-card" style="border-color:rgba(216,226,252,0.4);height:100%;">
+      <div class="home-team-head" style="background:linear-gradient(135deg,#26314fee 0%,#26314f99 100%);border-bottom:2px solid #d8e2fc60;">
+        <div class="home-team-logo" style="background:#fff;border-color:rgba(216,226,252,0.4);padding:2px;"><img src="https://static.wbsc.org/upload/c6f45770-2b34-bfcf-33e8-1909b6ef7bae.jpg" style="width:100%;height:100%;object-fit:contain;border-radius:50%;display:block;"></div>
+        <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Grizzlys</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Grenoble · Poule A</div></div>
+      </div>
+      <div class="home-team-body">
+        <div class="home-team-line"><span class="home-team-k">Historique</span><span class="home-team-v">2025 : 6e · 2024 : 5e · 2023 : 3e</span></div>
+        <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">🏆 Challenge 2022 · podium 2023</span></div>
+        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong style="color:#d8e2fc;">5e</strong> <span style="font-size:10px;color:var(--muted);">(4V · 6D)</span></span></div>
+      </div>
+    </div>
+
+    <div class="home-team-card" style="border-color:rgba(248,205,92,0.45);height:100%;">
       <div class="home-team-head" style="background:linear-gradient(135deg,#6b0001ee 0%,#6b000199 100%);border-bottom:2px solid #f8cd5c60;">
         <div class="home-team-logo" style="background:#fff;border-color:rgba(248,205,92,0.45);padding:2px;"><img src="https://static.wbsc.org/upload/07067501-9be9-9d54-0187-4b5ce1bc028d.jpg" style="width:100%;height:100%;object-fit:contain;border-radius:50%;display:block;"></div>
         <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Pharaons</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Évry-Courcouronnes · Poule B</div></div>
@@ -1585,11 +1606,10 @@ footer{
         <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong style="color:#f8cd5c;">6e</strong> <span style="font-size:10px;color:var(--muted);">(3V · 7D)</span></span></div>
       </div>
     </div>
+
   </div>
-</div>
-</div>
 <!-- ── INFOS PRATIQUES RAPIDES ── -->
-<div class="home-section" style="padding-top:0;">
+<div class="home-section" style="padding-top:1.8rem;">
   <div class="home-section-eyebrow">Pratique</div>
   <div class="home-section-title">Venir au tournoi</div>
   <div class="home-quick-infos">
@@ -1890,6 +1910,7 @@ footer{
       </div>
       <div class="trc-num" style="color:rgba(176,183,197,0.2);">26</div>
     </div>
+    <div class="scroll-hint-wrap">
     <div class="trc-players-scroll">
       <div class="trc-player-slot">
         <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/f5da96a8-813d-c175-b53b-b170700f363a.jpg" alt="" loading="lazy"><div class="trc-player-num">6</div></div>
@@ -1999,6 +2020,8 @@ footer{
     <div style="padding:.5rem .8rem;background:rgba(74,155,255,0.05);border-top:1px solid var(--border);">
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);letter-spacing:.04em;">📋 Roster complet de la saison · Les joueuses présentes ce week-end peuvent varier</span>
     </div>
+    <div class="scroll-hint-bar"><span>←</span> Glissez pour voir toutes les joueuses <span>→</span></div>
+    </div>
     <div class="trc-footer">
       <span class="trc-stat" style="color:#b0b7c5;border:1px solid rgba(128,128,128,0.25);background:rgba(128,128,128,0.07);">26 joueuses</span>
       <span class="trc-stat">🏆 Challenge 2025</span>
@@ -2020,6 +2043,7 @@ footer{
       </div>
       <div class="trc-num" style="color:rgba(248,205,92,0.18);">19</div>
     </div>
+    <div class="scroll-hint-wrap">
     <div class="trc-players-scroll">
       <div class="trc-player-slot">
         <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/4065f550-5d82-ac69-85d9-94ed81d739ae.jpg" alt="" loading="lazy"><div class="trc-player-num">74</div></div>
@@ -2101,6 +2125,8 @@ footer{
     <div style="padding:.5rem .8rem;background:rgba(74,155,255,0.05);border-top:1px solid var(--border);">
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);letter-spacing:.04em;">📋 Roster complet de la saison · Les joueuses présentes ce week-end peuvent varier</span>
     </div>
+    <div class="scroll-hint-bar"><span>←</span> Glissez pour voir toutes les joueuses <span>→</span></div>
+    </div>
     <div class="trc-footer">
       <span class="trc-stat" style="color:#f8cd5c;border:1px solid rgba(128,128,128,0.25);background:rgba(128,128,128,0.07);">19 joueuses</span>
       <a href="https://ffbs.wbsc.org/fr/events/2026-championnat-de-france-division-1-feminine-softball/stats" target="_blank" rel="noopener" class="trc-stat" style="color:var(--cyan);text-decoration:none;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.07);">Stats D1 2026 ↗</a>
@@ -2121,6 +2147,7 @@ footer{
       </div>
       <div class="trc-num" style="color:rgba(245,201,58,0.22);">26</div>
     </div>
+    <div class="scroll-hint-wrap">
     <div class="trc-players-scroll">
       <div class="trc-player-slot">
         <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/7d9b785f-ef7c-942a-bb75-cd9e56f63818.jpg" alt="" loading="lazy"><div class="trc-player-num">41</div></div>
@@ -2230,6 +2257,8 @@ footer{
     <div style="padding:.5rem .8rem;background:rgba(74,155,255,0.05);border-top:1px solid var(--border);">
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);letter-spacing:.04em;">📋 Roster complet de la saison · Les joueuses présentes ce week-end peuvent varier</span>
     </div>
+    <div class="scroll-hint-bar"><span>←</span> Glissez pour voir toutes les joueuses <span>→</span></div>
+    </div>
     <div class="trc-footer">
       <span class="trc-stat" style="color:#f8cd5c;border:1px solid rgba(248,205,92,0.3);background:rgba(248,205,92,0.08);">26 joueuses</span>
       <span class="trc-stat">🏆 Challenge 2021·23·24</span>
@@ -2249,6 +2278,7 @@ footer{
       </div>
       <div class="trc-num" style="color:rgba(113,122,213,0.2);">24</div>
     </div>
+    <div class="scroll-hint-wrap">
     <div class="trc-players-scroll">
       <div class="trc-player-slot">
         <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/5980a99a-ced3-0961-e5b1-b68b361271d9.jpeg" alt="" loading="lazy"><div class="trc-player-num">9</div></div>
@@ -2350,6 +2380,8 @@ footer{
     <div style="padding:.5rem .8rem;background:rgba(74,155,255,0.05);border-top:1px solid var(--border);">
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);letter-spacing:.04em;">📋 Roster complet de la saison · Les joueuses présentes ce week-end peuvent varier</span>
     </div>
+    <div class="scroll-hint-bar"><span>←</span> Glissez pour voir toutes les joueuses <span>→</span></div>
+    </div>
     <div class="trc-footer">
       <span class="trc-stat" style="color:#e8a001;border:1px solid rgba(128,128,128,0.25);background:rgba(128,128,128,0.07);">24 joueuses</span>
       <span class="trc-stat">🏆 Championnes D2 2024</span>
@@ -2371,6 +2403,7 @@ footer{
       </div>
       <div class="trc-num" style="color:rgba(216,226,252,0.18);">22</div>
     </div>
+    <div class="scroll-hint-wrap">
     <div class="trc-players-scroll">
       <div class="trc-player-slot">
         <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/dc524f6e-5aac-f31b-e8f7-c2af51ea86e5.png" alt="" loading="lazy"><div class="trc-player-num">4</div></div>
@@ -2464,6 +2497,8 @@ footer{
     <div style="padding:.5rem .8rem;background:rgba(74,155,255,0.05);border-top:1px solid var(--border);">
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);letter-spacing:.04em;">📋 Roster complet de la saison · Les joueuses présentes ce week-end peuvent varier</span>
     </div>
+    <div class="scroll-hint-bar"><span>←</span> Glissez pour voir toutes les joueuses <span>→</span></div>
+    </div>
     <div class="trc-footer">
       <span class="trc-stat" style="color:#d8e2fc;border:1px solid rgba(128,128,128,0.25);background:rgba(128,128,128,0.07);">22 joueuses</span>
       <span class="trc-stat">🏆 Challenge 2022</span>
@@ -2485,6 +2520,7 @@ footer{
       </div>
       <div class="trc-num" style="color:rgba(165,0,22,0.2);">21</div>
     </div>
+    <div class="scroll-hint-wrap">
     <div class="trc-players-scroll">
       <div class="trc-player-slot">
         <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/6eae0e41-71da-6156-94bc-8ceafb0d15ef.JPG" alt="" loading="lazy"><div class="trc-player-num">54</div></div>
@@ -2573,6 +2609,8 @@ footer{
     </div>
     <div style="padding:.5rem .8rem;background:rgba(74,155,255,0.05);border-top:1px solid var(--border);">
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);letter-spacing:.04em;">📋 Roster complet de la saison · Les joueuses présentes ce week-end peuvent varier</span>
+    </div>
+    <div class="scroll-hint-bar"><span>←</span> Glissez pour voir toutes les joueuses <span>→</span></div>
     </div>
     <div class="trc-footer">
       <span class="trc-stat" style="color:#ff6b7a;border:1px solid rgba(128,128,128,0.25);background:rgba(128,128,128,0.07);">21 joueuses</span>
