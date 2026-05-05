@@ -1396,6 +1396,16 @@ footer{
 .pools-layout > .home-team-card .home-team-body{
   flex:1;
 }
+/* Force identical header height so body rows align across the two columns */
+.pools-layout > .home-team-card .home-team-head{
+  min-height:80px;
+  align-items:flex-start;
+  padding-top:.9rem;
+}
+.pools-layout > .home-team-card .home-team-logo{
+  flex-shrink:0;
+  margin-top:2px;
+}
 </style>
 </head>
 <body>
@@ -1476,19 +1486,19 @@ footer{
         <span class="palmares-link">↗</span>
       </a>
 
-      <a href="https://www.stats.ffbs.fr/2023/feminin_challenge/resultats.php" target="_blank" rel="noopener" class="palmares-row">
+      <div class="palmares-row">
         <span class="palmares-year">2023</span>
         <span class="palmares-trophy">🥇</span>
         <span class="palmares-winner">Pharaons d'Évry-Courcouronnes</span>
-        <span class="palmares-link">↗</span>
-      </a>
+        <span class="palmares-link" style="color:rgba(77,120,170,0.4);font-size:10px;">–</span>
+      </div>
 
-      <a href="https://www.stats.ffbs.fr/2022/feminin_challenge/resultats.php" target="_blank" rel="noopener" class="palmares-row">
+      <div class="palmares-row">
         <span class="palmares-year">2022</span>
         <span class="palmares-trophy">🥇</span>
         <span class="palmares-winner">Grenoble Grizzlys</span>
-        <span class="palmares-link">↗</span>
-      </a>
+        <span class="palmares-link" style="color:rgba(77,120,170,0.4);font-size:10px;">–</span>
+      </div>
 
       <a href="https://ffbs.wbsc.org/fr/events/2021-challenge-de-france-de-softball-feminin/schedule-and-results" target="_blank" rel="noopener" class="palmares-row">
         <span class="palmares-year">2021</span>
@@ -1646,7 +1656,7 @@ footer{
 
 <footer>
   <div class="footer-logo">Vipères de Valenciennes</div>
-  <div class="footer-sub">Organisateur officiel · Open Softball Féminin 2026</div>
+  <div class="footer-sub">Organisateur officiel · Challenge Softball Féminin 2026</div>
   <div class="footer-ffbs">
     <div class="ffbs-flag">
       <span style="background:#002395;"></span>
