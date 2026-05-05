@@ -1395,6 +1395,12 @@ footer{
 }
 .pools-layout > .home-team-card .home-team-body{
   flex:1;
+  display:flex;
+  flex-direction:column;
+}
+/* D1 2026 (last line) always pinned to the bottom */
+.pools-layout > .home-team-card .home-team-body .home-team-line:last-child{
+  margin-top:auto;
 }
 /* Force identical header height so body rows align across the two columns */
 .pools-layout > .home-team-card .home-team-head{
