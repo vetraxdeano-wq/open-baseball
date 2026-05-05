@@ -31,7 +31,7 @@ body{
   font-size:15px;
   line-height:1.6;
   overflow-x:hidden;
-  padding-bottom:80px;
+  padding-bottom:calc(64px + env(safe-area-inset-bottom,0px));
 }
 
 /* ── BOTTOM NAV ── */
@@ -42,41 +42,39 @@ body{
   background:rgba(5,13,28,0.97);
   border-top:1px solid var(--border2);
   display:flex;
-  overflow-x:auto;
-  overflow-y:hidden;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
+  justify-content:space-around;
+  align-items:stretch;
+  overflow:hidden;
   padding-bottom:env(safe-area-inset-bottom,0);
 }
-.bot-nav::-webkit-scrollbar{display:none;}
 .bot-tab{
-  flex:0 0 auto;
-  min-width:60px;
+  flex:1 1 0;
+  min-width:0;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:3px;
-  padding:10px 8px 8px;
+  gap:2px;
+  padding:8px 2px 7px;
   cursor:pointer;
   border:none;
   background:transparent;
   color:var(--muted);
   font-family:'Barlow Condensed',sans-serif;
-  font-size:9px;
+  font-size:8px;
   font-weight:600;
-  letter-spacing:0.06em;
+  letter-spacing:0.04em;
   text-transform:uppercase;
   transition:color .2s;
   position:relative;
   white-space:nowrap;
 }
-.bot-tab .tab-icon{font-size:20px;line-height:1;display:block;}
+.bot-tab .tab-icon{font-size:18px;line-height:1;display:block;}
 .bot-tab.active{color:var(--cyan);}
 .bot-tab.active::before{
   content:'';
   position:absolute;
-  top:0;left:12%;right:12%;
+  top:0;left:10%;right:10%;
   height:2px;
   background:var(--cyan);
   border-radius:0 0 3px 3px;
@@ -1174,7 +1172,7 @@ body{
 .home-team-k{
   font-family:'Barlow Condensed',sans-serif;
   font-weight:700;
-  color:var(--muted);
+  color:rgba(180,200,230,0.9);
   letter-spacing:.07em;
   text-transform:uppercase;
   flex:0 0 auto;
@@ -1183,6 +1181,7 @@ body{
   text-align:right;
   color:var(--white);
   min-width:0;
+  font-weight:500;
 }
 .home-team-v strong{color:var(--cyan);font-weight:700;}
 @media(max-width:390px){
@@ -1338,6 +1337,33 @@ footer{
 }
 .ffbs-flag{display:flex;gap:2px;}
 .ffbs-flag span{display:block;width:8px;height:14px;}
+
+/* ── POOLS LAYOUT ── */
+.pools-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:.2rem;
+}
+.pool-col{}
+.pool-col-head{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:.45rem .5rem .5rem;
+  margin-bottom:8px;
+}
+.pool-col-label{
+  font-family:'Anton',sans-serif;
+  font-size:13px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.pool-col-cards{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
 </style>
 </head>
 <body>
@@ -1440,7 +1466,7 @@ footer{
       </a>
 
     </div>
-  </div>
+  
 
   <div class="home-format-grid" style="margin-top:1.2rem;">
     <div class="home-format-card">
@@ -1459,104 +1485,98 @@ footer{
       <div class="home-format-icon">🏆</div>
       <div class="home-format-label" style="color:var(--gold);">Finale</div>
       <div class="home-format-val" style="color:var(--gold);">Lun. 25/05</div>
-      <div class="home-format-desc">Grande finale · Lundi de Pentecôte</div>
-    </div>
-  </div>
-</div>
-
-<!-- ── LES 6 ÉQUIPES ── -->
-<div class="home-section" style="padding-top:0;">
-  <div class="home-section-eyebrow">Participants 2026</div>
-  <div class="home-section-title">Les 6 équipes</div>
-  <p class="home-section-text" style="margin-bottom:1.4rem;">Six clubs de toute la France. Deux poules officielles. Une seule championne.</p>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-    <div class="pool-box">
-      <div class="pool-box-head">Poule A</div>
-      <div class="pool-box-row"><span class="pool-rank">1</span><span>Colombes Wildcats</span></div>
-      <div class="pool-box-row"><span class="pool-rank">2</span><span>Saint-Raphaël Comanches</span></div>
-      <div class="pool-box-row"><span class="pool-rank">3</span><span>Grenoble Grizzlys</span></div>
-    </div>
-    <div class="pool-box">
-      <div class="pool-box-head" style="color:var(--cyan);">Poule B</div>
-      <div class="pool-box-row"><span class="pool-rank">1</span><span>Nice Cavigal</span></div>
-      <div class="pool-box-row"><span class="pool-rank">2</span><span>Pessac Panthères</span></div>
-      <div class="pool-box-row"><span class="pool-rank">3</span><span>Évry-Courcouronnes Pharaons</span></div>
+      <div class="home-format-desc">Grande finale · 14h00</div>
     </div>
   </div>
 
-  <div class="home-team-grid">
-    <div class="home-team-card">
-      <div class="home-team-head">
-        <div class="home-team-logo">W</div>
-        <div><div class="home-team-name">Wildcats</div><div class="home-team-city">Colombes · Poule A</div></div>
+  <!-- Poules -->
+  <div class="home-pool-label pool-a-label">⬡ Poule A</div>
+  <div class="pools-layout">
+<div class="pool-col">
+  <div class="pool-col-head" style="color:var(--blue2);border-bottom:2px solid rgba(74,155,255,0.4);">
+    <span class="pool-col-label">POULE A</span>
+  </div>
+  <div class="pool-col-cards">
+    <div class="home-team-card" style="border-color:rgba(113,122,213,0.5);">
+      <div class="home-team-head" style="background:linear-gradient(135deg,#717ad5ee 0%,#717ad599 100%);border-bottom:2px solid #e8a00160;">
+        <div class="home-team-logo" style="background:#fff;border-color:rgba(113,122,213,0.5);padding:2px;"><img src="https://static.wbsc.org/upload/00c226d7-a309-43bf-2e34-cf074ffb6e4c.png" style="width:100%;height:100%;object-fit:contain;border-radius:50%;display:block;"></div>
+        <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Wildcats</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Colombes · Poule A</div></div>
       </div>
       <div class="home-team-body">
         <div class="home-team-line"><span class="home-team-k">Historique</span><span class="home-team-v">2025 : 5e · 2024 : n.p. · 2023 : 5e</span></div>
-        <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">Championnes D1 2025</span></div>
-        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong>1er</strong> classement actuel</span></div>
+        <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">🏆 Championnes D2 2024</span></div>
+        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong style="color:#e8a001;">1er</strong> <span style="font-size:10px;color:var(--muted);">(8V · 2D)</span></span></div>
       </div>
     </div>
 
-    <div class="home-team-card">
-      <div class="home-team-head">
-        <div class="home-team-logo">SC</div>
-        <div><div class="home-team-name">Comanches</div><div class="home-team-city">Saint-Raphaël · Poule A</div></div>
+    <div class="home-team-card" style="border-color:rgba(176,183,197,0.5);">
+      <div class="home-team-head" style="background:linear-gradient(135deg,#20212bee 0%,#20212b99 100%);border-bottom:2px solid #b0b7c560;">
+        <div class="home-team-logo" style="background:#20212b;border-color:rgba(176,183,197,0.5);padding:2px;"><img src="https://static.wbsc.org/assets/cms/teams/logo/229a41eb-e61a-7ab8-e29f-3100fc34a2ce.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
+        <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Comanches</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Saint-Raphaël · Poule A</div></div>
       </div>
       <div class="home-team-body">
         <div class="home-team-line"><span class="home-team-k">Historique</span><span class="home-team-v">2025 : 1er · 2024 : 2e · 2023 : 2e</span></div>
-        <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">Challenge 2025 · finales 2023-24</span></div>
-        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong>4e</strong> classement actuel</span></div>
+        <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">🏆 Challenge 2025 · finales 2023-24</span></div>
+        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong style="color:#b0b7c5;">4e</strong> <span style="font-size:10px;color:var(--muted);">(5V · 5D)</span></span></div>
       </div>
     </div>
 
-    <div class="home-team-card">
-      <div class="home-team-head">
-        <div class="home-team-logo">GG</div>
-        <div><div class="home-team-name">Grizzlys</div><div class="home-team-city">Grenoble · Poule A</div></div>
+    <div class="home-team-card" style="border-color:rgba(216,226,252,0.4);">
+      <div class="home-team-head" style="background:linear-gradient(135deg,#26314fee 0%,#26314f99 100%);border-bottom:2px solid #d8e2fc60;">
+        <div class="home-team-logo" style="background:#fff;border-color:rgba(216,226,252,0.4);padding:2px;"><img src="https://static.wbsc.org/upload/c6f45770-2b34-bfcf-33e8-1909b6ef7bae.jpg" style="width:100%;height:100%;object-fit:contain;border-radius:50%;display:block;"></div>
+        <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Grizzlys</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Grenoble · Poule A</div></div>
       </div>
       <div class="home-team-body">
         <div class="home-team-line"><span class="home-team-k">Historique</span><span class="home-team-v">2025 : 6e · 2024 : 5e · 2023 : 3e</span></div>
-        <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">Challenge 2022 · podium 2023</span></div>
-        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong>5e</strong> classement actuel</span></div>
+        <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">🏆 Challenge 2022 · podium 2023</span></div>
+        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong style="color:#d8e2fc;">5e</strong> <span style="font-size:10px;color:var(--muted);">(4V · 6D)</span></span></div>
       </div>
     </div>
-
-    <div class="home-team-card">
-      <div class="home-team-head">
-        <div class="home-team-logo">NC</div>
-        <div><div class="home-team-name">Cavigal</div><div class="home-team-city">Nice · Poule B</div></div>
+  </div>
+</div>
+<div class="pool-col">
+  <div class="pool-col-head" style="color:var(--cyan);border-bottom:2px solid rgba(0,212,255,0.4);">
+    <span class="pool-col-label">POULE B</span>
+  </div>
+  <div class="pool-col-cards">
+    <div class="home-team-card" style="border-color:rgba(165,0,22,0.6);">
+      <div class="home-team-head" style="background:linear-gradient(135deg,#a50016ee 0%,#a5001699 100%);border-bottom:2px solid #ff6b7a60;">
+        <div class="home-team-logo" style="background:#fff;border-color:rgba(165,0,22,0.6);padding:2px;"><img src="https://static.wbsc.org/upload/9299e180-0639-6ae2-e61d-a4faf42b7b27.jpg" style="width:100%;height:100%;object-fit:contain;border-radius:50%;display:block;"></div>
+        <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Cavigal</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Nice · Poule B</div></div>
       </div>
       <div class="home-team-body">
         <div class="home-team-line"><span class="home-team-k">Historique</span><span class="home-team-v">2025 : n.p. · 2024 : 3e · 2023 : 6e</span></div>
         <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">3e du Challenge 2024</span></div>
-        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong>2e</strong> classement actuel</span></div>
+        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong style="color:#ff6b7a;">2e</strong> <span style="font-size:10px;color:var(--muted);">(7V · 3D)</span></span></div>
       </div>
     </div>
 
-    <div class="home-team-card">
-      <div class="home-team-head">
-        <div class="home-team-logo">PP</div>
-        <div><div class="home-team-name">Panthères</div><div class="home-team-city">Pessac · Poule B</div></div>
+    <div class="home-team-card" style="border-color:rgba(248,205,92,0.5);">
+      <div class="home-team-head" style="background:linear-gradient(135deg,#1a1a1aee 0%,#1a1a1a99 100%);border-bottom:2px solid #f8cd5c60;">
+        <div class="home-team-logo" style="background:#1a1a1a;border-color:rgba(248,205,92,0.5);padding:2px;"><img src="https://static.wbsc.org/upload/77e94058-ac4d-db29-8258-7b792b239dbc.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
+        <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Panthères</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Pessac · Poule B</div></div>
       </div>
       <div class="home-team-body">
         <div class="home-team-line"><span class="home-team-k">Historique</span><span class="home-team-v">2025 : 3e · 2024 : 6e · 2023 : n.p.</span></div>
         <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">3e du Challenge 2025</span></div>
-        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong>3e</strong> classement actuel</span></div>
+        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong style="color:#f8cd5c;">3e</strong> <span style="font-size:10px;color:var(--muted);">(6V · 4D)</span></span></div>
       </div>
     </div>
 
-    <div class="home-team-card">
-      <div class="home-team-head">
-        <div class="home-team-logo" style="background:#fff;border-color:rgba(245,201,58,0.35);padding:2px;"><img src="https://static.wbsc.org/upload/07067501-9be9-9d54-0187-4b5ce1bc028d.jpg" style="width:100%;height:100%;object-fit:contain;border-radius:50%;display:block;"></div>
-        <div><div class="home-team-name">Pharaons</div><div class="home-team-city">Évry-Courcouronnes · Poule B</div></div>
+    <div class="home-team-card" style="border-color:rgba(248,205,92,0.45);">
+      <div class="home-team-head" style="background:linear-gradient(135deg,#6b0001ee 0%,#6b000199 100%);border-bottom:2px solid #f8cd5c60;">
+        <div class="home-team-logo" style="background:#fff;border-color:rgba(248,205,92,0.45);padding:2px;"><img src="https://static.wbsc.org/upload/07067501-9be9-9d54-0187-4b5ce1bc028d.jpg" style="width:100%;height:100%;object-fit:contain;border-radius:50%;display:block;"></div>
+        <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Pharaons</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Évry-Courcouronnes · Poule B</div></div>
       </div>
       <div class="home-team-body">
         <div class="home-team-line"><span class="home-team-k">Historique</span><span class="home-team-v">2025 : 2e · 2024 : 1er · 2023 : 1er</span></div>
-        <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">Challenge 2021, 2023, 2024</span></div>
-        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong>6e</strong> classement actuel</span></div>
+        <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">🏆 Challenge 2021, 2023, 2024</span></div>
+        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong style="color:#f8cd5c;">6e</strong> <span style="font-size:10px;color:var(--muted);">(3V · 7D)</span></span></div>
       </div>
     </div>
-  </div></div>
+  </div>
+</div>
+</div>
 <!-- ── INFOS PRATIQUES RAPIDES ── -->
 <div class="home-section" style="padding-top:0;">
   <div class="home-section-eyebrow">Pratique</div>
@@ -1605,6 +1625,8 @@ footer{
     Affilié FFBS · Fédération Française de Baseball et Softball
   </div>
 </footer>
+</div>
+</div>
 </div>
 
 <!-- ═══════════════════ SECTION: PROGRAMME ═══════════════════ -->
@@ -1846,118 +1868,239 @@ footer{
 
   <!-- Équipe 1 : Comanches -->
   <div class="team-rich-card">
-    <div class="trc-header" style="background:linear-gradient(135deg,#8B4513 0%,#5c2d0a 100%);">
-      <div class="trc-logo-wrap">
-        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
-          <circle cx="30" cy="30" r="28" fill="#6B3310" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-          <text x="30" y="38" text-anchor="middle" font-size="28">🪶</text>
-        </svg>
+    <div class="trc-header" style="background:linear-gradient(135deg,#20212b 0%,#0a0b10 100%);">
+      <div class="trc-logo-wrap" style="background:#0a0b10;">
+        <img class="trc-logo-img" src="https://static.wbsc.org/assets/cms/teams/logo/229a41eb-e61a-7ab8-e29f-3100fc34a2ce.jpg" alt="Comanches logo">
       </div>
       <div class="trc-header-info">
         <div class="trc-pool-chip" style="background:rgba(30,111,232,0.35);color:#8BB8FF;">Poule A</div>
         <div class="trc-name">Comanches</div>
         <div class="trc-city">Saint-Raphaël · PACA</div>
       </div>
-      <div class="trc-num">#1</div>
+      <div class="trc-num" style="color:rgba(176,183,197,0.2);">26</div>
     </div>
-    <div class="trc-players-grid">
+    <div class="trc-players-scroll">
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#3d1a06,#6B3310);">
-          <span style="font-size:1.4rem;">🧢</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Capitaine</div>
-        <div class="trc-player-pos">Pitcher</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/f5da96a8-813d-c175-b53b-b170700f363a.jpg" alt="" loading="lazy"><div class="trc-player-num">6</div></div>
+        <div class="trc-player-name">Chiara</div><div class="trc-player-lastname">Barbato</div><div class="trc-player-pos">IF</div>
       </div>
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#3d1a06,#6B3310);">
-          <span style="font-size:1.4rem;">⚾</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Joueuse #2</div>
-        <div class="trc-player-pos">Catcher</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/5bf3a26d-da31-39bc-5cef-f06fca2501c8.jpg" alt="" loading="lazy"><div class="trc-player-num">99</div></div>
+        <div class="trc-player-name">Stéphanie</div><div class="trc-player-lastname">BEST</div><div class="trc-player-pos">OF</div>
       </div>
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#3d1a06,#6B3310);">
-          <span style="font-size:1.4rem;">⚾</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Joueuse #3</div>
-        <div class="trc-player-pos">1ère base</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/34efad8e-8c70-4e5d-a620-1e38418d6e79.jpg" alt="" loading="lazy"><div class="trc-player-num">1</div></div>
+        <div class="trc-player-name">Marjorie</div><div class="trc-player-lastname">BRUNEL</div><div class="trc-player-pos">IF</div>
       </div>
-      <div class="trc-player-slot trc-more-slot">
-        <div class="trc-player-photo" style="background:var(--card2);">
-          <span style="font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--muted);">+17</span>
-        </div>
-        <div class="trc-player-name" style="color:var(--muted);">joueuses</div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/4e28af5e-d441-0bc9-aee7-f206f59d96dc.jpg" alt="" loading="lazy"><div class="trc-player-num">22</div></div>
+        <div class="trc-player-name">Guylaine</div><div class="trc-player-lastname">BUVAT</div><div class="trc-player-pos">OF</div>
       </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/b482fc1b-1c42-4961-eb34-d90f2997114f.jpg" alt="" loading="lazy"><div class="trc-player-num">12</div></div>
+        <div class="trc-player-name">Elise</div><div class="trc-player-lastname">BUVAT</div><div class="trc-player-pos">P</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/ed402f5c-6414-10e0-80a6-ba7c1a2270c0.jpg" alt="" loading="lazy"><div class="trc-player-num">24</div></div>
+        <div class="trc-player-name">Alice</div><div class="trc-player-lastname">CHANAL</div><div class="trc-player-pos">P</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/41de7438-10d8-065c-8cc5-d47f33833301.jpg" alt="" loading="lazy"><div class="trc-player-num">6</div></div>
+        <div class="trc-player-name">Prapeng</div><div class="trc-player-lastname">DE RIDDER</div><div class="trc-player-pos">P</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/4892283e-86f8-5e8b-77c7-81d8f46428b3.jpg" alt="" loading="lazy"><div class="trc-player-num">10</div></div>
+        <div class="trc-player-name">Yasmine</div><div class="trc-player-lastname">DERBAL</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/dcdee086-527c-3d72-6b06-4647bee9719d.png" alt="" loading="lazy"><div class="trc-player-num">13</div></div>
+        <div class="trc-player-name">Margaux</div><div class="trc-player-lastname">DUBRULLE</div><div class="trc-player-pos">OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/fe30f0cc-c275-1371-a0c9-f8fe03f968f0.jpeg" alt="" loading="lazy"><div class="trc-player-num">2</div></div>
+        <div class="trc-player-name">Chiara</div><div class="trc-player-lastname">ENRIONE-THORRAND</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/ac7e20f8-a4aa-dbae-3243-8623dd78a824.jpg" alt="" loading="lazy"><div class="trc-player-num">26</div></div>
+        <div class="trc-player-name">Sofia</div><div class="trc-player-lastname">HAMMACOTT</div><div class="trc-player-pos">OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/278/photos/5e849ab6-aada-4bce-f3f3-9cf8ad4f0f98.jpg" alt="" loading="lazy"><div class="trc-player-num">19</div></div>
+        <div class="trc-player-name">Ines</div><div class="trc-player-lastname">HAUDIQUER</div><div class="trc-player-pos">OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/7c3873b9-231f-c580-f97f-b52a796cdda3.jpeg" alt="" loading="lazy"><div class="trc-player-num">5</div></div>
+        <div class="trc-player-name">Maëla</div><div class="trc-player-lastname">LAGOFUN</div><div class="trc-player-pos">OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/f186f96f-f1b7-6deb-8a7f-9a73d2314093.jpg" alt="" loading="lazy"><div class="trc-player-num">18</div></div>
+        <div class="trc-player-name">Manon</div><div class="trc-player-lastname">MARIE</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/9a99330f-549e-9b39-d92b-b001d9e7a0b7.jpg" alt="" loading="lazy"><div class="trc-player-num">42</div></div>
+        <div class="trc-player-name">Mélissa</div><div class="trc-player-lastname">MAYEUX</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/9c68176b-411f-6f88-839f-e74eeb77843d.jpg" alt="" loading="lazy"><div class="trc-player-num">8</div></div>
+        <div class="trc-player-name">Raphaella</div><div class="trc-player-lastname">MORIUS</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/03666080-e226-57ea-d404-d16b1ac697e3.jpg" alt="" loading="lazy"><div class="trc-player-num">29</div></div>
+        <div class="trc-player-name">Elsa</div><div class="trc-player-lastname">MUNIER</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/278/photos/e4c4a250-a430-4e64-71c8-9027b85e4db5.jpg" alt="" loading="lazy"><div class="trc-player-num">25</div></div>
+        <div class="trc-player-name">Youna</div><div class="trc-player-lastname">PEAN</div><div class="trc-player-pos">OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/upload/c840e42b-ca12-3ea5-a1da-89a178168521.jpg" alt="" loading="lazy"><div class="trc-player-num">7</div></div>
+        <div class="trc-player-name">Pauline</div><div class="trc-player-lastname">Prade</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/985831dd-0469-4ba8-0117-ed1e45394358.jpg" alt="" loading="lazy"><div class="trc-player-num">9</div></div>
+        <div class="trc-player-name">Agathe</div><div class="trc-player-lastname">SAGORY</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/b9ca9b83-7bbf-2eb2-15d4-c4dd1a0ddabe.jpg" alt="" loading="lazy"><div class="trc-player-num">26</div></div>
+        <div class="trc-player-name">Farah</div><div class="trc-player-lastname">SAIDI</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/upload/4f03cf73-9c74-2bb5-81a4-fbb23193cc78.jpg" alt="" loading="lazy"><div class="trc-player-num">46</div></div>
+        <div class="trc-player-name">Léna</div><div class="trc-player-lastname">SELLAM</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/83abb2ec-6ad3-8aef-50bb-2e8d231c8e4c.jpg" alt="" loading="lazy"><div class="trc-player-num">21</div></div>
+        <div class="trc-player-name">Enora</div><div class="trc-player-lastname">SIMON</div><div class="trc-player-pos">P</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/26259f33-f32d-bd32-6e53-c6a84608ba0c.jpeg" alt="" loading="lazy"><div class="trc-player-num">14</div></div>
+        <div class="trc-player-name">Morgane</div><div class="trc-player-lastname">TOURET</div><div class="trc-player-pos">OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/57ac4b40-4848-13f0-1608-455c70f8f015.jpg" alt="" loading="lazy"><div class="trc-player-num">3</div></div>
+        <div class="trc-player-name">Eloïse</div><div class="trc-player-lastname">TRIBOLET</div><div class="trc-player-pos">OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/82af7011-ed6a-2e25-f52f-00a2a466fa5c.jpg" alt="" loading="lazy"><div class="trc-player-num">27</div></div>
+        <div class="trc-player-name">Lisa Carmen</div><div class="trc-player-lastname">VIEIRA</div><div class="trc-player-pos">IF</div>
+      </div>
+    </div>
+    <div style="padding:.5rem .8rem;background:rgba(74,155,255,0.05);border-top:1px solid var(--border);">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);letter-spacing:.04em;">📋 Roster complet de la saison · Les joueuses présentes ce week-end peuvent varier</span>
     </div>
     <div class="trc-footer">
-      <span class="trc-stat">Fondé 1998</span>
-      <span class="trc-stat">Div. Nationale</span>
+      <span class="trc-stat" style="color:#b0b7c5;border:1px solid rgba(128,128,128,0.25);background:rgba(128,128,128,0.07);">26 joueuses</span>
+      <span class="trc-stat">🏆 Challenge 2025</span>
       <a href="https://ffbs.wbsc.org/fr/events/2026-championnat-de-france-division-1-feminine-softball/stats" target="_blank" rel="noopener" class="trc-stat" style="color:var(--cyan);text-decoration:none;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.07);">Stats D1 2026 ↗</a>
     </div>
   </div>
 
+  
   <!-- Équipe 2 : Panthères -->
   <div class="team-rich-card">
-    <div class="trc-header" style="background:linear-gradient(135deg,#1a3a1a 0%,#0d200d 100%);">
-      <div class="trc-logo-wrap">
-        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
-          <circle cx="30" cy="30" r="28" fill="#1a3a1a" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-          <text x="30" y="38" text-anchor="middle" font-size="28">🐆</text>
-        </svg>
+    <div class="trc-header" style="background:linear-gradient(135deg,#1a1a1a 0%,#111111 100%);">
+      <div class="trc-logo-wrap" style="background:#111111;">
+        <img class="trc-logo-img" src="https://static.wbsc.org/upload/77e94058-ac4d-db29-8258-7b792b239dbc.jpg" alt="Panthères logo">
       </div>
       <div class="trc-header-info">
-        <div class="trc-pool-chip" style="background:rgba(30,111,232,0.35);color:#8BB8FF;">Poule B</div>
+        <div class="trc-pool-chip" style="background:rgba(248,205,92,0.18);color:#f8cd5c;">Poule B</div>
         <div class="trc-name">Panthères</div>
         <div class="trc-city">Pessac · Nouvelle-Aquitaine</div>
       </div>
-      <div class="trc-num">#2</div>
+      <div class="trc-num" style="color:rgba(248,205,92,0.18);">19</div>
     </div>
-    <div class="trc-players-grid">
+    <div class="trc-players-scroll">
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#0a1f0a,#1a3a1a);">
-          <span style="font-size:1.4rem;">🧢</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Capitaine</div>
-        <div class="trc-player-pos">Pitcher</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/4065f550-5d82-ac69-85d9-94ed81d739ae.jpg" alt="" loading="lazy"><div class="trc-player-num">74</div></div>
+        <div class="trc-player-name">Laurence</div><div class="trc-player-lastname">CORNAILLE</div><div class="trc-player-pos">P</div>
       </div>
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#0a1f0a,#1a3a1a);">
-          <span style="font-size:1.4rem;">⚾</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Joueuse #2</div>
-        <div class="trc-player-pos">Shortstop</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/eb87b68d-a89a-07f4-92f6-5420f7bf2e9a.jpeg" alt="" loading="lazy"><div class="trc-player-num">38</div></div>
+        <div class="trc-player-name">Mathilde</div><div class="trc-player-lastname">DJAHEL</div><div class="trc-player-pos">C</div>
       </div>
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#0a1f0a,#1a3a1a);">
-          <span style="font-size:1.4rem;">⚾</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Joueuse #3</div>
-        <div class="trc-player-pos">Outfield</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/e01ce2e5-793b-8cb7-2c01-edfaff39cf7a.jpeg" alt="" loading="lazy"><div class="trc-player-num">93</div></div>
+        <div class="trc-player-name">audrey</div><div class="trc-player-lastname">FERAL</div><div class="trc-player-pos">C</div>
       </div>
-      <div class="trc-player-slot trc-more-slot">
-        <div class="trc-player-photo" style="background:var(--card2);">
-          <span style="font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--muted);">+17</span>
-        </div>
-        <div class="trc-player-name" style="color:var(--muted);">joueuses</div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/a70c812a-186c-2ec0-a3c2-0547916e02e7.jpg" alt="" loading="lazy"><div class="trc-player-num">13</div></div>
+        <div class="trc-player-name">Isaure</div><div class="trc-player-lastname">GOURGUE</div><div class="trc-player-pos">SS</div>
       </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/502c0bdc-bf1f-a748-cf90-1e388cffa18e.jpg" alt="" loading="lazy"><div class="trc-player-num">24</div></div>
+        <div class="trc-player-name">Mylène</div><div class="trc-player-lastname">GRAVES</div><div class="trc-player-pos">OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/d9cc3b9b-34a9-67f9-842d-63cdd313cc2a.jpg" alt="" loading="lazy"><div class="trc-player-num">10</div></div>
+        <div class="trc-player-name">Siobhan</div><div class="trc-player-lastname">HAYES</div><div class="trc-player-pos">1B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/656f12df-619b-8591-4392-11584758ea82.jpg" alt="" loading="lazy"><div class="trc-player-num">16</div></div>
+        <div class="trc-player-name">Alexandra</div><div class="trc-player-lastname">JUST</div><div class="trc-player-pos">2B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/6f15e556-3f6e-6529-04c3-2849df279edd.jpg" alt="" loading="lazy"><div class="trc-player-num">6</div></div>
+        <div class="trc-player-name">Léa</div><div class="trc-player-lastname">KERANFLECH</div><div class="trc-player-pos">3B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/ed50decb-1b7f-044c-41d9-2ab59251d28e.jpg" alt="" loading="lazy"><div class="trc-player-num">31</div></div>
+        <div class="trc-player-name">Louise</div><div class="trc-player-lastname">LE CHENADEC</div><div class="trc-player-pos">P</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/ce2f8bc1-9700-3ca8-f24e-695b957c7751.jpg" alt="" loading="lazy"><div class="trc-player-num">88</div></div>
+        <div class="trc-player-name">Anaïs</div><div class="trc-player-lastname">MERSCH</div><div class="trc-player-pos">P</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/879cc3fa-ea00-8224-13fd-6abda57951df.jpg" alt="" loading="lazy"><div class="trc-player-num">11</div></div>
+        <div class="trc-player-name">Amandine</div><div class="trc-player-lastname">METREAU</div><div class="trc-player-pos">SS</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/3d065d59-5ea6-7f12-58ed-a9568ce05f41.jpg" alt="" loading="lazy"><div class="trc-player-num">20</div></div>
+        <div class="trc-player-name">Gabrielle</div><div class="trc-player-lastname">PEDARZACQ</div><div class="trc-player-pos">1B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/0d0ec63f-7b88-68cc-c19b-5091882cb006.jpg" alt="" loading="lazy"><div class="trc-player-num">55</div></div>
+        <div class="trc-player-name">Carrie, Juliette</div><div class="trc-player-lastname">PITCHER</div><div class="trc-player-pos">2B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/08896ed5-783c-8477-563e-0aa7e91ac351.jpg" alt="" loading="lazy"><div class="trc-player-num">15</div></div>
+        <div class="trc-player-name">Camille</div><div class="trc-player-lastname">RIERA</div><div class="trc-player-pos">C</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/1b9dab94-2087-f652-df84-1d897f0b97d6.jpg" alt="" loading="lazy"><div class="trc-player-num">9</div></div>
+        <div class="trc-player-name">Josephine</div><div class="trc-player-lastname">ROBISHAW</div><div class="trc-player-pos">OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/5b3ff99e-7c98-e24c-76a2-4369fe97976f.jpg" alt="" loading="lazy"><div class="trc-player-num">97</div></div>
+        <div class="trc-player-name">Kimane</div><div class="trc-player-lastname">ROGRON</div><div class="trc-player-pos">3B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/97fe976f-de7b-d399-abb4-156988886fb5.jpg" alt="" loading="lazy"><div class="trc-player-num">48</div></div>
+        <div class="trc-player-name">Mailys</div><div class="trc-player-lastname">RUAU</div><div class="trc-player-pos">2B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/34023597-1676-c529-48a9-6eedfcf7c2f9.jpg" alt="" loading="lazy"><div class="trc-player-num">2</div></div>
+        <div class="trc-player-name">Nadège</div><div class="trc-player-lastname">SINOQUET</div><div class="trc-player-pos">OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/8bf49b61-f002-b8dd-cec4-510e83be93e3.jpg" alt="" loading="lazy"><div class="trc-player-num">5</div></div>
+        <div class="trc-player-name">Marion</div><div class="trc-player-lastname">TRAVERS</div><div class="trc-player-pos">OF</div>
+      </div>
+    </div>
+    <div style="padding:.5rem .8rem;background:rgba(74,155,255,0.05);border-top:1px solid var(--border);">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);letter-spacing:.04em;">📋 Roster complet de la saison · Les joueuses présentes ce week-end peuvent varier</span>
     </div>
     <div class="trc-footer">
-      <span class="trc-stat">Fondé 2003</span>
-      <span class="trc-stat">Div. Nationale</span>
+      <span class="trc-stat" style="color:#f8cd5c;border:1px solid rgba(128,128,128,0.25);background:rgba(128,128,128,0.07);">19 joueuses</span>
       <a href="https://ffbs.wbsc.org/fr/events/2026-championnat-de-france-division-1-feminine-softball/stats" target="_blank" rel="noopener" class="trc-stat" style="color:var(--cyan);text-decoration:none;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.07);">Stats D1 2026 ↗</a>
     </div>
   </div>
 
+  
   <!-- Équipe 3 : Pharaons -->
   <div class="team-rich-card">
-    <div class="trc-header" style="background:linear-gradient(135deg,#3a2800 0%,#1f1500 100%);">
-      <div class="trc-logo-wrap" style="background:#1f1500;">
+    <div class="trc-header" style="background:linear-gradient(135deg,#6b0001 0%,#2a0001 100%);">
+      <div class="trc-logo-wrap" style="background:#2a0001;">
         <img class="trc-logo-img" src="https://static.wbsc.org/upload/07067501-9be9-9d54-0187-4b5ce1bc028d.jpg" alt="Pharaons logo">
       </div>
       <div class="trc-header-info">
@@ -1965,7 +2108,7 @@ footer{
         <div class="trc-name">Pharaons</div>
         <div class="trc-city">Évry-Courcouronnes · Île-de-France</div>
       </div>
-      <div class="trc-num" style="color:rgba(245,201,58,0.18);">26</div>
+      <div class="trc-num" style="color:rgba(245,201,58,0.22);">26</div>
     </div>
     <div class="trc-players-scroll">
       <div class="trc-player-slot">
@@ -2077,176 +2220,356 @@ footer{
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);letter-spacing:.04em;">📋 Roster complet de la saison · Les joueuses présentes ce week-end peuvent varier</span>
     </div>
     <div class="trc-footer">
-      <span class="trc-stat" style="color:var(--gold);border:1px solid rgba(245,201,58,0.25);background:rgba(245,201,58,0.07);">26 joueuses</span>
+      <span class="trc-stat" style="color:#f8cd5c;border:1px solid rgba(248,205,92,0.3);background:rgba(248,205,92,0.08);">26 joueuses</span>
       <span class="trc-stat">🏆 Challenge 2021·23·24</span>
       <a href="https://ffbs.wbsc.org/fr/events/2026-championnat-de-france-division-1-feminine-softball/stats" target="_blank" rel="noopener" class="trc-stat" style="color:var(--cyan);text-decoration:none;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.07);">Stats D1 2026 ↗</a>
     </div>
   </div>
   <!-- Équipe 4 : Wildcats -->
   <div class="team-rich-card">
-    <div class="trc-header" style="background:linear-gradient(135deg,#001a3a 0%,#000d1f 100%);">
-      <div class="trc-logo-wrap">
-        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
-          <circle cx="30" cy="30" r="28" fill="#001a3a" stroke="rgba(0,212,255,0.4)" stroke-width="1.5"/>
-          <text x="30" y="38" text-anchor="middle" font-size="28">🐱</text>
-        </svg>
+    <div class="trc-header" style="background:linear-gradient(135deg,#717ad5 0%,#4a51a0 100%);">
+      <div class="trc-logo-wrap" style="background:#4a51a0;">
+        <img class="trc-logo-img" src="https://static.wbsc.org/upload/00c226d7-a309-43bf-2e34-cf074ffb6e4c.png" alt="Wildcats logo">
       </div>
       <div class="trc-header-info">
-        <div class="trc-pool-chip" style="background:rgba(0,212,255,0.15);color:var(--cyan);">Poule A</div>
+        <div class="trc-pool-chip" style="background:rgba(113,122,213,0.25);color:#a8b0ff;">Poule A</div>
         <div class="trc-name">Wildcats</div>
         <div class="trc-city">Colombes · Île-de-France</div>
       </div>
-      <div class="trc-num">#4</div>
+      <div class="trc-num" style="color:rgba(113,122,213,0.2);">24</div>
     </div>
-    <div class="trc-players-grid">
+    <div class="trc-players-scroll">
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#000d1f,#001a3a);">
-          <span style="font-size:1.4rem;">🧢</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Capitaine</div>
-        <div class="trc-player-pos">Pitcher</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/5980a99a-ced3-0961-e5b1-b68b361271d9.jpeg" alt="" loading="lazy"><div class="trc-player-num">9</div></div>
+        <div class="trc-player-name">Oriana</div><div class="trc-player-lastname">ALVARADO TORRES</div><div class="trc-player-pos">OF</div>
       </div>
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#000d1f,#001a3a);">
-          <span style="font-size:1.4rem;">⚾</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Joueuse #2</div>
-        <div class="trc-player-pos">Catcher</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/dbcb6eff-08b0-c84e-46c5-0892ee101e14.jpg" alt="" loading="lazy"><div class="trc-player-num">31</div></div>
+        <div class="trc-player-name">Cynthia</div><div class="trc-player-lastname">ARMET</div><div class="trc-player-pos">IF</div>
       </div>
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#000d1f,#001a3a);">
-          <span style="font-size:1.4rem;">⚾</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Joueuse #3</div>
-        <div class="trc-player-pos">Shortstop</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/1f193fd7-e148-9dcb-f174-e20ad6dd4b7d.jpg" alt="" loading="lazy"><div class="trc-player-num">99</div></div>
+        <div class="trc-player-name">Nour</div><div class="trc-player-lastname">BETIS</div><div class="trc-player-pos">C/OF</div>
       </div>
-      <div class="trc-player-slot trc-more-slot">
-        <div class="trc-player-photo" style="background:var(--card2);">
-          <span style="font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--muted);">+17</span>
-        </div>
-        <div class="trc-player-name" style="color:var(--muted);">joueuses</div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/fe42761f-e379-263b-acd7-f5881a53d038.jpeg" alt="" loading="lazy"><div class="trc-player-num">7</div></div>
+        <div class="trc-player-name">Alexandra</div><div class="trc-player-lastname">BRUEL</div><div class="trc-player-pos">OF</div>
       </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/a9811063-d341-3fca-6a1b-c66f0c4fb5ae.jpg" alt="" loading="lazy"><div class="trc-player-num">45</div></div>
+        <div class="trc-player-name">Elise</div><div class="trc-player-lastname">BUSSAT</div><div class="trc-player-pos">3B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/8c431350-fc70-d1ca-0c16-f70f56e6f41a.jpeg" alt="" loading="lazy"><div class="trc-player-num">4</div></div>
+        <div class="trc-player-name">Axelle</div><div class="trc-player-lastname">CHIAPASCO</div><div class="trc-player-pos">P/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/65c28977-629e-c5b4-c220-8e5d0ef6b816.jpg" alt="" loading="lazy"><div class="trc-player-num">15</div></div>
+        <div class="trc-player-name">Manon</div><div class="trc-player-lastname">DELEGUE</div><div class="trc-player-pos">1B/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/7dcf7556-08c2-50b4-3911-637f5378ee45.jpeg" alt="" loading="lazy"><div class="trc-player-num">50</div></div>
+        <div class="trc-player-name">Nadia</div><div class="trc-player-lastname">DOZOVA</div><div class="trc-player-pos">C/1B/IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/4f9b4371-9c7c-d075-d90a-8b1d420e8d7b.jpeg" alt="" loading="lazy"><div class="trc-player-num">30</div></div>
+        <div class="trc-player-name">Jenny</div><div class="trc-player-lastname">Durassier</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/ba098b08-b938-7f78-f75c-64387041b0e7.jpg" alt="" loading="lazy"><div class="trc-player-num">26</div></div>
+        <div class="trc-player-name">Micha</div><div class="trc-player-lastname">LABATUT</div><div class="trc-player-pos">C/UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/24f628d9-3449-9eac-51d7-f4784372d523.jpg" alt="" loading="lazy"><div class="trc-player-num">2</div></div>
+        <div class="trc-player-name">Alice</div><div class="trc-player-lastname">LE BALLE</div><div class="trc-player-pos">OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/7387a7ec-3a9a-6e9a-597e-fa57f2121153.jpeg" alt="" loading="lazy"><div class="trc-player-num">28</div></div>
+        <div class="trc-player-name">Isabelle</div><div class="trc-player-lastname">LEBOEUF</div><div class="trc-player-pos">IF/UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/7b5b803e-551f-871c-1a21-2563646ec776.jpg" alt="" loading="lazy"><div class="trc-player-num">25</div></div>
+        <div class="trc-player-name">Agnès</div><div class="trc-player-lastname">MASSON-SIBUT</div><div class="trc-player-pos">2B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/4e73731b-2ea4-8653-fb5d-1475c5888155.jpg" alt="" loading="lazy"><div class="trc-player-num">12</div></div>
+        <div class="trc-player-name">Estelle</div><div class="trc-player-lastname">Meyer</div><div class="trc-player-pos">P/IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/f1cd8314-16d7-4d08-6a0f-f5fedc73ee36.jpeg" alt="" loading="lazy"><div class="trc-player-num">5</div></div>
+        <div class="trc-player-name">Samantha</div><div class="trc-player-lastname">PAMPHILE</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/1d8320ff-ba42-672e-cef5-5a8b644f22e8.jpeg" alt="" loading="lazy"><div class="trc-player-num">16</div></div>
+        <div class="trc-player-name">Lola</div><div class="trc-player-lastname">PERIE</div><div class="trc-player-pos">OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/97e21311-e7a1-6f3a-ee4d-6d9037429498.jpg" alt="" loading="lazy"><div class="trc-player-num">19</div></div>
+        <div class="trc-player-name">Christina Grace</div><div class="trc-player-lastname">POLEY</div><div class="trc-player-pos">C/3B/IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/e1b7c66f-a744-0334-89c8-c9d570d50241.jpg" alt="" loading="lazy"><div class="trc-player-num">23</div></div>
+        <div class="trc-player-name">Livia</div><div class="trc-player-lastname">ROECK</div><div class="trc-player-pos">UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/bc5a4748-9298-0a6a-3a45-8a999c616078.png" alt="" loading="lazy"><div class="trc-player-num">10</div></div>
+        <div class="trc-player-name">Laurie Nour</div><div class="trc-player-lastname">SADOUDI</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/89dd189e-33fb-e4f9-8d4b-78d2ee341fcc.jpeg" alt="" loading="lazy"><div class="trc-player-num">87</div></div>
+        <div class="trc-player-name">Laurie</div><div class="trc-player-lastname">SAURAT</div><div class="trc-player-pos">P/1B/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/a50c912a-fbc6-1675-cb46-059a3d9bda58.jpeg" alt="" loading="lazy"><div class="trc-player-num">11</div></div>
+        <div class="trc-player-name">Shahineze</div><div class="trc-player-lastname">SOUICI</div><div class="trc-player-pos">IF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/9d20a713-4dc9-2275-c144-59c79be33ee6.jpeg" alt="" loading="lazy"><div class="trc-player-num">62</div></div>
+        <div class="trc-player-name">Marie</div><div class="trc-player-lastname">TEN EYCK</div><div class="trc-player-pos">C/IF/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/595b396a-0fbe-2a72-fd79-5c8c7fde362b.jpeg" alt="" loading="lazy"><div class="trc-player-num">97</div></div>
+        <div class="trc-player-name">Louise</div><div class="trc-player-lastname">TIBERGHIEN</div><div class="trc-player-pos">2B/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/f14e68a8-dd2e-1a0a-3c89-2b33e781d4a6.jpg" alt="" loading="lazy"><div class="trc-player-num">6</div></div>
+        <div class="trc-player-name">Garance</div><div class="trc-player-lastname">VIGUIER</div><div class="trc-player-pos">OF</div>
+      </div>
+    </div>
+    <div style="padding:.5rem .8rem;background:rgba(74,155,255,0.05);border-top:1px solid var(--border);">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);letter-spacing:.04em;">📋 Roster complet de la saison · Les joueuses présentes ce week-end peuvent varier</span>
     </div>
     <div class="trc-footer">
-      <span class="trc-stat">Fondé 2001</span>
-      <span class="trc-stat">Div. Nationale</span>
+      <span class="trc-stat" style="color:#e8a001;border:1px solid rgba(128,128,128,0.25);background:rgba(128,128,128,0.07);">24 joueuses</span>
+      <span class="trc-stat">🏆 Championnes D2 2024</span>
       <a href="https://ffbs.wbsc.org/fr/events/2026-championnat-de-france-division-1-feminine-softball/stats" target="_blank" rel="noopener" class="trc-stat" style="color:var(--cyan);text-decoration:none;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.07);">Stats D1 2026 ↗</a>
     </div>
   </div>
 
+  
   <!-- Équipe 5 : Grizzlys -->
   <div class="team-rich-card">
-    <div class="trc-header" style="background:linear-gradient(135deg,#2a1a0a 0%,#150d05 100%);">
-      <div class="trc-logo-wrap">
-        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
-          <circle cx="30" cy="30" r="28" fill="#2a1a0a" stroke="rgba(255,150,50,0.3)" stroke-width="1.5"/>
-          <text x="30" y="38" text-anchor="middle" font-size="28">🐻</text>
-        </svg>
+    <div class="trc-header" style="background:linear-gradient(135deg,#26314f 0%,#141d33 100%);">
+      <div class="trc-logo-wrap" style="background:#141d33;">
+        <img class="trc-logo-img" src="https://static.wbsc.org/upload/c6f45770-2b34-bfcf-33e8-1909b6ef7bae.jpg" alt="Grizzlys logo">
       </div>
       <div class="trc-header-info">
-        <div class="trc-pool-chip" style="background:rgba(0,212,255,0.15);color:var(--cyan);">Poule A</div>
+        <div class="trc-pool-chip" style="background:rgba(38,49,79,0.5);color:#d8e2fc;">Poule A</div>
         <div class="trc-name">Grizzlys</div>
         <div class="trc-city">Grenoble · Auvergne-Rhône-Alpes</div>
       </div>
-      <div class="trc-num">#5</div>
+      <div class="trc-num" style="color:rgba(216,226,252,0.18);">22</div>
     </div>
-    <div class="trc-players-grid">
+    <div class="trc-players-scroll">
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#150d05,#2a1a0a);">
-          <span style="font-size:1.4rem;">🧢</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Capitaine</div>
-        <div class="trc-player-pos">Pitcher</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/dc524f6e-5aac-f31b-e8f7-c2af51ea86e5.png" alt="" loading="lazy"><div class="trc-player-num">4</div></div>
+        <div class="trc-player-name">Soumiya</div><div class="trc-player-lastname">Bengrine</div><div class="trc-player-pos">C/2B/3B</div>
       </div>
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#150d05,#2a1a0a);">
-          <span style="font-size:1.4rem;">⚾</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Joueuse #2</div>
-        <div class="trc-player-pos">Outfield</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/278/photos/b73c95f9-40be-aabd-839c-f8aa49f72279.jpeg" alt="" loading="lazy"><div class="trc-player-num">8</div></div>
+        <div class="trc-player-name">Victoria</div><div class="trc-player-lastname">BITEUR</div><div class="trc-player-pos">P</div>
       </div>
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#150d05,#2a1a0a);">
-          <span style="font-size:1.4rem;">⚾</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Joueuse #3</div>
-        <div class="trc-player-pos">1ère base</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/038639c6-6a68-0ac2-c4fd-224ccc740ad2.png" alt="" loading="lazy"><div class="trc-player-num">2</div></div>
+        <div class="trc-player-name">Hermine</div><div class="trc-player-lastname">BOUDOUSQ</div><div class="trc-player-pos">IF/OF</div>
       </div>
-      <div class="trc-player-slot trc-more-slot">
-        <div class="trc-player-photo" style="background:var(--card2);">
-          <span style="font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--muted);">+17</span>
-        </div>
-        <div class="trc-player-name" style="color:var(--muted);">joueuses</div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/278/photos/89ec848b-cb06-42fe-f443-65fe16acd24c.jpeg" alt="" loading="lazy"><div class="trc-player-num">51</div></div>
+        <div class="trc-player-name">Ellie</div><div class="trc-player-lastname">BOUIS</div><div class="trc-player-pos">P/1B</div>
       </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/93ac45c1-7ea2-1938-917a-531a98051e08.png" alt="" loading="lazy"><div class="trc-player-num">16</div></div>
+        <div class="trc-player-name">Carla</div><div class="trc-player-lastname">bura</div><div class="trc-player-pos">3B/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/cdab29e5-2012-1ec0-2e11-d580d221be1e.png" alt="" loading="lazy"><div class="trc-player-num">9</div></div>
+        <div class="trc-player-name">Laetitia</div><div class="trc-player-lastname">DASPRES-SAGARDOY</div><div class="trc-player-pos">3B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/b282113c-42ad-6c87-7103-21f3de06ac2d.jpg" alt="" loading="lazy"><div class="trc-player-num">77</div></div>
+        <div class="trc-player-name">Elise</div><div class="trc-player-lastname">FOULADOUX</div><div class="trc-player-pos">UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/278/photos/1815ae5a-3bd0-f393-50fd-e4bec9f84408.jpeg" alt="" loading="lazy"><div class="trc-player-num">80</div></div>
+        <div class="trc-player-name">Géraldine</div><div class="trc-player-lastname">GAUZELIN ORS</div><div class="trc-player-pos">C/3B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/1cb3caeb-d8d8-c453-21f6-770db5fa2acb.jpg" alt="" loading="lazy"><div class="trc-player-num">25</div></div>
+        <div class="trc-player-name">Camille</div><div class="trc-player-lastname">Gellin</div><div class="trc-player-pos">SS</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/a35d2411-a691-5cb4-41bf-a2ba3bdb4330.png" alt="" loading="lazy"><div class="trc-player-num">5</div></div>
+        <div class="trc-player-name">Arwenn</div><div class="trc-player-lastname">gercet</div><div class="trc-player-pos">1B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/621cd58b-6143-4f47-16d9-226ee9149194.jpeg" alt="" loading="lazy"><div class="trc-player-num">6</div></div>
+        <div class="trc-player-name">Lahna</div><div class="trc-player-lastname">Josselin Ogee</div><div class="trc-player-pos">2B/SS/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/278/photos/e32fd2b4-c230-e3c1-0b3c-ae4760b3b342.jpeg" alt="" loading="lazy"><div class="trc-player-num">33</div></div>
+        <div class="trc-player-name">Kristyna</div><div class="trc-player-lastname">KOROUSOVA</div><div class="trc-player-pos">1B/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/9ac289eb-1585-a58c-3dcf-a03e4d4795e4.png" alt="" loading="lazy"><div class="trc-player-num">99</div></div>
+        <div class="trc-player-name">Justine</div><div class="trc-player-lastname">LIARDET</div><div class="trc-player-pos">UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/278/photos/56060e5d-2af1-ac4b-e214-d64f952a51a0.jpeg" alt="" loading="lazy"><div class="trc-player-num">12</div></div>
+        <div class="trc-player-name">Capucine</div><div class="trc-player-lastname">MEISS</div><div class="trc-player-pos">SS/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/baaa29a2-1aaf-e50d-1e12-32e3e9982aae.jpeg" alt="" loading="lazy"><div class="trc-player-num">26</div></div>
+        <div class="trc-player-name">Lauryne</div><div class="trc-player-lastname">PALADINI--EMO</div><div class="trc-player-pos">P/3B/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/278/photos/6bac4009-a705-d620-1ac9-ce05f7009f3f.jpeg" alt="" loading="lazy"><div class="trc-player-num">29</div></div>
+        <div class="trc-player-name">Shirley</div><div class="trc-player-lastname">PATIN</div><div class="trc-player-pos">UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/d13ffd3b-8efd-46b4-b7c3-80feb034d8d5.png" alt="" loading="lazy"><div class="trc-player-num">32</div></div>
+        <div class="trc-player-name">Marianne</div><div class="trc-player-lastname">PRACH</div><div class="trc-player-pos">C/2B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/36aa896a-614c-8362-56e7-112ccf512848.png" alt="" loading="lazy"><div class="trc-player-num">28</div></div>
+        <div class="trc-player-name">Manureva</div><div class="trc-player-lastname">SALZE</div><div class="trc-player-pos">P/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/278/photos/8a3c459c-a1f7-1ad5-08c3-af624c9f4cd0.jpeg" alt="" loading="lazy"><div class="trc-player-num">30</div></div>
+        <div class="trc-player-name">Salome</div><div class="trc-player-lastname">SERGEANT</div><div class="trc-player-pos">3B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/fd5856d1-b2a0-6a91-af1e-59c691069aee.png" alt="" loading="lazy"><div class="trc-player-num">22</div></div>
+        <div class="trc-player-name">Diane</div><div class="trc-player-lastname">SIMON</div><div class="trc-player-pos">C/3B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/1f94df9a-4ec6-b493-8208-c1e8af0d5206.png" alt="" loading="lazy"><div class="trc-player-num">15</div></div>
+        <div class="trc-player-name">Floriane</div><div class="trc-player-lastname">TREFOUEL</div><div class="trc-player-pos">1B</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/414d87b0-4a06-495f-f869-fb0c899c5244.jpg" alt="" loading="lazy"><div class="trc-player-num">7</div></div>
+        <div class="trc-player-name">Anne</div><div class="trc-player-lastname">Tsolissos</div><div class="trc-player-pos">UTL</div>
+      </div>
+    </div>
+    <div style="padding:.5rem .8rem;background:rgba(74,155,255,0.05);border-top:1px solid var(--border);">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);letter-spacing:.04em;">📋 Roster complet de la saison · Les joueuses présentes ce week-end peuvent varier</span>
     </div>
     <div class="trc-footer">
-      <span class="trc-stat">Rhône-Alpes</span>
-      <span class="trc-stat">Div. Nationale</span>
+      <span class="trc-stat" style="color:#d8e2fc;border:1px solid rgba(128,128,128,0.25);background:rgba(128,128,128,0.07);">22 joueuses</span>
+      <span class="trc-stat">🏆 Challenge 2022</span>
       <a href="https://ffbs.wbsc.org/fr/events/2026-championnat-de-france-division-1-feminine-softball/stats" target="_blank" rel="noopener" class="trc-stat" style="color:var(--cyan);text-decoration:none;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.07);">Stats D1 2026 ↗</a>
     </div>
   </div>
 
+  
   <!-- Équipe 6 : Cavigal -->
   <div class="team-rich-card">
-    <div class="trc-header" style="background:linear-gradient(135deg,#001f3a 0%,#00102a 100%);">
-      <div class="trc-logo-wrap">
-        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
-          <circle cx="30" cy="30" r="28" fill="#001f3a" stroke="rgba(0,180,255,0.4)" stroke-width="1.5"/>
-          <text x="30" y="38" text-anchor="middle" font-size="28">🌊</text>
-        </svg>
+    <div class="trc-header" style="background:linear-gradient(135deg,#a50016 0%,#050810 100%);">
+      <div class="trc-logo-wrap" style="background:#050810;">
+        <img class="trc-logo-img" src="https://static.wbsc.org/upload/9299e180-0639-6ae2-e61d-a4faf42b7b27.jpg" alt="Cavigal logo">
       </div>
       <div class="trc-header-info">
-        <div class="trc-pool-chip" style="background:rgba(0,212,255,0.15);color:var(--cyan);">Poule B</div>
+        <div class="trc-pool-chip" style="background:rgba(165,0,22,0.25);color:#ff6b7a;">Poule B</div>
         <div class="trc-name">Cavigal</div>
-        <div class="trc-city">Nice · Provence-Alpes-Côte d'Azur</div>
+        <div class="trc-city">Nice · PACA</div>
       </div>
-      <div class="trc-num">#6</div>
+      <div class="trc-num" style="color:rgba(165,0,22,0.2);">21</div>
     </div>
-    <div class="trc-players-grid">
+    <div class="trc-players-scroll">
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#00102a,#001f3a);">
-          <span style="font-size:1.4rem;">🧢</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Capitaine</div>
-        <div class="trc-player-pos">Pitcher</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/6eae0e41-71da-6156-94bc-8ceafb0d15ef.JPG" alt="" loading="lazy"><div class="trc-player-num">54</div></div>
+        <div class="trc-player-name">Lea</div><div class="trc-player-lastname">AIT BENALI</div><div class="trc-player-pos">P/UTL</div>
       </div>
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#00102a,#001f3a);">
-          <span style="font-size:1.4rem;">⚾</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Joueuse #2</div>
-        <div class="trc-player-pos">Catcher</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/6bc78e2b-230a-d400-bb3c-ba4de780a965.jpeg" alt="" loading="lazy"><div class="trc-player-num">65</div></div>
+        <div class="trc-player-name">Melissa</div><div class="trc-player-lastname">BERNARD</div><div class="trc-player-pos">IF/OF/UTL</div>
       </div>
       <div class="trc-player-slot">
-        <div class="trc-player-photo" style="background:linear-gradient(135deg,#00102a,#001f3a);">
-          <span style="font-size:1.4rem;">⚾</span>
-          <div class="trc-player-add">Photo</div>
-        </div>
-        <div class="trc-player-name">Joueuse #3</div>
-        <div class="trc-player-pos">2ème base</div>
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/e35d9de4-2a75-2771-285b-888df6c9ccc4.jpg" alt="" loading="lazy"><div class="trc-player-num">5</div></div>
+        <div class="trc-player-name">Isabel</div><div class="trc-player-lastname">Bertrand</div><div class="trc-player-pos">UTL</div>
       </div>
-      <div class="trc-player-slot trc-more-slot">
-        <div class="trc-player-photo" style="background:var(--card2);">
-          <span style="font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--muted);">+17</span>
-        </div>
-        <div class="trc-player-name" style="color:var(--muted);">joueuses</div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/527270bf-d7f7-58f2-00f6-8910c6b2d882.jpg" alt="" loading="lazy"><div class="trc-player-num">14</div></div>
+        <div class="trc-player-name">Amandine</div><div class="trc-player-lastname">BERTRAND</div><div class="trc-player-pos">P/1B/RF/DH</div>
       </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/87d7cfbb-7a74-2323-a42d-e40cc05fdc2b.jpg" alt="" loading="lazy"><div class="trc-player-num">22</div></div>
+        <div class="trc-player-name">Audrey</div><div class="trc-player-lastname">Bertrand</div><div class="trc-player-pos">2B/LF/CF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/83a5b074-ef55-b181-a04c-6f2396a50047.jpg" alt="" loading="lazy"><div class="trc-player-num">10</div></div>
+        <div class="trc-player-name">Louise</div><div class="trc-player-lastname">BIGATI</div><div class="trc-player-pos">UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/f069e8bf-fb6f-2c3c-0457-3124cd736edd.jpg" alt="" loading="lazy"><div class="trc-player-num">15</div></div>
+        <div class="trc-player-name">Anaisie</div><div class="trc-player-lastname">BUGNA</div><div class="trc-player-pos">C/3B/UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/aa555b20-939c-44db-c130-5128acd1ff0a.jpeg" alt="" loading="lazy"><div class="trc-player-num">4</div></div>
+        <div class="trc-player-name">Pamela</div><div class="trc-player-lastname">DESSI</div><div class="trc-player-pos">P/3B/SS/LF/CF/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/49c68339-3b6a-9e19-a8aa-6916b07a5a24.jpg" alt="" loading="lazy"><div class="trc-player-num">12</div></div>
+        <div class="trc-player-name">Sandra</div><div class="trc-player-lastname">DYMOWIEZ</div><div class="trc-player-pos">SS/CF/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/ede7e2a1-49b8-2c8b-410b-bb4bb385c08f.jpg" alt="" loading="lazy"><div class="trc-player-num">6</div></div>
+        <div class="trc-player-name">Emma</div><div class="trc-player-lastname">FLAYOL</div><div class="trc-player-pos">P/2B/SS</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/275c9b86-c232-abe0-15be-2b4ecddba135.jpg" alt="" loading="lazy"><div class="trc-player-num">78</div></div>
+        <div class="trc-player-name">Christelle</div><div class="trc-player-lastname">GIRET</div><div class="trc-player-pos">UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/5a4afb7d-0c9c-66a2-1889-0340fdad1a0e.jpeg" alt="" loading="lazy"><div class="trc-player-num">9</div></div>
+        <div class="trc-player-name">Charlotte</div><div class="trc-player-lastname">GONFRIER</div><div class="trc-player-pos">1B/OF</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/36d1ad4f-8a95-c323-a93f-612c54f205b9.jpg" alt="" loading="lazy"><div class="trc-player-num">30</div></div>
+        <div class="trc-player-name">Emma</div><div class="trc-player-lastname">Ledin</div><div class="trc-player-pos">P/UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/855c8684-78c1-a1ed-ace4-22f9a4d5eada.jpg" alt="" loading="lazy"><div class="trc-player-num">21</div></div>
+        <div class="trc-player-name">Amandine</div><div class="trc-player-lastname">LOPEZ</div><div class="trc-player-pos">C/2B/UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/71f9b8e6-5ba7-69f5-b0c6-749cd2ebfeac.jpg" alt="" loading="lazy"><div class="trc-player-num">8</div></div>
+        <div class="trc-player-name">lola</div><div class="trc-player-lastname">LOUVET TABURET</div><div class="trc-player-pos">UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/6ec7c52a-41e8-0272-ba9a-4b856be86a91.jpg" alt="" loading="lazy"><div class="trc-player-num">19</div></div>
+        <div class="trc-player-name">Mathilde</div><div class="trc-player-lastname">MARBRIER</div><div class="trc-player-pos">UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/90a64873-67b7-6fd5-0e1d-9fd324bf1d38.jpg" alt="" loading="lazy"><div class="trc-player-num">47</div></div>
+        <div class="trc-player-name">Juliette</div><div class="trc-player-lastname">PECULIER</div><div class="trc-player-pos">UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/bf0ab335-14c4-f8b8-35fa-07b92837073a.jpg" alt="" loading="lazy"><div class="trc-player-num">16</div></div>
+        <div class="trc-player-name">Lea</div><div class="trc-player-lastname">PETIT</div><div class="trc-player-pos">UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/54513766-6af4-d06c-9f0c-3ee0abd13045.jpg" alt="" loading="lazy"><div class="trc-player-num">2</div></div>
+        <div class="trc-player-name">Claire</div><div class="trc-player-lastname">PIOLIN</div><div class="trc-player-pos">UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/cf9d1a6e-827d-067b-370d-b3df52a6eedf.jpeg" alt="" loading="lazy"><div class="trc-player-num">13</div></div>
+        <div class="trc-player-name">Sandrine</div><div class="trc-player-lastname">REA</div><div class="trc-player-pos">UTL</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo"><img class="trc-player-img" src="https://static.wbsc.org/uploads/federations/14/photos/e10ddc8d-d565-8b62-e8f3-e4e110fda7a7.jpg" alt="" loading="lazy"><div class="trc-player-num">7</div></div>
+        <div class="trc-player-name">Sandra</div><div class="trc-player-lastname">ROUSSELOT</div><div class="trc-player-pos">1B/DH</div>
+      </div>
+    </div>
+    <div style="padding:.5rem .8rem;background:rgba(74,155,255,0.05);border-top:1px solid var(--border);">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);letter-spacing:.04em;">📋 Roster complet de la saison · Les joueuses présentes ce week-end peuvent varier</span>
     </div>
     <div class="trc-footer">
-      <span class="trc-stat">Multi-sports</span>
-      <span class="trc-stat">Div. Nationale</span>
+      <span class="trc-stat" style="color:#ff6b7a;border:1px solid rgba(128,128,128,0.25);background:rgba(128,128,128,0.07);">21 joueuses</span>
       <a href="https://ffbs.wbsc.org/fr/events/2026-championnat-de-france-division-1-feminine-softball/stats" target="_blank" rel="noopener" class="trc-stat" style="color:var(--cyan);text-decoration:none;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.07);">Stats D1 2026 ↗</a>
     </div>
   </div>
 
+  
   <div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:10px;padding:.9rem 1rem;margin-top:.5rem;font-size:12px;color:var(--muted);text-align:center;">
     Rosters des autres équipes à compléter · Contactez l'organisation pour mettre à jour votre fiche équipe
   </div>
@@ -2525,78 +2848,82 @@ footer{
 
 <!-- ═══════════════════ BOTTOM NAV ═══════════════════ -->
 <nav class="bot-nav">
-  <button class="bot-tab active" data-section="sec-accueil" onclick="showSection('sec-accueil',this)">
+  <button class="bot-tab active" onclick="showSection('sec-accueil',this)">
     <span class="tab-icon">🏠</span>Accueil
   </button>
-  <button class="bot-tab" data-section="sec-equipes" onclick="showSection('sec-equipes',this)">
-    <span class="tab-icon">👥</span>Équipes
-  </button>
-  <button class="bot-tab" data-section="sec-resultats" onclick="showSection('sec-resultats',this)">
+  <button class="bot-tab" onclick="showSection('sec-programme',this)">
     <span class="tab-icon">📅</span>Programme
   </button>
-  <button class="bot-tab" data-section="sec-bracket" onclick="showSection('sec-bracket',this)">
+  <button class="bot-tab" onclick="showSection('sec-equipes',this)">
+    <span class="tab-icon">⚾</span>Équipes
+  </button>
+  <button class="bot-tab" onclick="showSection('sec-resultats',this)">
+    <span class="tab-icon">📊</span>Résultats
+  </button>
+  <button class="bot-tab" onclick="showSection('sec-bracket',this)">
     <span class="tab-icon">🏆</span>Bracket
   </button>
-  <button class="bot-tab" data-section="sec-buvette" onclick="showSection('sec-buvette',this)">
+  <button class="bot-tab" onclick="showSection('sec-buvette',this)">
     <span class="tab-icon">🍔</span>Buvette
   </button>
-  <button class="bot-tab" data-section="sec-infos" onclick="showSection('sec-infos',this)">
-    <span class="tab-icon">📍</span>Infos
+  <button class="bot-tab" onclick="showSection('sec-infos',this)">
+    <span class="tab-icon">🗺️</span>Infos
   </button>
-  <button class="bot-tab" data-section="sec-stats" onclick="showSection('sec-stats',this)">
-    <span class="tab-icon">📊</span>Stats
+  <button class="bot-tab" onclick="showSection('sec-stats',this)">
+    <span class="tab-icon">📈</span>Stats
   </button>
 </nav>
 
 <script>
-// ── Navigation principale ──
-function showSection(id, btn) {
+// ── SECTION NAVIGATION ──
+function showSection(id, tab) {
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.bot-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
-  window.scrollTo(0, 0);
+  document.querySelectorAll('.bot-tab').forEach(t => t.classList.remove('active'));
+  const sec = document.getElementById(id);
+  if (sec) { sec.classList.add('active'); window.scrollTo(0,0); }
+  if (tab) tab.classList.add('active');
 }
 
-// ── Tabs Programme ──
-function switchDay(id, el) {
+// ── DAY TABS (Programme) ──
+function switchDay(id, tab) {
   document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('prog-' + id).classList.add('active');
-  el.classList.add('active');
+  const panel = document.getElementById('prog-' + id);
+  if (panel) panel.classList.add('active');
+  if (tab) tab.classList.add('active');
 }
 
-// ── Tabs Résultats ──
-function switchRes(id, btn) {
-  ['r-sam','r-dim','r-lun','r-class'].forEach(t => document.getElementById(t).style.display = 'none');
-  document.querySelectorAll('.res-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById(id).style.display = 'block';
-  btn.classList.add('active');
+// ── RESULT TABS ──
+function switchRes(id, tab) {
+  ['r-sam','r-dim','r-lun','r-class'].forEach(i => {
+    const el = document.getElementById(i);
+    if (el) el.style.display = 'none';
+  });
+  document.querySelectorAll('.res-tab').forEach(t => t.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.style.display = '';
+  if (tab) tab.classList.add('active');
 }
 
-// ── Countdown ──
-function updateCD() {
-  const target = new Date('2026-05-23T08:30:00');
-  const diff = target - new Date();
-  if (diff <= 0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(id => document.getElementById(id).textContent = '0'); return; }
-  document.getElementById('cd-d').textContent = Math.floor(diff/86400000);
-  document.getElementById('cd-h').textContent = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
-  document.getElementById('cd-m').textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-  document.getElementById('cd-s').textContent = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
-}
-updateCD();
-setInterval(updateCD, 1000);
-
-// ── Live update time ──
-function updateTime() {
-  const n = new Date();
-  const el = document.getElementById('upd-time');
-  if (el) el.textContent = 'Mis à jour à ' + String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
-}
-updateTime();
-setInterval(updateTime, 60000);
-
-
+// ── COUNTDOWN ──
+(function countdown() {
+  const target = new Date('2026-05-23T10:00:00');
+  function tick() {
+    const diff = target - new Date();
+    if (diff <= 0) {
+      ['cd-d','cd-h','cd-m','cd-s'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = '0'; });
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+    set('cd-d', d); set('cd-h', h); set('cd-m', m); set('cd-s', s);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
 </script>
 </body>
 </html>
