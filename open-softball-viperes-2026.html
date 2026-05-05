@@ -1,0 +1,2612 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Open Féminin Softball 2026 · Valenciennes</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;1,600&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --navy:    #050D1C;
+  --card:    #0A1829;
+  --card2:   #0F2040;
+  --card3:   #162B54;
+  --blue:    #1E6FE8;
+  --blue2:   #4A9BFF;
+  --cyan:    #00D4FF;
+  --red:     #E02B2B;
+  --gold:    #F5C93A;
+  --white:   #E8F1FF;
+  --muted:   #4D78AA;
+  --border:  rgba(74,155,255,0.18);
+  --border2: rgba(74,155,255,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--navy);
+  color:var(--white);
+  font-family:'Barlow',sans-serif;
+  font-size:15px;
+  line-height:1.6;
+  overflow-x:hidden;
+  padding-bottom:80px;
+}
+
+/* ── BOTTOM NAV ── */
+.bot-nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  z-index:200;
+  background:rgba(5,13,28,0.97);
+  border-top:1px solid var(--border2);
+  display:flex;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  padding-bottom:env(safe-area-inset-bottom,0);
+}
+.bot-nav::-webkit-scrollbar{display:none;}
+.bot-tab{
+  flex:0 0 auto;
+  min-width:60px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  padding:10px 8px 8px;
+  cursor:pointer;
+  border:none;
+  background:transparent;
+  color:var(--muted);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  transition:color .2s;
+  position:relative;
+  white-space:nowrap;
+}
+.bot-tab .tab-icon{font-size:20px;line-height:1;display:block;}
+.bot-tab.active{color:var(--cyan);}
+.bot-tab.active::before{
+  content:'';
+  position:absolute;
+  top:0;left:12%;right:12%;
+  height:2px;
+  background:var(--cyan);
+  border-radius:0 0 3px 3px;
+}
+
+/* ── SECTION VISIBILITY ── */
+.page-section{display:none;}
+.page-section.active{display:block;}
+
+/* ── HERO ── */
+.hero{
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:2rem 1.5rem 5rem;
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse 100% 70% at 50% 100%, rgba(30,111,232,0.18) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 40% at 80% 10%, rgba(0,212,255,0.08) 0%, transparent 60%),
+    var(--navy);
+}
+.hero::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(
+    -55deg,
+    transparent,
+    transparent 28px,
+    rgba(74,155,255,0.03) 28px,
+    rgba(74,155,255,0.03) 29px
+  );
+  pointer-events:none;
+}
+.hero-flag{
+  display:flex;
+  gap:4px;
+  margin-bottom:1.5rem;
+}
+.flag-stripe{width:32px;height:5px;border-radius:3px;}
+.stripe-blue{background:#002395;}
+.stripe-white{background:rgba(255,255,255,0.6);}
+.stripe-red{background:#ED2939;}
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(0,212,255,0.1);
+  border:1px solid rgba(0,212,255,0.3);
+  color:var(--cyan);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  padding:6px 18px;
+  border-radius:100px;
+  margin-bottom:1.2rem;
+}
+.hero-badge::before{content:'⚡';font-size:11px;}
+.hero-title{
+  font-family:'Anton',sans-serif;
+  font-size:clamp(3rem,13vw,5.5rem);
+  line-height:0.9;
+  text-transform:uppercase;
+  margin-bottom:.5rem;
+}
+.hero-title .accent{
+  color:var(--cyan);
+  display:block;
+  font-size:clamp(3.5rem,15vw,6.5rem);
+}
+.hero-org{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.9rem,3.5vw,1.2rem);
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:2rem;
+}
+.hero-dates-band{
+  display:flex;
+  width:100%;
+  max-width:340px;
+  border:1px solid var(--border2);
+  border-radius:12px;
+  overflow:hidden;
+  margin-bottom:1.8rem;
+  background:var(--card);
+}
+.hero-day{
+  flex:1;
+  padding:.9rem .5rem;
+  text-align:center;
+  border-right:1px solid var(--border);
+}
+.hero-day:last-child{border-right:none;}
+.hero-day-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:3px;
+}
+.hero-day-num{
+  font-family:'Anton',sans-serif;
+  font-size:1.8rem;
+  color:var(--cyan);
+  line-height:1;
+}
+.hero-day-month{
+  font-size:11px;
+  color:var(--muted);
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.hero-stats-row{
+  display:flex;
+  gap:12px;
+  margin-bottom:2rem;
+}
+.hero-stat{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.8rem 1.1rem;
+  text-align:center;
+}
+.hero-stat-num{
+  font-family:'Anton',sans-serif;
+  font-size:1.6rem;
+  color:var(--blue2);
+  line-height:1;
+  display:block;
+}
+.hero-stat-lbl{
+  font-size:10px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-top:3px;
+  display:block;
+}
+.countdown{
+  display:flex;
+  gap:10px;
+}
+.cd-block{
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 14px;
+  text-align:center;
+  min-width:58px;
+}
+.cd-num{
+  font-family:'Anton',sans-serif;
+  font-size:1.8rem;
+  color:var(--cyan);
+  line-height:1;
+  display:block;
+}
+.cd-lbl{
+  font-size:9px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-top:3px;
+  display:block;
+}
+
+/* ── SECTION SHELL ── */
+.sec-head{
+  background:var(--card);
+  border-bottom:1px solid var(--border2);
+  padding:1.4rem 1.5rem 1rem;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.sec-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--cyan);
+  margin-bottom:3px;
+}
+.sec-title{
+  font-family:'Anton',sans-serif;
+  font-size:2rem;
+  text-transform:uppercase;
+  line-height:1;
+}
+.sec-body{padding:1.5rem;}
+
+/* ── DAY TABS ── */
+.day-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  margin-bottom:1.5rem;
+}
+.day-tab{
+  background:var(--card);
+  border:1.5px solid var(--border);
+  border-radius:12px;
+  padding:.8rem .5rem;
+  text-align:center;
+  cursor:pointer;
+  transition:all .2s;
+  font-family:'Barlow Condensed',sans-serif;
+}
+.day-tab .dt-icon{font-size:22px;display:block;margin-bottom:4px;}
+.day-tab .dt-name{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+  display:block;
+}
+.day-tab .dt-date{
+  font-size:13px;
+  font-weight:700;
+  color:var(--white);
+  display:block;
+  margin-top:2px;
+}
+.day-tab.active{
+  border-color:var(--cyan);
+  background:rgba(0,212,255,0.07);
+}
+.day-tab.active .dt-name{color:var(--cyan);}
+.day-tab.active .dt-date{color:var(--cyan);}
+.day-panel{display:none;}
+.day-panel.active{display:block;}
+
+/* ── MATCH BLOCK ── */
+.time-block{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--cyan);
+  padding:.6rem 0 .4rem;
+  border-bottom:1px solid var(--border);
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.time-block::after{content:'';flex:1;height:1px;background:var(--border);}
+.match-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1rem 1.1rem;
+  margin-bottom:8px;
+}
+.match-card-meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:.7rem;
+}
+.match-phase{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.badge{
+  font-size:10px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:3px 8px;
+  border-radius:5px;
+}
+.badge-pool-a{background:rgba(30,111,232,0.2);color:var(--blue2);}
+.badge-pool-b{background:rgba(0,212,255,0.12);color:var(--cyan);}
+.badge-finale{background:rgba(245,201,58,0.15);color:var(--gold);}
+.badge-semi{background:rgba(240,43,43,0.15);color:#FF7070;}
+.match-teams{
+  display:grid;
+  grid-template-columns:1fr 28px 1fr;
+  align-items:center;
+  gap:6px;
+}
+.mt-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:14px;
+  line-height:1.2;
+}
+.mt-name.right{text-align:right;}
+.mt-vs{
+  text-align:center;
+  font-family:'Anton',sans-serif;
+  font-size:11px;
+  color:var(--muted);
+}
+
+/* ── TEAMS ── */
+.teams-list{display:flex;flex-direction:column;gap:12px;}
+.team-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:1.1rem 1.2rem;
+  display:flex;
+  gap:14px;
+  align-items:center;
+  transition:border-color .2s;
+}
+.team-card.host{border-color:var(--border2);}
+.team-avatar{
+  width:52px;height:52px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;
+  flex-shrink:0;
+  background:var(--card2);
+  border:1px solid var(--border);
+}
+.team-info-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:1.05rem;
+  letter-spacing:.04em;
+  margin-bottom:2px;
+}
+.team-info-city{font-size:12px;color:var(--muted);margin-bottom:5px;}
+.team-chips{display:flex;gap:6px;flex-wrap:wrap;}
+.chip{
+  font-size:10px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  padding:2px 8px;
+  border-radius:4px;
+}
+.chip-pool-a{background:rgba(30,111,232,0.15);color:var(--blue2);}
+.chip-pool-b{background:rgba(0,212,255,0.1);color:var(--cyan);}
+.chip-host{background:rgba(245,201,58,0.12);color:var(--gold);}
+.chip-players{background:rgba(255,255,255,0.06);color:var(--muted);}
+
+/* ── RÉSULTATS ── */
+.res-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:6px;
+  margin-bottom:1.2rem;
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:4px;
+}
+.res-tab{
+  background:transparent;
+  border:none;
+  color:var(--muted);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  padding:9px 4px;
+  border-radius:7px;
+  cursor:pointer;
+  transition:all .2s;
+}
+.res-tab.active{background:var(--blue);color:var(--white);}
+.live-pill{
+  display:flex;align-items:center;gap:6px;
+  margin-bottom:1rem;
+}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--red);animation:blink 1.2s ease infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.live-txt{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--red);
+}
+.live-upd{font-size:11px;color:var(--muted);margin-left:auto;}
+.res-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1rem 1.1rem;
+  margin-bottom:10px;
+}
+.res-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;}
+.res-phase{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+.res-status{font-size:10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:5px;}
+.st-done{background:rgba(0,212,255,0.1);color:var(--cyan);}
+.st-live{background:rgba(224,43,43,0.15);color:#FF6B6B;}
+.st-soon{background:rgba(255,255,255,0.06);color:var(--muted);}
+.res-score-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;}
+.res-team{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;line-height:1.2;}
+.res-team.right{text-align:right;}
+.res-team.win{color:var(--cyan);}
+.score-box{display:flex;align-items:center;gap:5px;justify-content:center;}
+.sc{font-family:'Anton',sans-serif;font-size:2rem;line-height:1;}
+.sc.win{color:var(--cyan);}
+.sc-sep{font-family:'Anton',sans-serif;font-size:1.4rem;color:var(--muted);}
+.res-detail{text-align:center;margin-top:6px;font-size:11px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;}
+
+/* CLASSEMENT TABLE */
+.classif-table{width:100%;border-collapse:collapse;font-family:'Barlow Condensed',sans-serif;margin-top:.5rem;}
+.classif-table th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:.5rem .4rem;border-bottom:1px solid var(--border);text-align:center;}
+.classif-table th:first-child,.classif-table th:nth-child(2){text-align:left;}
+.classif-table td{padding:.65rem .4rem;font-size:13px;font-weight:600;border-bottom:1px solid var(--border);text-align:center;color:var(--white);}
+.classif-table td:nth-child(2){text-align:left;}
+.classif-table tr:last-child td{border-bottom:none;}
+.pool-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);padding:.4rem 0 .3rem;margin-top:1rem;}
+.rk{font-family:'Anton',sans-serif;font-size:1rem;color:var(--muted);}
+.rk.top{color:var(--cyan);}
+
+/* ── BRACKET TOURNAMENT TREE ── */
+.bracket-tree{
+  overflow-x:auto;
+  padding:1rem 0 1.5rem;
+  -webkit-overflow-scrolling:touch;
+}
+.bracket-tree-inner{
+  display:flex;
+  align-items:center;
+  gap:0;
+  min-width:480px;
+  padding:0 .5rem;
+}
+.bt-col{
+  display:flex;
+  flex-direction:column;
+  justify-content:space-around;
+  gap:0;
+}
+.bt-col-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;font-weight:700;
+  letter-spacing:.13em;text-transform:uppercase;
+  color:var(--cyan);text-align:center;
+  margin-bottom:.6rem;
+  white-space:nowrap;
+}
+.bt-match{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:8px;
+  overflow:hidden;
+  margin:4px 0;
+  width:120px;
+  flex-shrink:0;
+}
+.bt-match.gold-match{border-color:rgba(245,201,58,0.5);background:linear-gradient(135deg,var(--card) 0%,rgba(245,201,58,0.04) 100%);}
+.bt-match.bronze-match{border-color:rgba(74,155,255,0.4);}
+.bt-slot{
+  padding:.45rem .55rem;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;
+  display:flex;align-items:center;gap:5px;
+  border-bottom:1px solid var(--border);
+  white-space:nowrap;overflow:hidden;
+}
+.bt-slot:last-child{border-bottom:none;}
+.bt-slot.tbd{color:var(--muted);font-style:italic;}
+.bt-slot.winner{background:rgba(0,212,255,0.09);color:var(--cyan);}
+.bt-slot.gold-slot{color:var(--gold);}
+.bt-seed{
+  font-size:9px;color:var(--muted);font-weight:700;
+  background:var(--card2);border-radius:3px;
+  padding:1px 4px;flex-shrink:0;
+}
+.bt-score{font-family:'Anton',sans-serif;font-size:12px;color:var(--muted);margin-left:auto;flex-shrink:0;}
+.bt-score.win{color:var(--cyan);}
+
+/* Connector lines */
+.bt-connectors{
+  display:flex;
+  flex-direction:column;
+  justify-content:space-around;
+  width:28px;
+  flex-shrink:0;
+  align-self:stretch;
+}
+.bt-conn-pair{
+  display:flex;flex-direction:column;
+  flex:1;
+  position:relative;
+}
+.bt-conn-top,.bt-conn-bot{
+  flex:1;
+  border-right:2px solid var(--border2);
+}
+.bt-conn-top{border-bottom:2px solid var(--border2);border-radius:0 0 4px 0;}
+.bt-conn-bot{border-top:2px solid var(--border2);border-radius:0 4px 0 0;}
+.bt-conn-mid{
+  width:10px;
+  border-top:2px solid var(--border2);
+  align-self:center;
+  flex-shrink:0;
+}
+.bt-conn-single{
+  flex:1;
+  border-top:2px solid var(--border2);
+  align-self:center;
+}
+.bt-round-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);
+  padding:.5rem 0 .4rem;
+  border-bottom:1px solid var(--border);
+  margin-bottom:.8rem;
+}
+.bt-champion{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:90px;flex-shrink:0;
+  text-align:center;
+}
+.bt-trophy{font-size:2rem;margin-bottom:.3rem;}
+.bt-champ-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.2rem;
+}
+.bt-champ-name{
+  font-family:'Anton',sans-serif;
+  font-size:.75rem;color:var(--gold);
+  line-height:1.2;
+}
+
+/* Pool summary box */
+.pool-box{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  margin-bottom:1rem;
+}
+.pool-box-head{
+  background:var(--card2);
+  padding:.7rem 1rem;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:13px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--blue2);
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.pool-box-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:.65rem 1rem;
+  border-top:1px solid var(--border);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;
+  font-weight:600;
+}
+.pool-box-row.qualif{color:var(--cyan);}
+.pool-rank{font-family:'Anton',sans-serif;font-size:1rem;color:var(--muted);min-width:18px;}
+.pool-rank.q{color:var(--cyan);}
+.qualif-arrow{margin-left:auto;font-size:11px;color:var(--cyan);}
+.bracket-legend{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:1rem;
+}
+.leg-item{
+  display:flex;align-items:center;gap:5px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;color:var(--muted);
+}
+.leg-dot{width:8px;height:8px;border-radius:2px;}
+
+/* Final bracket simple visual */
+.final-bracket{margin-top:1rem;}
+.fb-round-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);
+  padding:.5rem 0 .3rem;
+  border-bottom:1px solid var(--border);
+  margin-bottom:.6rem;
+}
+.fb-match{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  margin-bottom:.6rem;
+}
+.fb-match.gold{border-color:rgba(245,201,58,0.5);}
+.fb-match.bronze{border-color:rgba(74,155,255,0.4);}
+.fb-row{
+  display:flex;align-items:center;gap:8px;
+  padding:.55rem .8rem;
+  border-bottom:1px solid var(--border);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:700;
+}
+.fb-row:last-child{border-bottom:none;}
+.fb-row.tbd{color:var(--muted);}
+.fb-row.winner{background:rgba(0,212,255,0.07);color:var(--cyan);}
+.fb-seed{font-size:10px;color:var(--muted);min-width:18px;font-weight:600;}
+.fb-score{font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--muted);margin-left:auto;}
+.fb-score.win{color:var(--cyan);}
+.fb-meta{
+  font-size:10px;font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);padding:.3rem .8rem;
+  background:var(--card2);
+  border-bottom:1px solid var(--border);
+}
+.fb-meta.gold{color:var(--gold);}
+.fb-meta.bronze{color:var(--blue2);}
+
+/* ── BUVETTE ── */
+.buv-section{margin-bottom:1.5rem;}
+.buv-cat-head{
+  display:flex;align-items:center;gap:10px;
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:12px 12px 0 0;
+  padding:.9rem 1.1rem;
+}
+.buv-icon{font-size:26px;}
+.buv-cat-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:1rem;
+  letter-spacing:.05em;color:var(--cyan);
+}
+.buv-cat-sub{font-size:11px;color:var(--muted);}
+.menu-list{
+  border:1px solid var(--border);
+  border-top:none;
+  border-radius:0 0 12px 12px;
+  overflow:hidden;
+}
+.menu-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.8rem 1.1rem;
+  background:var(--card);
+  border-top:1px solid var(--border);
+  gap:10px;
+}
+.menu-row:first-child{border-top:none;}
+.menu-row-name{font-size:14px;font-weight:500;}
+.menu-row-desc{font-size:11px;color:var(--muted);margin-top:1px;}
+.menu-price{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:1.1rem;
+  color:var(--cyan);white-space:nowrap;
+}
+.buv-notice{
+  display:flex;align-items:flex-start;gap:10px;
+  background:rgba(30,111,232,0.08);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1rem;
+  font-size:13px;
+  color:rgba(232,241,255,.75);
+  margin-top:1rem;
+}
+
+/* ── CARTE & INFOS ── */
+#map{
+  width:100%;
+  height:320px;
+  border-radius:12px;
+  border:1px solid var(--border2);
+  overflow:hidden;
+  margin-bottom:1.2rem;
+}
+.map-legend{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin-bottom:1.2rem;
+}
+.map-leg-item{
+  display:flex;align-items:center;gap:6px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:7px;
+  padding:5px 10px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:600;
+  letter-spacing:.04em;
+  color:var(--white);
+}
+.map-dot{width:10px;height:10px;border-radius:50%;}
+.info-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1.1rem;
+  margin-bottom:10px;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.info-ico{
+  width:38px;height:38px;
+  border-radius:9px;
+  background:rgba(30,111,232,0.12);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;flex-shrink:0;
+}
+.info-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:1rem;
+  margin-bottom:3px;color:var(--white);
+}
+.info-body{font-size:13px;color:var(--muted);line-height:1.65;}
+.info-body a{color:var(--cyan);text-decoration:none;}
+.info-body strong{color:var(--white);}
+
+/* ── TEAM RICH CARDS ── */
+.team-rich-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+  margin-bottom:12px;
+}
+.trc-header{
+  padding:.9rem 1rem;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.trc-logo-wrap{
+  width:52px;height:52px;flex-shrink:0;
+  border-radius:50%;
+  overflow:hidden;
+  border:2px solid rgba(255,255,255,0.15);
+}
+.trc-logo-wrap svg{display:block;}
+.trc-header-info{flex:1;min-width:0;}
+.trc-pool-chip{
+  display:inline-block;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 7px;border-radius:4px;
+  margin-bottom:3px;
+}
+.trc-name{
+  font-family:'Anton',sans-serif;
+  font-size:1.2rem;text-transform:uppercase;
+  color:#fff;line-height:1;margin-bottom:2px;
+}
+.trc-city{font-size:11px;color:rgba(255,255,255,0.5);font-family:'Barlow Condensed',sans-serif;}
+.trc-num{
+  font-family:'Anton',sans-serif;
+  font-size:2rem;color:rgba(255,255,255,0.12);
+  flex-shrink:0;
+}
+.trc-players-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--border);
+  border-top:1px solid var(--border);
+}
+.trc-player-slot{
+  background:var(--card);
+  padding:.6rem .4rem;
+  text-align:center;
+}
+.trc-player-photo{
+  width:100%;
+  aspect-ratio:1;
+  border-radius:8px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  margin-bottom:.35rem;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+}
+.trc-player-add{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:8px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);
+}
+.trc-player-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;
+  color:var(--white);line-height:1.2;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.trc-player-pos{
+  font-size:9px;color:var(--muted);
+  font-family:'Barlow Condensed',sans-serif;
+}
+.trc-footer{
+  display:flex;
+  border-top:1px solid var(--border);
+  padding:.5rem .8rem;
+  gap:8px;
+}
+.trc-stat{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);
+  padding:2px 7px;
+  background:var(--card2);
+  border-radius:4px;
+}
+
+/* ── SPLIT TEAM CARDS (accueil) ── */
+.ht-split-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.ht-split-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.ht-split-header{
+  padding:.75rem .8rem;
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+.ht-split-logo{
+  width:48px;height:48px;flex-shrink:0;
+  border-radius:50%;
+  overflow:hidden;
+}
+.ht-split-logo svg{display:block;}
+.ht-split-name{
+  font-family:'Anton',sans-serif;
+  font-size:.95rem;text-transform:uppercase;
+  color:#fff;line-height:1;
+}
+.ht-split-city{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;color:rgba(255,255,255,0.45);
+  margin-top:2px;
+}
+.ht-split-body{padding:.6rem .8rem .8rem;}
+.ht-split-roster-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--blue2);
+  margin-bottom:.4rem;
+}
+.ht-split-roster{display:flex;flex-direction:column;gap:2px;}
+.ht-roster-row{
+  display:flex;align-items:center;gap:5px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;line-height:1.5;
+}
+.ht-num{
+  font-weight:700;font-size:10px;
+  color:var(--blue2);min-width:22px;flex-shrink:0;
+}
+.ht-pname{flex:1;color:rgba(232,241,255,.6);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ht-pos{
+  font-size:9px;font-weight:700;letter-spacing:.05em;
+  color:var(--muted);background:var(--card2);
+  padding:1px 5px;border-radius:3px;flex-shrink:0;
+}
+.ht-more{
+  font-size:10px;color:var(--muted);
+  font-style:italic;padding-top:2px;
+}
+
+/* ── HOME TEAM DETAILED ── */
+.home-team-detailed{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:.9rem 1rem;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.htd-logo{
+  width:48px;height:48px;flex-shrink:0;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.12);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;
+}
+.htd-body{flex:1;min-width:0;}
+.htd-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1rem;font-weight:700;
+  color:var(--white);margin-bottom:.25rem;
+  line-height:1.2;
+}
+.htd-city{
+  font-size:.85rem;color:var(--muted);
+  font-weight:600;margin-left:4px;
+}
+.htd-desc{font-size:12px;color:rgba(232,241,255,.6);line-height:1.55;margin-bottom:.5rem;}
+.htd-tags{display:flex;gap:5px;flex-wrap:wrap;}
+.htd-tag{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:2px 7px;border-radius:4px;
+  color:var(--blue2);border:1px solid rgba(74,155,255,0.2);
+  background:rgba(74,155,255,0.07);
+}
+
+/* ── HOME SECTIONS ── */
+.home-section{
+  padding:1.8rem 1.5rem 1.2rem;
+  border-top:1px solid var(--border);
+}
+.home-section-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:4px;
+}
+.home-section-title{
+  font-family:'Anton',sans-serif;
+  font-size:1.6rem;text-transform:uppercase;
+  line-height:1;margin-bottom:1rem;
+}
+.home-section-text{
+  font-size:14px;color:rgba(232,241,255,.75);
+  line-height:1.7;
+}
+.home-section-text strong{color:var(--white);}
+.home-format-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;margin-top:1.2rem;
+}
+.home-format-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:.9rem .7rem;
+  text-align:center;
+}
+.home-format-icon{font-size:1.4rem;margin-bottom:.3rem;}
+.home-format-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--blue2);margin-bottom:.2rem;
+}
+.home-format-val{
+  font-family:'Anton',sans-serif;
+  font-size:.85rem;color:var(--white);
+  margin-bottom:.2rem;
+}
+.home-format-desc{font-size:10px;color:var(--muted);line-height:1.4;}
+.home-pool-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;padding:.4rem 0 .5rem;
+  border-bottom:1px solid var(--border);
+  margin-bottom:.8rem;
+}
+.pool-a-label{color:var(--blue2);}
+.pool-b-label{color:var(--cyan);margin-top:.8rem;}
+.home-team-row{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;
+  margin-bottom:.5rem;
+}
+.home-team-item{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.7rem .6rem;
+  display:flex;align-items:center;gap:8px;
+}
+.home-team-ava{font-size:1.3rem;flex-shrink:0;}
+.home-team-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:700;
+  color:var(--white);line-height:1.2;
+}
+.home-team-city{font-size:10px;color:var(--muted);}
+.home-quick-infos{display:flex;flex-direction:column;gap:10px;margin-top:.5rem;}
+.home-qi-item{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.85rem 1rem;
+}
+.home-qi-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+.home-qi-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:2px;
+}
+.home-qi-val{font-size:13px;color:var(--white);line-height:1.4;}
+
+/* ── PALMARÈS ── */
+.palmares-row{
+  display:flex;align-items:center;gap:8px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:.55rem .9rem;
+  text-decoration:none;
+  transition:background .15s,border-color .15s;
+}
+.palmares-row:hover{background:var(--card2);border-color:var(--border2);}
+.palmares-gold{background:rgba(245,201,58,0.07)!important;border-color:rgba(245,201,58,0.25)!important;}
+.palmares-gold:hover{background:rgba(245,201,58,0.12)!important;}
+.palmares-year{
+  font-family:'Anton',sans-serif;font-size:.95rem;
+  color:var(--muted);min-width:40px;flex-shrink:0;
+}
+.palmares-gold .palmares-year{color:var(--gold);}
+.palmares-trophy{font-size:1rem;flex-shrink:0;}
+.palmares-winner{
+  flex:1;font-size:12px;
+  color:rgba(232,241,255,.8);
+  font-family:'Barlow Condensed',sans-serif;font-weight:600;
+}
+.palmares-gold .palmares-winner{color:var(--white);}
+.palmares-link{
+  font-size:11px;color:var(--muted);flex-shrink:0;
+}
+.palmares-gold .palmares-link{color:var(--gold);}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);
+  padding:2rem 1.5rem 1.5rem;
+  text-align:center;
+  background:var(--card);
+}
+.footer-logo{
+  font-family:'Anton',sans-serif;
+  font-size:1.4rem;
+  color:var(--cyan);
+  margin-bottom:.3rem;
+  letter-spacing:.04em;
+}
+.footer-sub{font-size:12px;color:var(--muted);}
+.footer-ffbs{
+  display:flex;align-items:center;justify-content:center;
+  gap:8px;
+  margin-top:1rem;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);
+}
+.ffbs-flag{display:flex;gap:2px;}
+.ffbs-flag span{display:block;width:8px;height:14px;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ SECTION: ACCUEIL ═══════════════════ -->
+<div class="page-section active" id="sec-accueil">
+<div class="hero">
+  <div class="hero-flag">
+    <div class="flag-stripe stripe-blue"></div>
+    <div class="flag-stripe stripe-white"></div>
+    <div class="flag-stripe stripe-red"></div>
+  </div>
+  <div class="hero-badge">FFBS · Open National Féminin</div>
+  <h1 class="hero-title">
+    Open<br>Softball
+    <span class="accent">Féminin</span>
+  </h1>
+  <p class="hero-org">Vipères Park · Valenciennes</p>
+  <div class="hero-dates-band">
+    <div class="hero-day">
+      <div class="hero-day-name">Sam.</div>
+      <div class="hero-day-num">23</div>
+      <div class="hero-day-month">Mai 2026</div>
+    </div>
+    <div class="hero-day">
+      <div class="hero-day-name">Dim.</div>
+      <div class="hero-day-num">24</div>
+      <div class="hero-day-month">Mai 2026</div>
+    </div>
+    <div class="hero-day">
+      <div class="hero-day-name">Lun.</div>
+      <div class="hero-day-num">25</div>
+      <div class="hero-day-month">Mai 2026</div>
+    </div>
+  </div>
+  <div class="hero-stats-row">
+    <div class="hero-stat"><span class="hero-stat-num">6</span><span class="hero-stat-lbl">Équipes</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">~120</span><span class="hero-stat-lbl">Joueuses</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">12</span><span class="hero-stat-lbl">Matchs</span></div>
+  </div>
+  <div class="countdown">
+    <div class="cd-block"><span class="cd-num" id="cd-d">--</span><span class="cd-lbl">Jours</span></div>
+    <div class="cd-block"><span class="cd-num" id="cd-h">--</span><span class="cd-lbl">Heures</span></div>
+    <div class="cd-block"><span class="cd-num" id="cd-m">--</span><span class="cd-lbl">Min</span></div>
+    <div class="cd-block"><span class="cd-num" id="cd-s">--</span><span class="cd-lbl">Sec</span></div>
+  </div>
+</div>
+
+<!-- ── PRÉSENTATION COMPÉTITION ── -->
+<div class="home-section">
+  <div class="home-section-eyebrow">La compétition</div>
+  <div class="home-section-title">L'Open Féminin de Valenciennes</div>
+  <p class="home-section-text">
+    Organisé par les <strong>Vipères de Valenciennes</strong> chaque Lundi de Pentecôte, l'Open Softball Féminin est l'un des tournois nationaux féminins les plus attendus du calendrier FFBS. Il réunit six clubs de toute la France sur trois jours de compétition autour d'un seul objectif : décrocher le titre.
+  </p>
+  <p class="home-section-text" style="margin-top:.7rem;">
+    Créées en 2006, les Vipères sont le club fondateur et organisateur de l'événement. Basées au <strong>114 rue du Vert Gazon à Valenciennes</strong>, elles accueillent chaque année leurs adversaires dans une ambiance à la fois compétitive et conviviale, fidèle à l'esprit du softball français.
+  </p>
+
+  <!-- Timeline éditions -->
+  <div style="margin-top:1.2rem;">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;">Palmarès — Challenge de France Féminin</div>
+    <div style="display:flex;flex-direction:column;gap:5px;">
+
+      <a href="https://ffbs.fr/les-comanches-de-saint-raphael-decrochent-leur-3e-challenge-de-france-de-softball/" target="_blank" rel="noopener" class="palmares-row palmares-gold">
+        <span class="palmares-year">2025</span>
+        <span class="palmares-trophy">🏆</span>
+        <span class="palmares-winner">Comanches de Saint-Raphaël</span>
+        <span class="palmares-link">↗</span>
+      </a>
+
+      <a href="https://ffbs.wbsc.org/fr/events/2024-challenge-de-france-feminin-de-softball-2024/schedule-and-results" target="_blank" rel="noopener" class="palmares-row">
+        <span class="palmares-year">2024</span>
+        <span class="palmares-trophy">🥇</span>
+        <span class="palmares-winner">Pharaons d'Évry-Courcouronnes</span>
+        <span class="palmares-link">↗</span>
+      </a>
+
+      <a href="http://www.stats.ffbs.fr/2023/feminin_challenge/resultats.php" target="_blank" rel="noopener" class="palmares-row">
+        <span class="palmares-year">2023</span>
+        <span class="palmares-trophy">🥇</span>
+        <span class="palmares-winner">Pharaons d'Évry-Courcouronnes</span>
+        <span class="palmares-link">↗</span>
+      </a>
+
+      <a href="http://www.stats.ffbs.fr/2022/feminin_challenge/resultats.php" target="_blank" rel="noopener" class="palmares-row">
+        <span class="palmares-year">2022</span>
+        <span class="palmares-trophy">🥇</span>
+        <span class="palmares-winner">Grenoble Grizzlys</span>
+        <span class="palmares-link">↗</span>
+      </a>
+
+      <a href="https://ffbs.wbsc.org/fr/events/2021-challenge-de-france-de-softball-feminin/schedule-and-results" target="_blank" rel="noopener" class="palmares-row">
+        <span class="palmares-year">2021</span>
+        <span class="palmares-trophy">🥇</span>
+        <span class="palmares-winner">Pharaons d'Évry-Courcouronnes</span>
+        <span class="palmares-link">↗</span>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="home-format-grid" style="margin-top:1.2rem;">
+    <div class="home-format-card">
+      <div class="home-format-icon">⚾</div>
+      <div class="home-format-label">Poules</div>
+      <div class="home-format-val">Sam. 23/05</div>
+      <div class="home-format-desc">2 poules · 3 matchs chacune</div>
+    </div>
+    <div class="home-format-card">
+      <div class="home-format-icon">⚡</div>
+      <div class="home-format-label">Demi-finales</div>
+      <div class="home-format-val">Dim. 24/05</div>
+      <div class="home-format-desc">Top 2 de chaque poule qualifié</div>
+    </div>
+    <div class="home-format-card" style="border-color:rgba(245,201,58,0.3);">
+      <div class="home-format-icon">🏆</div>
+      <div class="home-format-label" style="color:var(--gold);">Finale</div>
+      <div class="home-format-val" style="color:var(--gold);">Lun. 25/05</div>
+      <div class="home-format-desc">Grande finale · Lundi de Pentecôte</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── LES 6 ÉQUIPES ── -->
+<div class="home-section" style="padding-top:0;">
+  <div class="home-section-eyebrow">Participants 2026</div>
+  <div class="home-section-title">Les 6 équipes</div>
+  <p class="home-section-text" style="margin-bottom:1.4rem;">Six clubs de toute la France. Deux poules. Une seule championne.</p>
+
+  <!-- POOL A header -->
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:1rem;">
+    <div style="height:1px;flex:1;background:rgba(74,155,255,0.25);"></div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--blue2);padding:3px 12px;border:1px solid rgba(74,155,255,0.25);border-radius:20px;">Pool A</div>
+    <div style="height:1px;flex:1;background:rgba(74,155,255,0.25);"></div>
+  </div>
+
+  <!-- Pool A : Comanches vs Panthères vs Pharaons — 2 colonnes par ligne -->
+  <div class="ht-split-row">
+    <!-- Comanches -->
+    <div class="ht-split-card">
+      <div class="ht-split-header" style="background:linear-gradient(160deg,#5c2008 0%,#1a0800 100%);">
+        <div class="ht-split-logo">
+          <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
+            <circle cx="28" cy="28" r="26" fill="#7a3510" stroke="rgba(255,180,80,0.4)" stroke-width="1.5"/>
+            <ellipse cx="28" cy="32" rx="13" ry="9" fill="#5c2008"/>
+            <circle cx="28" cy="22" r="8" fill="#c06030"/>
+            <!-- visage stylisé -->
+            <circle cx="24" cy="21" r="1.5" fill="#1a0800"/>
+            <circle cx="32" cy="21" r="1.5" fill="#1a0800"/>
+            <path d="M24 25 Q28 28 32 25" fill="none" stroke="#1a0800" stroke-width="1.2"/>
+            <!-- plumes -->
+            <path d="M20 18 Q14 8 16 4" fill="none" stroke="#e05010" stroke-width="2"/>
+            <path d="M22 16 Q18 6 21 2" fill="none" stroke="#f0a020" stroke-width="2"/>
+            <path d="M25 15 Q24 5 27 2" fill="none" stroke="#e05010" stroke-width="2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="ht-split-name">Comanches</div>
+          <div class="ht-split-city">Saint-Raphaël</div>
+        </div>
+      </div>
+      <div class="ht-split-body">
+        <div class="ht-split-roster-title">Effectif</div>
+        <div class="ht-split-roster">
+          <div class="ht-roster-row"><span class="ht-num">#1</span><span class="ht-pname">À compléter</span><span class="ht-pos">P</span></div>
+          <div class="ht-roster-row"><span class="ht-num">#4</span><span class="ht-pname">À compléter</span><span class="ht-pos">C</span></div>
+          <div class="ht-roster-row"><span class="ht-num">#7</span><span class="ht-pname">À compléter</span><span class="ht-pos">1B</span></div>
+          <div class="ht-roster-row"><span class="ht-num">#9</span><span class="ht-pname">À compléter</span><span class="ht-pos">SS</span></div>
+          <div class="ht-roster-row ht-more">+ joueuses à renseigner</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panthères -->
+    <div class="ht-split-card">
+      <div class="ht-split-header" style="background:linear-gradient(160deg,#0f2e0f 0%,#050f05 100%);">
+        <div class="ht-split-logo">
+          <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
+            <circle cx="28" cy="28" r="26" fill="#113311" stroke="rgba(80,200,80,0.3)" stroke-width="1.5"/>
+            <!-- corps panthère -->
+            <ellipse cx="28" cy="30" rx="14" ry="10" fill="#1a4a1a"/>
+            <circle cx="28" cy="20" r="9" fill="#225522"/>
+            <!-- oreilles -->
+            <polygon points="20,14 16,6 23,12" fill="#225522"/>
+            <polygon points="36,14 40,6 33,12" fill="#225522"/>
+            <!-- yeux -->
+            <ellipse cx="24" cy="19" rx="2.5" ry="2" fill="#88ff44"/>
+            <ellipse cx="32" cy="19" rx="2.5" ry="2" fill="#88ff44"/>
+            <circle cx="24" cy="19" r="1.2" fill="#050f05"/>
+            <circle cx="32" cy="19" r="1.2" fill="#050f05"/>
+            <!-- truffe -->
+            <ellipse cx="28" cy="24" rx="2" ry="1.2" fill="#113311"/>
+            <!-- moustaches -->
+            <line x1="18" y1="23" x2="25" y2="24" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
+            <line x1="18" y1="25" x2="25" y2="25" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
+            <line x1="38" y1="23" x2="31" y2="24" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
+            <line x1="38" y1="25" x2="31" y2="25" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
+          </svg>
+        </div>
+        <div>
+          <div class="ht-split-name">Panthères</div>
+          <div class="ht-split-city">Pessac</div>
+        </div>
+      </div>
+      <div class="ht-split-body">
+        <div class="ht-split-roster-title">Effectif</div>
+        <div class="ht-split-roster">
+          <div class="ht-roster-row"><span class="ht-num">#2</span><span class="ht-pname">À compléter</span><span class="ht-pos">P</span></div>
+          <div class="ht-roster-row"><span class="ht-num">#5</span><span class="ht-pname">À compléter</span><span class="ht-pos">C</span></div>
+          <div class="ht-roster-row"><span class="ht-num">#8</span><span class="ht-pname">À compléter</span><span class="ht-pos">2B</span></div>
+          <div class="ht-roster-row"><span class="ht-num">#11</span><span class="ht-pname">À compléter</span><span class="ht-pos">OF</span></div>
+          <div class="ht-roster-row ht-more">+ joueuses à renseigner</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pharaons — pleine largeur car 3e de pool -->
+  <div class="ht-split-row" style="margin-top:8px;">
+    <div class="ht-split-card" style="flex:1;">
+      <div class="ht-split-header" style="background:linear-gradient(160deg,#3a2400 0%,#140d00 100%);">
+        <div class="ht-split-logo">
+          <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
+            <circle cx="28" cy="28" r="26" fill="#3a2800" stroke="rgba(245,201,58,0.4)" stroke-width="1.5"/>
+            <!-- pyramide -->
+            <polygon points="28,8 46,44 10,44" fill="none" stroke="rgba(245,201,58,0.7)" stroke-width="1.5"/>
+            <polygon points="28,14 40,40 16,40" fill="rgba(245,201,58,0.08)"/>
+            <!-- œil d'horus simplifié -->
+            <ellipse cx="28" cy="28" rx="6" ry="4" fill="none" stroke="#f5c93a" stroke-width="1.2"/>
+            <circle cx="28" cy="28" r="2.5" fill="#f5c93a"/>
+            <circle cx="28" cy="28" r="1" fill="#140d00"/>
+            <!-- trait kohl -->
+            <path d="M22 29 Q28 33 34 29" fill="none" stroke="#f5c93a" stroke-width="0.8"/>
+          </svg>
+        </div>
+        <div>
+          <div class="ht-split-name">Pharaons</div>
+          <div class="ht-split-city">Évry-Courcouronnes</div>
+        </div>
+      </div>
+      <div class="ht-split-body">
+        <div class="ht-split-roster-title">Effectif</div>
+        <div class="ht-split-roster">
+          <div class="ht-roster-row"><span class="ht-num">#3</span><span class="ht-pname">À compléter</span><span class="ht-pos">P</span></div>
+          <div class="ht-roster-row"><span class="ht-num">#6</span><span class="ht-pname">À compléter</span><span class="ht-pos">C</span></div>
+          <div class="ht-roster-row"><span class="ht-num">#10</span><span class="ht-pname">À compléter</span><span class="ht-pos">3B</span></div>
+          <div class="ht-roster-row"><span class="ht-num">#14</span><span class="ht-pname">À compléter</span><span class="ht-pos">OF</span></div>
+          <div class="ht-roster-row ht-more">+ joueuses à renseigner</div>
+        </div>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;background:rgba(245,201,58,0.03);border:1px dashed rgba(245,201,58,0.12);border-radius:12px;padding:1rem;min-height:160px;">
+      <div style="text-align:center;color:var(--muted);">
+        <div style="font-size:1.5rem;margin-bottom:.4rem;">📋</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Pool A · 3 équipes</div>
+        <div style="font-size:11px;margin-top:.3rem;">Comanches · Panthères · Pharaons</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POOL B header -->
+  <div style="display:flex;align-items:center;gap:8px;margin:1.4rem 0 1rem;">
+    <div style="height:1px;flex:1;background:rgba(0,212,255,0.2);"></div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);padding:3px 12px;border:1px solid rgba(0,212,255,0.25);border-radius:20px;">Pool B</div>
+    <div style="height:1px;flex:1;background:rgba(0,212,255,0.2);"></div>
+  </div>
+
+  <div class="ht-split-row">
+    <!-- Wildcats -->
+    <div class="ht-split-card">
+      <div class="ht-split-header" style="background:linear-gradient(160deg,#001830 0%,#000810 100%);">
+        <div class="ht-split-logo">
+          <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
+            <circle cx="28" cy="28" r="26" fill="#001830" stroke="rgba(0,212,255,0.4)" stroke-width="1.5"/>
+            <!-- tête chat sauvage -->
+            <ellipse cx="28" cy="30" rx="13" ry="10" fill="#002244"/>
+            <circle cx="28" cy="21" r="9" fill="#002a50"/>
+            <!-- oreilles pointues -->
+            <polygon points="19,14 15,4 24,13" fill="#002a50"/>
+            <polygon points="37,14 41,4 32,13" fill="#002a50"/>
+            <polygon points="20,13 17,7 24,13" fill="rgba(0,212,255,0.25)"/>
+            <polygon points="36,13 39,7 32,13" fill="rgba(0,212,255,0.25)"/>
+            <!-- yeux cyan -->
+            <ellipse cx="23" cy="20" rx="3" ry="2.5" fill="#00d4ff"/>
+            <ellipse cx="33" cy="20" rx="3" ry="2.5" fill="#00d4ff"/>
+            <ellipse cx="23" cy="20" rx="1.5" ry="2.2" fill="#000"/>
+            <ellipse cx="33" cy="20" rx="1.5" ry="2.2" fill="#000"/>
+            <!-- truffe & bouche -->
+            <polygon points="28,24.5 26.5,26 29.5,26" fill="rgba(0,212,255,0.6)"/>
+            <!-- moustaches -->
+            <line x1="16" y1="24" x2="24" y2="25" stroke="rgba(0,212,255,0.4)" stroke-width="0.8"/>
+            <line x1="16" y1="26" x2="24" y2="26" stroke="rgba(0,212,255,0.4)" stroke-width="0.8"/>
+            <line x1="40" y1="24" x2="32" y2="25" stroke="rgba(0,212,255,0.4)" stroke-width="0.8"/>
+            <line x1="40" y1="26" x2="32" y2="26" stroke="rgba(0,212,255,0.4)" stroke-width="0.8"/>
+          </svg>
+        </div>
+        <div>
+          <div class="ht-split-name" style="color:#7ed8ff;">Wildcats</div>
+          <div class="ht-split-city">Colombes</div>
+        </div>
+      </div>
+      <div class="ht-split-body">
+        <div class="ht-split-roster-title" style="color:var(--cyan);">Effectif</div>
+        <div class="ht-split-roster">
+          <div class="ht-roster-row"><span class="ht-num" style="color:var(--cyan);">#1</span><span class="ht-pname">À compléter</span><span class="ht-pos">P</span></div>
+          <div class="ht-roster-row"><span class="ht-num" style="color:var(--cyan);">#4</span><span class="ht-pname">À compléter</span><span class="ht-pos">C</span></div>
+          <div class="ht-roster-row"><span class="ht-num" style="color:var(--cyan);">#7</span><span class="ht-pname">À compléter</span><span class="ht-pos">SS</span></div>
+          <div class="ht-roster-row"><span class="ht-num" style="color:var(--cyan);">#9</span><span class="ht-pname">À compléter</span><span class="ht-pos">OF</span></div>
+          <div class="ht-roster-row ht-more">+ joueuses à renseigner</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grizzly -->
+    <div class="ht-split-card">
+      <div class="ht-split-header" style="background:linear-gradient(160deg,#2a1500 0%,#0f0800 100%);">
+        <div class="ht-split-logo">
+          <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
+            <circle cx="28" cy="28" r="26" fill="#2a1800" stroke="rgba(200,120,40,0.4)" stroke-width="1.5"/>
+            <!-- tête ours -->
+            <ellipse cx="28" cy="30" rx="14" ry="11" fill="#3a2200"/>
+            <circle cx="28" cy="20" r="10" fill="#4a2c00"/>
+            <!-- oreilles rondes -->
+            <circle cx="19" cy="13" r="5" fill="#4a2c00"/>
+            <circle cx="37" cy="13" r="5" fill="#4a2c00"/>
+            <circle cx="19" cy="13" r="2.5" fill="#2a1800"/>
+            <circle cx="37" cy="13" r="2.5" fill="#2a1800"/>
+            <!-- yeux -->
+            <circle cx="23" cy="19" r="3" fill="#1a0d00"/>
+            <circle cx="33" cy="19" r="3" fill="#1a0d00"/>
+            <circle cx="24" cy="18" r="1" fill="rgba(255,255,255,0.5)"/>
+            <circle cx="34" cy="18" r="1" fill="rgba(255,255,255,0.5)"/>
+            <!-- museau -->
+            <ellipse cx="28" cy="25" rx="5" ry="3.5" fill="#3a2200"/>
+            <ellipse cx="28" cy="23.5" rx="2.5" ry="1.5" fill="#1a0800"/>
+            <!-- narines -->
+            <circle cx="26.5" cy="23.5" r="0.8" fill="#0a0400"/>
+            <circle cx="29.5" cy="23.5" r="0.8" fill="#0a0400"/>
+          </svg>
+        </div>
+        <div>
+          <div class="ht-split-name" style="color:#ffb060;">Grizzly</div>
+          <div class="ht-split-city">Grenoble</div>
+        </div>
+      </div>
+      <div class="ht-split-body">
+        <div class="ht-split-roster-title" style="color:#ffb060;">Effectif</div>
+        <div class="ht-split-roster">
+          <div class="ht-roster-row"><span class="ht-num" style="color:#ffb060;">#2</span><span class="ht-pname">À compléter</span><span class="ht-pos">P</span></div>
+          <div class="ht-roster-row"><span class="ht-num" style="color:#ffb060;">#5</span><span class="ht-pname">À compléter</span><span class="ht-pos">C</span></div>
+          <div class="ht-roster-row"><span class="ht-num" style="color:#ffb060;">#8</span><span class="ht-pname">À compléter</span><span class="ht-pos">1B</span></div>
+          <div class="ht-roster-row"><span class="ht-num" style="color:#ffb060;">#12</span><span class="ht-pname">À compléter</span><span class="ht-pos">OF</span></div>
+          <div class="ht-roster-row ht-more">+ joueuses à renseigner</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cavigal pleine largeur -->
+  <div class="ht-split-row" style="margin-top:8px;">
+    <div class="ht-split-card" style="flex:1;">
+      <div class="ht-split-header" style="background:linear-gradient(160deg,#001e40 0%,#000d1c 100%);">
+        <div class="ht-split-logo">
+          <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
+            <circle cx="28" cy="28" r="26" fill="#001e40" stroke="rgba(0,140,255,0.4)" stroke-width="1.5"/>
+            <!-- vague 1 -->
+            <path d="M6 30 Q13 22 20 30 Q27 38 34 30 Q41 22 50 30" fill="none" stroke="rgba(0,180,255,0.7)" stroke-width="2.5"/>
+            <!-- vague 2 -->
+            <path d="M6 36 Q13 28 20 36 Q27 44 34 36 Q41 28 50 36" fill="none" stroke="rgba(0,140,255,0.4)" stroke-width="2"/>
+            <!-- soleil méditerranée -->
+            <circle cx="28" cy="20" r="7" fill="rgba(255,200,0,0.15)" stroke="rgba(255,200,0,0.5)" stroke-width="1.5"/>
+            <circle cx="28" cy="20" r="4" fill="rgba(255,200,0,0.4)"/>
+            <!-- rayons -->
+            <line x1="28" y1="11" x2="28" y2="9" stroke="rgba(255,200,0,0.5)" stroke-width="1"/>
+            <line x1="35" y1="13" x2="36.5" y2="11.5" stroke="rgba(255,200,0,0.5)" stroke-width="1"/>
+            <line x1="37" y1="20" x2="39" y2="20" stroke="rgba(255,200,0,0.5)" stroke-width="1"/>
+            <line x1="21" y1="13" x2="19.5" y2="11.5" stroke="rgba(255,200,0,0.5)" stroke-width="1"/>
+            <line x1="19" y1="20" x2="17" y2="20" stroke="rgba(255,200,0,0.5)" stroke-width="1"/>
+          </svg>
+        </div>
+        <div>
+          <div class="ht-split-name" style="color:#60c0ff;">Cavigal</div>
+          <div class="ht-split-city">Nice</div>
+        </div>
+      </div>
+      <div class="ht-split-body">
+        <div class="ht-split-roster-title" style="color:#60c0ff;">Effectif</div>
+        <div class="ht-split-roster">
+          <div class="ht-roster-row"><span class="ht-num" style="color:#60c0ff;">#3</span><span class="ht-pname">À compléter</span><span class="ht-pos">P</span></div>
+          <div class="ht-roster-row"><span class="ht-num" style="color:#60c0ff;">#6</span><span class="ht-pname">À compléter</span><span class="ht-pos">C</span></div>
+          <div class="ht-roster-row"><span class="ht-num" style="color:#60c0ff;">#9</span><span class="ht-pname">À compléter</span><span class="ht-pos">2B</span></div>
+          <div class="ht-roster-row"><span class="ht-num" style="color:#60c0ff;">#15</span><span class="ht-pname">À compléter</span><span class="ht-pos">OF</span></div>
+          <div class="ht-roster-row ht-more">+ joueuses à renseigner</div>
+        </div>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;background:rgba(0,212,255,0.03);border:1px dashed rgba(0,212,255,0.12);border-radius:12px;padding:1rem;min-height:160px;">
+      <div style="text-align:center;color:var(--muted);">
+        <div style="font-size:1.5rem;margin-bottom:.4rem;">📋</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);">Pool B · 3 équipes</div>
+        <div style="font-size:11px;margin-top:.3rem;">Wildcats · Grizzly · Cavigal</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── INFOS PRATIQUES RAPIDES ── -->
+<div class="home-section" style="padding-top:0;">
+  <div class="home-section-eyebrow">Pratique</div>
+  <div class="home-section-title">Venir au tournoi</div>
+  <div class="home-quick-infos">
+    <div class="home-qi-item">
+      <span class="home-qi-icon">📍</span>
+      <div>
+        <div class="home-qi-title">Lieu</div>
+        <div class="home-qi-val">114 rue du Vert Gazon, Valenciennes</div>
+      </div>
+    </div>
+    <div class="home-qi-item">
+      <span class="home-qi-icon">🎟️</span>
+      <div>
+        <div class="home-qi-title">Entrée</div>
+        <div class="home-qi-val" style="color:var(--cyan);font-weight:600;">Gratuite pour tous les spectateurs</div>
+      </div>
+    </div>
+    <div class="home-qi-item">
+      <span class="home-qi-icon">🚗</span>
+      <div>
+        <div class="home-qi-title">Parking</div>
+        <div class="home-qi-val">200 places gratuites devant le stade</div>
+      </div>
+    </div>
+    <div class="home-qi-item">
+      <span class="home-qi-icon">🍔</span>
+      <div>
+        <div class="home-qi-title">Buvette</div>
+        <div class="home-qi-val">Ouverte 8h–19h les 3 jours · CB acceptée</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Vipères de Valenciennes</div>
+  <div class="footer-sub">Organisateur officiel · Open Softball Féminin 2026</div>
+  <div class="footer-ffbs">
+    <div class="ffbs-flag">
+      <span style="background:#002395;"></span>
+      <span style="background:rgba(255,255,255,0.5);"></span>
+      <span style="background:#ED2939;"></span>
+    </div>
+    Affilié FFBS · Fédération Française de Baseball et Softball
+  </div>
+</footer>
+</div>
+
+<!-- ═══════════════════ SECTION: PROGRAMME ═══════════════════ -->
+<div class="page-section" id="sec-programme">
+<div class="sec-head">
+  <div class="sec-eyebrow">Planning des matchs</div>
+  <div class="sec-title">Programme</div>
+</div>
+<div class="sec-body">
+
+  <div class="day-tabs">
+    <div class="day-tab active" onclick="switchDay('j1',this)">
+      <span class="dt-icon">⚾</span>
+      <span class="dt-name">Jour 1</span>
+      <span class="dt-date">Sam 23/05</span>
+    </div>
+    <div class="day-tab" onclick="switchDay('j2',this)">
+      <span class="dt-icon">⚾</span>
+      <span class="dt-name">Jour 2</span>
+      <span class="dt-date">Dim 24/05</span>
+    </div>
+    <div class="day-tab" onclick="switchDay('j3',this)">
+      <span class="dt-icon">🏆</span>
+      <span class="dt-name">Jour 3</span>
+      <span class="dt-date">Lun 25/05</span>
+    </div>
+  </div>
+
+  <!-- JOUR 1 : 5 matchs -->
+  <div class="day-panel active" id="prog-j1">
+
+    <div class="time-block">10h00 — Poule B · Terrain 1</div>
+    <div class="match-card">
+      <div class="match-card-meta">
+        <span class="match-phase">Poule B · M1</span>
+        <span class="badge badge-pool-b">Poule B</span>
+        <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194434" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
+      </div>
+      <div class="match-teams">
+        <div class="mt-name">Nice Cavigal<br><span class="mt-sub">VISITOR</span></div>
+        <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
+        <div class="mt-name right">Pharaons<br><span class="mt-sub">HOME · Évry</span></div>
+      </div>
+    </div>
+
+    <div class="time-block">12h15 — Poule A · Terrain 1</div>
+    <div class="match-card">
+      <div class="match-card-meta">
+        <span class="match-phase">Poule A · M1</span>
+        <span class="badge badge-pool-a">Poule A</span>
+        <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194435" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
+      </div>
+      <div class="match-teams">
+        <div class="mt-name">Grenoble<br><span class="mt-sub">VISITOR · Grizzly</span></div>
+        <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
+        <div class="mt-name right">Colombes<br><span class="mt-sub">HOME · Wildcats</span></div>
+      </div>
+    </div>
+
+    <div class="time-block">14h30 — Poule B · Terrain 1</div>
+    <div class="match-card">
+      <div class="match-card-meta">
+        <span class="match-phase">Poule B · M2</span>
+        <span class="badge badge-pool-b">Poule B</span>
+        <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194435" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
+      </div>
+      <div class="match-teams">
+        <div class="mt-name">Pharaons<br><span class="mt-sub">VISITOR · Évry</span></div>
+        <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
+        <div class="mt-name right">Pessac<br><span class="mt-sub">HOME · Panthères</span></div>
+      </div>
+    </div>
+
+    <div class="time-block">16h45 — Poule A · Terrain 1</div>
+    <div class="match-card">
+      <div class="match-card-meta">
+        <span class="match-phase">Poule A · M2</span>
+        <span class="badge badge-pool-a">Poule A</span>
+        <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194435" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
+      </div>
+      <div class="match-teams">
+        <div class="mt-name">Colombes<br><span class="mt-sub">VISITOR · Wildcats</span></div>
+        <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
+        <div class="mt-name right">Comanches<br><span class="mt-sub">HOME · St-Raphaël</span></div>
+      </div>
+    </div>
+
+    <div class="time-block">19h00 — Poule B / A · Terrain 1</div>
+    <div class="match-card">
+      <div class="match-card-meta">
+        <span class="match-phase">Poule B · M3</span>
+        <span class="badge badge-pool-b">Poule B</span>
+        <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194435" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
+      </div>
+      <div class="match-teams">
+        <div class="mt-name">Colombes<br><span class="mt-sub">VISITOR · Wildcats</span></div>
+        <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
+        <div class="mt-name right">Nice<br><span class="mt-sub">HOME · Cavigal</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JOUR 2 : 5 matchs -->
+  <div class="day-panel" id="prog-j2">
+    <div style="background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.2);border-radius:10px;padding:.9rem 1rem;margin-bottom:1rem;font-size:13px;color:var(--cyan);font-family:'Barlow Condensed',sans-serif;font-weight:600;">
+      ⚡ Fin de poules · Quarts de finale &amp; demi-finales
+    </div>
+
+    <div class="time-block">10h00 — Poule A · Terrain 1</div>
+    <div class="match-card">
+      <div class="match-card-meta">
+        <span class="match-phase">Poule A · M3</span>
+        <span class="badge badge-pool-a">Poule A</span>
+        <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194443" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
+      </div>
+      <div class="match-teams">
+        <div class="mt-name">Comanches<br><span class="mt-sub">VISITOR · St-Raphaël</span></div>
+        <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
+        <div class="mt-name right">Grenoble<br><span class="mt-sub">HOME · Grizzly</span></div>
+      </div>
+    </div>
+
+    <div class="time-block">12h15 — Quart de finale 1</div>
+    <div class="match-card">
+      <div class="match-card-meta">
+        <span class="match-phase">QF1 · 5e/6e place</span>
+        <span class="badge badge-semi">Phase finale</span>
+        <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194443" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
+      </div>
+      <div class="match-teams">
+        <div class="mt-name">3e Poule A<br><span class="mt-sub">VISITOR</span></div>
+        <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
+        <div class="mt-name right">2e Poule B<br><span class="mt-sub">HOME</span></div>
+      </div>
+    </div>
+
+    <div class="time-block">14h30 — Quart de finale 2</div>
+    <div class="match-card">
+      <div class="match-card-meta">
+        <span class="match-phase">QF2 · 5e/6e place</span>
+        <span class="badge badge-semi">Phase finale</span>
+        <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194443" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
+      </div>
+      <div class="match-teams">
+        <div class="mt-name">3e Poule B<br><span class="mt-sub">VISITOR</span></div>
+        <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
+        <div class="mt-name right">2e Poule A<br><span class="mt-sub">HOME</span></div>
+      </div>
+    </div>
+
+    <div class="time-block">16h45 — Demi-finale 1</div>
+    <div class="match-card">
+      <div class="match-card-meta">
+        <span class="match-phase">Demi-finale 1</span>
+        <span class="badge badge-semi">Phase finale</span>
+        <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194443" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
+      </div>
+      <div class="match-teams">
+        <div class="mt-name">Gagnant QF2<br><span class="mt-sub">VISITOR</span></div>
+        <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
+        <div class="mt-name right">1er Poule A<br><span class="mt-sub">HOME</span></div>
+      </div>
+    </div>
+
+    <div class="time-block">19h00 — Demi-finale 2</div>
+    <div class="match-card">
+      <div class="match-card-meta">
+        <span class="match-phase">Demi-finale 2</span>
+        <span class="badge badge-semi">Phase finale</span>
+        <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194443" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
+      </div>
+      <div class="match-teams">
+        <div class="mt-name">Gagnant QF1<br><span class="mt-sub">VISITOR</span></div>
+        <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
+        <div class="mt-name right">1er Poule B<br><span class="mt-sub">HOME</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JOUR 3 : 2 matchs -->
+  <div class="day-panel" id="prog-j3">
+    <div style="background:rgba(245,201,58,0.07);border:1px solid rgba(245,201,58,0.25);border-radius:10px;padding:.9rem 1rem;margin-bottom:1rem;font-size:13px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:600;">
+      🏆 Lundi de Pentecôte · Journée des finales !
+    </div>
+
+    <div class="time-block">10h30 — 3e / 4e place</div>
+    <div class="match-card">
+      <div class="match-card-meta">
+        <span class="match-phase">Petite Finale</span>
+        <span class="badge badge-semi">🥉 Bronze</span>
+        <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194458" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
+      </div>
+      <div class="match-teams">
+        <div class="mt-name" style="color:var(--muted);">Perdant DF2<br><span class="mt-sub">VISITOR</span></div>
+        <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
+        <div class="mt-name right" style="color:var(--muted);">Perdant DF1<br><span class="mt-sub">HOME</span></div>
+      </div>
+    </div>
+
+    <div class="time-block">14h00 — Grande Finale 🏆</div>
+    <div class="match-card" style="border-color:rgba(245,201,58,0.4);background:linear-gradient(135deg,var(--card) 0%,rgba(245,201,58,0.04) 100%);">
+      <div class="match-card-meta">
+        <span class="match-phase">GRANDE FINALE</span>
+        <span class="badge badge-finale">🥇 Final</span>
+        <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194458" target="_blank" rel="noopener" class="match-ffbs-link" style="color:var(--gold);">FFBS ↗</a>
+      </div>
+      <div class="match-teams">
+        <div class="mt-name" style="color:var(--gold);">Vainqueur DF2<br><span class="mt-sub">VISITOR</span></div>
+        <div class="mt-score-box"><span class="mt-score" style="color:var(--gold);">0</span><span class="mt-vs">–</span><span class="mt-score" style="color:var(--gold);">0</span></div>
+        <div class="mt-name right" style="color:var(--gold);">Vainqueur DF1<br><span class="mt-sub">HOME</span></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════ SECTION: ÉQUIPES ═══════════════════ -->
+<div class="page-section" id="sec-equipes">
+<div class="sec-head">
+  <div class="sec-eyebrow">6 clubs participants</div>
+  <div class="sec-title">Les équipes</div>
+</div>
+<div class="sec-body" style="padding:1rem;">
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem;">
+    <div style="background:rgba(30,111,232,0.08);border:1px solid rgba(30,111,232,0.3);border-radius:8px;padding:.5rem .8rem;text-align:center;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue2);">Pool A</div>
+      <div style="font-size:12px;color:var(--white);margin-top:2px;">Comanches · Panthères · Pharaons</div>
+    </div>
+    <div style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.25);border-radius:8px;padding:.5rem .8rem;text-align:center;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);">Pool B</div>
+      <div style="font-size:12px;color:var(--white);margin-top:2px;">Wildcats · Grizzly · Cavigal</div>
+    </div>
+  </div>
+
+  <!-- Équipe 1 : Comanches -->
+  <div class="team-rich-card">
+    <div class="trc-header" style="background:linear-gradient(135deg,#8B4513 0%,#5c2d0a 100%);">
+      <div class="trc-logo-wrap">
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
+          <circle cx="30" cy="30" r="28" fill="#6B3310" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+          <text x="30" y="38" text-anchor="middle" font-size="28">🪶</text>
+        </svg>
+      </div>
+      <div class="trc-header-info">
+        <div class="trc-pool-chip" style="background:rgba(30,111,232,0.35);color:#8BB8FF;">Pool A</div>
+        <div class="trc-name">Comanches</div>
+        <div class="trc-city">Saint-Raphaël · PACA</div>
+      </div>
+      <div class="trc-num">#1</div>
+    </div>
+    <div class="trc-players-grid">
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#3d1a06,#6B3310);">
+          <span style="font-size:1.4rem;">🧢</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Capitaine</div>
+        <div class="trc-player-pos">Pitcher</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#3d1a06,#6B3310);">
+          <span style="font-size:1.4rem;">⚾</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Joueuse #2</div>
+        <div class="trc-player-pos">Catcher</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#3d1a06,#6B3310);">
+          <span style="font-size:1.4rem;">⚾</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Joueuse #3</div>
+        <div class="trc-player-pos">1ère base</div>
+      </div>
+      <div class="trc-player-slot trc-more-slot">
+        <div class="trc-player-photo" style="background:var(--card2);">
+          <span style="font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--muted);">+17</span>
+        </div>
+        <div class="trc-player-name" style="color:var(--muted);">joueuses</div>
+      </div>
+    </div>
+    <div class="trc-footer">
+      <span class="trc-stat">Fondé 1998</span>
+      <span class="trc-stat">Div. Nationale</span>
+    </div>
+  </div>
+
+  <!-- Équipe 2 : Panthères -->
+  <div class="team-rich-card">
+    <div class="trc-header" style="background:linear-gradient(135deg,#1a3a1a 0%,#0d200d 100%);">
+      <div class="trc-logo-wrap">
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
+          <circle cx="30" cy="30" r="28" fill="#1a3a1a" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+          <text x="30" y="38" text-anchor="middle" font-size="28">🐆</text>
+        </svg>
+      </div>
+      <div class="trc-header-info">
+        <div class="trc-pool-chip" style="background:rgba(30,111,232,0.35);color:#8BB8FF;">Pool A</div>
+        <div class="trc-name">Panthères</div>
+        <div class="trc-city">Pessac · Nouvelle-Aquitaine</div>
+      </div>
+      <div class="trc-num">#2</div>
+    </div>
+    <div class="trc-players-grid">
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#0a1f0a,#1a3a1a);">
+          <span style="font-size:1.4rem;">🧢</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Capitaine</div>
+        <div class="trc-player-pos">Pitcher</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#0a1f0a,#1a3a1a);">
+          <span style="font-size:1.4rem;">⚾</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Joueuse #2</div>
+        <div class="trc-player-pos">Shortstop</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#0a1f0a,#1a3a1a);">
+          <span style="font-size:1.4rem;">⚾</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Joueuse #3</div>
+        <div class="trc-player-pos">Outfield</div>
+      </div>
+      <div class="trc-player-slot trc-more-slot">
+        <div class="trc-player-photo" style="background:var(--card2);">
+          <span style="font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--muted);">+17</span>
+        </div>
+        <div class="trc-player-name" style="color:var(--muted);">joueuses</div>
+      </div>
+    </div>
+    <div class="trc-footer">
+      <span class="trc-stat">Fondé 2003</span>
+      <span class="trc-stat">Div. Nationale</span>
+    </div>
+  </div>
+
+  <!-- Équipe 3 : Pharaons -->
+  <div class="team-rich-card">
+    <div class="trc-header" style="background:linear-gradient(135deg,#3a2800 0%,#1f1500 100%);">
+      <div class="trc-logo-wrap">
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
+          <circle cx="30" cy="30" r="28" fill="#3a2800" stroke="rgba(245,201,58,0.4)" stroke-width="1.5"/>
+          <text x="30" y="38" text-anchor="middle" font-size="28">🏺</text>
+        </svg>
+      </div>
+      <div class="trc-header-info">
+        <div class="trc-pool-chip" style="background:rgba(30,111,232,0.35);color:#8BB8FF;">Pool A</div>
+        <div class="trc-name">Pharaons</div>
+        <div class="trc-city">Évry-Courcouronnes · Île-de-France</div>
+      </div>
+      <div class="trc-num">#3</div>
+    </div>
+    <div class="trc-players-grid">
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#1f1500,#3a2800);">
+          <span style="font-size:1.4rem;">🧢</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Capitaine</div>
+        <div class="trc-player-pos">Pitcher</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#1f1500,#3a2800);">
+          <span style="font-size:1.4rem;">⚾</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Joueuse #2</div>
+        <div class="trc-player-pos">2ème base</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#1f1500,#3a2800);">
+          <span style="font-size:1.4rem;">⚾</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Joueuse #3</div>
+        <div class="trc-player-pos">3ème base</div>
+      </div>
+      <div class="trc-player-slot trc-more-slot">
+        <div class="trc-player-photo" style="background:var(--card2);">
+          <span style="font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--muted);">+17</span>
+        </div>
+        <div class="trc-player-name" style="color:var(--muted);">joueuses</div>
+      </div>
+    </div>
+    <div class="trc-footer">
+      <span class="trc-stat">Île-de-France</span>
+      <span class="trc-stat">Div. Nationale</span>
+    </div>
+  </div>
+
+  <!-- Séparateur Pool B -->
+  <div style="display:flex;align-items:center;gap:10px;margin:1.2rem 0 .8rem;">
+    <div style="flex:1;height:1px;background:rgba(0,212,255,0.2);"></div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);">Pool B</div>
+    <div style="flex:1;height:1px;background:rgba(0,212,255,0.2);"></div>
+  </div>
+
+  <!-- Équipe 4 : Wildcats -->
+  <div class="team-rich-card">
+    <div class="trc-header" style="background:linear-gradient(135deg,#001a3a 0%,#000d1f 100%);">
+      <div class="trc-logo-wrap">
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
+          <circle cx="30" cy="30" r="28" fill="#001a3a" stroke="rgba(0,212,255,0.4)" stroke-width="1.5"/>
+          <text x="30" y="38" text-anchor="middle" font-size="28">🐱</text>
+        </svg>
+      </div>
+      <div class="trc-header-info">
+        <div class="trc-pool-chip" style="background:rgba(0,212,255,0.15);color:var(--cyan);">Pool B</div>
+        <div class="trc-name">Wildcats</div>
+        <div class="trc-city">Colombes · Île-de-France</div>
+      </div>
+      <div class="trc-num">#4</div>
+    </div>
+    <div class="trc-players-grid">
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#000d1f,#001a3a);">
+          <span style="font-size:1.4rem;">🧢</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Capitaine</div>
+        <div class="trc-player-pos">Pitcher</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#000d1f,#001a3a);">
+          <span style="font-size:1.4rem;">⚾</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Joueuse #2</div>
+        <div class="trc-player-pos">Catcher</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#000d1f,#001a3a);">
+          <span style="font-size:1.4rem;">⚾</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Joueuse #3</div>
+        <div class="trc-player-pos">Shortstop</div>
+      </div>
+      <div class="trc-player-slot trc-more-slot">
+        <div class="trc-player-photo" style="background:var(--card2);">
+          <span style="font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--muted);">+17</span>
+        </div>
+        <div class="trc-player-name" style="color:var(--muted);">joueuses</div>
+      </div>
+    </div>
+    <div class="trc-footer">
+      <span class="trc-stat">Fondé 2001</span>
+      <span class="trc-stat">Div. Nationale</span>
+    </div>
+  </div>
+
+  <!-- Équipe 5 : Grizzly -->
+  <div class="team-rich-card">
+    <div class="trc-header" style="background:linear-gradient(135deg,#2a1a0a 0%,#150d05 100%);">
+      <div class="trc-logo-wrap">
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
+          <circle cx="30" cy="30" r="28" fill="#2a1a0a" stroke="rgba(255,150,50,0.3)" stroke-width="1.5"/>
+          <text x="30" y="38" text-anchor="middle" font-size="28">🐻</text>
+        </svg>
+      </div>
+      <div class="trc-header-info">
+        <div class="trc-pool-chip" style="background:rgba(0,212,255,0.15);color:var(--cyan);">Pool B</div>
+        <div class="trc-name">Grizzly</div>
+        <div class="trc-city">Grenoble · Auvergne-Rhône-Alpes</div>
+      </div>
+      <div class="trc-num">#5</div>
+    </div>
+    <div class="trc-players-grid">
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#150d05,#2a1a0a);">
+          <span style="font-size:1.4rem;">🧢</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Capitaine</div>
+        <div class="trc-player-pos">Pitcher</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#150d05,#2a1a0a);">
+          <span style="font-size:1.4rem;">⚾</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Joueuse #2</div>
+        <div class="trc-player-pos">Outfield</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#150d05,#2a1a0a);">
+          <span style="font-size:1.4rem;">⚾</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Joueuse #3</div>
+        <div class="trc-player-pos">1ère base</div>
+      </div>
+      <div class="trc-player-slot trc-more-slot">
+        <div class="trc-player-photo" style="background:var(--card2);">
+          <span style="font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--muted);">+17</span>
+        </div>
+        <div class="trc-player-name" style="color:var(--muted);">joueuses</div>
+      </div>
+    </div>
+    <div class="trc-footer">
+      <span class="trc-stat">Rhône-Alpes</span>
+      <span class="trc-stat">Div. Nationale</span>
+    </div>
+  </div>
+
+  <!-- Équipe 6 : Cavigal -->
+  <div class="team-rich-card">
+    <div class="trc-header" style="background:linear-gradient(135deg,#001f3a 0%,#00102a 100%);">
+      <div class="trc-logo-wrap">
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
+          <circle cx="30" cy="30" r="28" fill="#001f3a" stroke="rgba(0,180,255,0.4)" stroke-width="1.5"/>
+          <text x="30" y="38" text-anchor="middle" font-size="28">🌊</text>
+        </svg>
+      </div>
+      <div class="trc-header-info">
+        <div class="trc-pool-chip" style="background:rgba(0,212,255,0.15);color:var(--cyan);">Pool B</div>
+        <div class="trc-name">Cavigal</div>
+        <div class="trc-city">Nice · Provence-Alpes-Côte d'Azur</div>
+      </div>
+      <div class="trc-num">#6</div>
+    </div>
+    <div class="trc-players-grid">
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#00102a,#001f3a);">
+          <span style="font-size:1.4rem;">🧢</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Capitaine</div>
+        <div class="trc-player-pos">Pitcher</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#00102a,#001f3a);">
+          <span style="font-size:1.4rem;">⚾</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Joueuse #2</div>
+        <div class="trc-player-pos">Catcher</div>
+      </div>
+      <div class="trc-player-slot">
+        <div class="trc-player-photo" style="background:linear-gradient(135deg,#00102a,#001f3a);">
+          <span style="font-size:1.4rem;">⚾</span>
+          <div class="trc-player-add">Photo</div>
+        </div>
+        <div class="trc-player-name">Joueuse #3</div>
+        <div class="trc-player-pos">2ème base</div>
+      </div>
+      <div class="trc-player-slot trc-more-slot">
+        <div class="trc-player-photo" style="background:var(--card2);">
+          <span style="font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--muted);">+17</span>
+        </div>
+        <div class="trc-player-name" style="color:var(--muted);">joueuses</div>
+      </div>
+    </div>
+    <div class="trc-footer">
+      <span class="trc-stat">Multi-sports</span>
+      <span class="trc-stat">Div. Nationale</span>
+    </div>
+  </div>
+
+  <div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:10px;padding:.9rem 1rem;margin-top:.5rem;font-size:12px;color:var(--muted);text-align:center;">
+    Photos et infos joueuses à compléter · Contactez l'organisation pour mettre à jour votre fiche équipe
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════ SECTION: RÉSULTATS ═══════════════════ -->
+<div class="page-section" id="sec-resultats">
+<div class="sec-head">
+  <div class="sec-eyebrow">Scores en temps réel</div>
+  <div class="sec-title">Résultats</div>
+</div>
+<div class="sec-body">
+
+  <div class="res-tabs">
+    <button class="res-tab active" onclick="switchRes('r-sam',this)">Sam 23</button>
+    <button class="res-tab" onclick="switchRes('r-dim',this)">Dim 24</button>
+    <button class="res-tab" onclick="switchRes('r-class',this)">Classement</button>
+  </div>
+
+  <!-- Samedi -->
+  <div id="r-sam">
+    <div class="live-pill">
+      <div class="live-dot"></div>
+      <span class="live-txt">En direct</span>
+      <span class="live-upd" id="upd-time">Mis à jour à 11:18</span>
+    </div>
+
+    <div class="res-card">
+      <div class="res-meta">
+        <span class="res-phase">Pool A · Match 1</span>
+        <span class="res-status st-done">Terminé</span>
+      </div>
+      <div class="res-score-row">
+        <div class="res-team win">Comanches</div>
+        <div class="score-box"><span class="sc win">8</span><span class="sc-sep">-</span><span class="sc">3</span></div>
+        <div class="res-team right">Panthères</div>
+      </div>
+      <div class="res-detail">7 manches · Pool A</div>
+    </div>
+
+    <div class="res-card" style="border-color:rgba(224,43,43,0.35);">
+      <div class="res-meta">
+        <span class="res-phase">Pool B · Match 1</span>
+        <span class="res-status st-live">🔴 En cours · 4e manche</span>
+      </div>
+      <div class="res-score-row">
+        <div class="res-team win">Wildcats</div>
+        <div class="score-box"><span class="sc win" id="sc-wc">5</span><span class="sc-sep">-</span><span class="sc" id="sc-gr">2</span></div>
+        <div class="res-team right">Grizzly</div>
+      </div>
+      <div class="res-detail" id="live-txt">4ème manche · 1 out</div>
+    </div>
+
+    <div class="res-card">
+      <div class="res-meta">
+        <span class="res-phase">Pool A · Match 2</span>
+        <span class="res-status st-soon">À venir · 11h00</span>
+      </div>
+      <div class="res-score-row">
+        <div class="res-team" style="color:var(--muted);">Pharaons</div>
+        <div class="score-box"><span class="sc" style="color:var(--muted);">-</span><span class="sc-sep">vs</span><span class="sc" style="color:var(--muted);">-</span></div>
+        <div class="res-team right" style="color:var(--muted);">Comanches</div>
+      </div>
+    </div>
+
+    <div class="res-card">
+      <div class="res-meta">
+        <span class="res-phase">Pool B · Match 2</span>
+        <span class="res-status st-soon">À venir · 11h00</span>
+      </div>
+      <div class="res-score-row">
+        <div class="res-team" style="color:var(--muted);">Cavigal</div>
+        <div class="score-box"><span class="sc" style="color:var(--muted);">-</span><span class="sc-sep">vs</span><span class="sc" style="color:var(--muted);">-</span></div>
+        <div class="res-team right" style="color:var(--muted);">Wildcats</div>
+      </div>
+    </div>
+
+    <div class="res-card">
+      <div class="res-meta">
+        <span class="res-phase">Pool A · Match 3</span>
+        <span class="res-status st-soon">À venir · 14h00</span>
+      </div>
+      <div class="res-score-row">
+        <div class="res-team" style="color:var(--muted);">Panthères</div>
+        <div class="score-box"><span class="sc" style="color:var(--muted);">-</span><span class="sc-sep">vs</span><span class="sc" style="color:var(--muted);">-</span></div>
+        <div class="res-team right" style="color:var(--muted);">Pharaons</div>
+      </div>
+    </div>
+
+    <div class="res-card">
+      <div class="res-meta">
+        <span class="res-phase">Pool B · Match 3</span>
+        <span class="res-status st-soon">À venir · 14h00</span>
+      </div>
+      <div class="res-score-row">
+        <div class="res-team" style="color:var(--muted);">Grizzly</div>
+        <div class="score-box"><span class="sc" style="color:var(--muted);">-</span><span class="sc-sep">vs</span><span class="sc" style="color:var(--muted);">-</span></div>
+        <div class="res-team right" style="color:var(--muted);">Cavigal</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dimanche -->
+  <div id="r-dim" style="display:none;">
+    <div style="text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:14px;line-height:1.8;">
+      Les résultats du dimanche<br>apparaîtront ici en temps réel 📋
+    </div>
+  </div>
+
+  <!-- Classement -->
+  <div id="r-class" style="display:none;">
+    <div class="pool-label">Pool A</div>
+    <table class="classif-table">
+      <thead><tr><th>#</th><th>Équipe</th><th>J</th><th>V</th><th>D</th><th>Ra</th><th>Pts</th></tr></thead>
+      <tbody>
+        <tr><td><span class="rk top">1</span></td><td>Comanches 🪶</td><td>1</td><td>1</td><td>0</td><td>+5</td><td style="color:var(--cyan);font-family:'Anton',sans-serif;">3</td></tr>
+        <tr><td><span class="rk">2</span></td><td>Pharaons 🏺</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td><span class="rk">3</span></td><td>Panthères 🐆</td><td>1</td><td>0</td><td>1</td><td>-5</td><td>0</td></tr>
+      </tbody>
+    </table>
+    <div class="pool-label">Pool B</div>
+    <table class="classif-table">
+      <thead><tr><th>#</th><th>Équipe</th><th>J</th><th>V</th><th>D</th><th>Ra</th><th>Pts</th></tr></thead>
+      <tbody>
+        <tr><td><span class="rk top">1</span></td><td>Wildcats 🐱</td><td>1</td><td>1</td><td>0</td><td>+3</td><td style="color:var(--cyan);font-family:'Anton',sans-serif;">3</td></tr>
+        <tr><td><span class="rk">2</span></td><td>Cavigal 🌊</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td><span class="rk">3</span></td><td>Grizzly 🐻</td><td>1</td><td>0</td><td>1</td><td>-3</td><td>0</td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:11px;color:var(--muted);margin-top:.8rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:.06em;">
+      Ra = Différentiel de runs · Top 2 de chaque poule qualifiés pour les demi-finales
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════ SECTION: BRACKET ═══════════════════ -->
+<div class="page-section" id="sec-bracket">
+<div class="sec-head">
+  <div class="sec-eyebrow">Phase éliminatoire</div>
+  <div class="sec-title">Bracket</div>
+</div>
+<div class="sec-body">
+
+  <div style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.2);border-radius:10px;padding:.9rem 1rem;margin-bottom:1.5rem;font-size:13px;color:var(--muted);">
+    Top 2 de chaque poule → demi-finales → grande finale. Faites défiler horizontalement pour voir l'arbre complet.
+  </div>
+
+  <!-- ARBRE DE TOURNOI -->
+  <div class="bracket-tree">
+    <div class="bracket-tree-inner">
+
+      <!-- COL 1 : Demi-finales -->
+      <div class="bt-col">
+        <div class="bt-col-label">Demi-finales<br>Dim. 24/05</div>
+        <!-- DF1 -->
+        <div class="bt-match" style="margin-bottom:32px;">
+          <div class="bt-slot tbd"><span class="bt-seed">A1</span>1er Pool A<span class="bt-score">-</span></div>
+          <div class="bt-slot tbd"><span class="bt-seed">B2</span>2ème Pool B<span class="bt-score">-</span></div>
+        </div>
+        <!-- DF2 -->
+        <div class="bt-match">
+          <div class="bt-slot tbd"><span class="bt-seed">B1</span>1er Pool B<span class="bt-score">-</span></div>
+          <div class="bt-slot tbd"><span class="bt-seed">A2</span>2ème Pool A<span class="bt-score">-</span></div>
+        </div>
+      </div>
+
+      <!-- CONNECTEURS DF → Finale -->
+      <div class="bt-connectors">
+        <div class="bt-conn-pair">
+          <div class="bt-conn-top"></div>
+          <div class="bt-conn-bot"></div>
+        </div>
+        <div class="bt-conn-mid"></div>
+        <div class="bt-conn-pair">
+          <div class="bt-conn-top"></div>
+          <div class="bt-conn-bot"></div>
+        </div>
+      </div>
+
+      <!-- COL 2 : Grande Finale -->
+      <div class="bt-col" style="justify-content:center;">
+        <div class="bt-col-label">Grande Finale<br>Lun. 25/05 · 13h00</div>
+        <div class="bt-match gold-match">
+          <div class="bt-slot tbd gold-slot"><span class="bt-seed" style="color:var(--gold);">V1</span>Vainqueur DF1<span class="bt-score">-</span></div>
+          <div class="bt-slot tbd gold-slot"><span class="bt-seed" style="color:var(--gold);">V2</span>Vainqueur DF2<span class="bt-score">-</span></div>
+        </div>
+      </div>
+
+      <!-- CONNECTEUR Finale → Champion -->
+      <div class="bt-connectors" style="width:18px;">
+        <div class="bt-conn-single" style="border-top:2px solid rgba(245,201,58,0.5);"></div>
+      </div>
+
+      <!-- COL 3 : Champion -->
+      <div class="bt-champion">
+        <div class="bt-trophy">🏆</div>
+        <div class="bt-champ-label">Championne</div>
+        <div class="bt-champ-name">À couronner</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Match petite finale séparé -->
+  <div style="margin-top:1.5rem;">
+    <div class="bt-round-title">3e / 4e Place · Lun. 25 Mai à 10h00</div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <div class="bt-match bronze-match" style="flex:1;">
+        <div class="bt-slot tbd"><span class="bt-seed">P1</span>Perdant DF1<span class="bt-score">-</span></div>
+        <div class="bt-slot tbd"><span class="bt-seed">P2</span>Perdant DF2<span class="bt-score">-</span></div>
+      </div>
+      <div style="text-align:center;width:48px;flex-shrink:0;">
+        <div style="font-size:1.5rem;">🥉</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue2);">Bronze</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Match 5e/6e place -->
+  <div style="margin-top:1.2rem;">
+    <div class="bt-round-title">5e / 6e Place · Dim. 24 Mai à 11h30</div>
+    <div class="bt-match" style="width:100%;">
+      <div class="bt-slot tbd"><span class="bt-seed">A3</span>3ème Pool A<span class="bt-score">-</span></div>
+      <div class="bt-slot tbd"><span class="bt-seed">B3</span>3ème Pool B<span class="bt-score">-</span></div>
+    </div>
+  </div>
+
+  <!-- Résumé qualifications -->
+  <div style="margin-top:1.5rem;">
+    <div class="bt-round-title">Qualifications depuis les poules</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div class="pool-box">
+        <div class="pool-box-head">Pool A</div>
+        <div class="pool-box-row qualif"><span class="pool-rank q">1</span><span>Comanches 🪶</span><span class="qualif-arrow">→ DF</span></div>
+        <div class="pool-box-row qualif"><span class="pool-rank q">2</span><span>À déterminer</span><span class="qualif-arrow">→ DF</span></div>
+        <div class="pool-box-row" style="color:var(--muted);"><span class="pool-rank">3</span><span>Éliminé</span></div>
+      </div>
+      <div class="pool-box">
+        <div class="pool-box-head" style="color:var(--cyan);">Pool B</div>
+        <div class="pool-box-row qualif"><span class="pool-rank q">1</span><span>Wildcats 🐱</span><span class="qualif-arrow">→ DF</span></div>
+        <div class="pool-box-row qualif"><span class="pool-rank q">2</span><span>À déterminer</span><span class="qualif-arrow">→ DF</span></div>
+        <div class="pool-box-row" style="color:var(--muted);"><span class="pool-rank">3</span><span>Éliminé</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════ SECTION: BUVETTE ═══════════════════ -->
+<div class="page-section" id="sec-buvette">
+<div class="sec-head">
+  <div class="sec-eyebrow">Restauration sur place</div>
+  <div class="sec-title">Buvette</div>
+</div>
+<div class="sec-body">
+
+  <div style="background:var(--card2);border:1px dashed var(--border2);border-radius:12px;padding:2.5rem 1.5rem;text-align:center;margin:.5rem 0;">
+    <div style="font-size:2rem;margin-bottom:.6rem;">🍔</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Menu à compléter</div>
+    <div style="font-size:12px;color:rgba(77,120,170,0.6);margin-top:.3rem;">Les tarifs et produits seront ajoutés prochainement</div>
+  </div>
+
+
+
+</div>
+</div>
+
+<!-- ═══════════════════ SECTION: INFOS & CARTE ═══════════════════ -->
+<div class="page-section" id="sec-infos">
+<div class="sec-head">
+  <div class="sec-eyebrow">Venir &amp; accès</div>
+  <div class="sec-title">Infos &amp; Carte</div>
+</div>
+<div class="sec-body">
+
+  <!-- Carte à venir -->
+  <div style="background:var(--card2);border:1px dashed var(--border2);border-radius:12px;height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;margin-bottom:1rem;">
+    <div style="font-size:2rem;">🗺️</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Carte à ajouter</div>
+    <div style="font-size:11px;color:rgba(77,120,170,0.6);">Capture Google Maps à venir</div>
+  </div>
+
+  <a href="https://maps.google.com/?q=114+rue+du+Vert+Gazon+Valenciennes" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(30,111,232,0.1);border:1px solid var(--border2);border-radius:9px;padding:.7rem 1rem;color:var(--blue2);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;margin-bottom:1.2rem;">
+    <span>📍</span> Ouvrir dans Google Maps
+  </a>
+
+  <div class="info-card">
+    <div class="info-ico">📍</div>
+    <div>
+      <div class="info-title">Vipères Park</div>
+      <div class="info-body">114 rue du Vert Gazon, 59300 Valenciennes<br>Stade officiel des Vipères de Valenciennes</div>
+    </div>
+  </div>
+
+  <div class="info-card" style="border-color:rgba(224,43,43,0.35);">
+    <div class="info-ico" style="background:rgba(224,43,43,0.12);border-color:rgba(224,43,43,0.3);">⛔</div>
+    <div>
+      <div class="info-title" style="color:#FF7070;">Accès — rue principale barrée</div>
+      <div class="info-body">
+        La rue du Vert Gazon sera <strong style="color:#FF7070;">bloquée côté entrée principale</strong> le week-end du tournoi.<br>
+        <strong>Itinéraire de contournement</strong> à confirmer — les détails d'accès seront mis à jour ici dès qu'ils seront disponibles.
+      </div>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-ico">🚗</div>
+    <div>
+      <div class="info-title">Parking</div>
+      <div class="info-body">
+        <strong>Parking principal (gratuit)</strong> : devant le stade, 200 places<br>
+        <strong>Parking secondaire (gratuit)</strong> : rue adjacente, 80 places
+      </div>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-ico">🎟️</div>
+    <div>
+      <div class="info-title">Entrée</div>
+      <div class="info-body"><strong style="color:var(--cyan);">Entrée libre et gratuite</strong> pour tous les spectateurs les 3 jours !</div>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-ico">🌐</div>
+    <div>
+      <div class="info-title">Réseaux sociaux</div>
+      <div class="info-body"><a href="#">@VipereSoftball</a> sur Instagram &amp; Facebook<br>Résultats et photos en temps réel !</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════ BOTTOM NAV ═══════════════════ -->
+<nav class="bot-nav">
+  <button class="bot-tab active" data-section="sec-accueil" onclick="showSection('sec-accueil',this)">
+    <span class="tab-icon">🏠</span>Accueil
+  </button>
+  <button class="bot-tab" data-section="sec-programme" onclick="showSection('sec-programme',this)">
+    <span class="tab-icon">📅</span>Programme
+  </button>
+  <button class="bot-tab" data-section="sec-equipes" onclick="showSection('sec-equipes',this)">
+    <span class="tab-icon">👥</span>Équipes
+  </button>
+  <button class="bot-tab" data-section="sec-resultats" onclick="showSection('sec-resultats',this)">
+    <span class="tab-icon">📊</span>Live
+  </button>
+  <button class="bot-tab" data-section="sec-bracket" onclick="showSection('sec-bracket',this)">
+    <span class="tab-icon">🏆</span>Bracket
+  </button>
+  <button class="bot-tab" data-section="sec-buvette" onclick="showSection('sec-buvette',this)">
+    <span class="tab-icon">🍔</span>Buvette
+  </button>
+  <button class="bot-tab" data-section="sec-infos" onclick="showSection('sec-infos',this)">
+    <span class="tab-icon">📍</span>Infos
+  </button>
+</nav>
+
+<script>
+// ── Navigation principale ──
+function showSection(id, btn) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.bot-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── Tabs Programme ──
+function switchDay(id, el) {
+  document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('prog-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── Tabs Résultats ──
+function switchRes(id, btn) {
+  ['r-sam','r-dim','r-class'].forEach(t => document.getElementById(t).style.display = 'none');
+  document.querySelectorAll('.res-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).style.display = 'block';
+  btn.classList.add('active');
+}
+
+// ── Countdown ──
+function updateCD() {
+  const target = new Date('2026-05-23T08:30:00');
+  const diff = target - new Date();
+  if (diff <= 0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(id => document.getElementById(id).textContent = '0'); return; }
+  document.getElementById('cd-d').textContent = Math.floor(diff/86400000);
+  document.getElementById('cd-h').textContent = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+  document.getElementById('cd-m').textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+  document.getElementById('cd-s').textContent = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+}
+updateCD();
+setInterval(updateCD, 1000);
+
+// ── Live update time ──
+function updateTime() {
+  const n = new Date();
+  const el = document.getElementById('upd-time');
+  if (el) el.textContent = 'Mis à jour à ' + String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
+}
+updateTime();
+setInterval(updateTime, 60000);
+
+
+</script>
+</body>
+</html>
