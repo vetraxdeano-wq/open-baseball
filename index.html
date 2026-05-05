@@ -1395,12 +1395,21 @@ footer{
 }
 .pools-layout > .home-team-card .home-team-body{
   flex:1;
-  display:flex;
-  flex-direction:column;
+  display:grid;
+  grid-template-rows:1fr 1fr 1fr;
+  padding:0;
 }
-/* D1 2026 (last line) always pinned to the bottom */
+/* Each line fills its cell and aligns content centrally */
+.pools-layout > .home-team-card .home-team-body .home-team-line{
+  display:flex;
+  align-items:center;
+  margin:0;
+  padding:4px 8px;
+  border-bottom:1px solid rgba(74,155,255,0.1);
+}
 .pools-layout > .home-team-card .home-team-body .home-team-line:last-child{
-  margin-top:auto;
+  border-bottom:none;
+  margin-top:0; /* override previous auto */
 }
 /* Force identical header height so body rows align across the two columns */
 .pools-layout > .home-team-card .home-team-head{
