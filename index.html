@@ -1544,14 +1544,14 @@ footer{
 
     <!-- ── Rangée 1 ── -->
     <div class="home-team-card" style="border-color:rgba(113,122,213,0.5);height:100%;">
-      <div class="home-team-head" style="background:linear-gradient(135deg,#717ad5ee 0%,#717ad599 100%);border-bottom:2px solid #e8a00160;">
+      <div class="home-team-head" style="background:linear-gradient(135deg,#717ad5ee 0%,#717ad599 100%);border-bottom:2px solid #717ad560;">
         <div class="home-team-logo" style="background:#fff;border-color:rgba(113,122,213,0.5);padding:2px;"><img src="https://static.wbsc.org/upload/00c226d7-a309-43bf-2e34-cf074ffb6e4c.png" style="width:100%;height:100%;object-fit:contain;border-radius:50%;display:block;"></div>
         <div><div class="home-team-name" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6);">Wildcats</div><div class="home-team-city" style="color:rgba(200,215,235,0.85);">Colombes · Poule A</div></div>
       </div>
       <div class="home-team-body">
         <div class="home-team-line"><span class="home-team-k">Historique</span><span class="home-team-v">2025 : 5e · 2024 : n.p. · 2023 : 5e</span></div>
         <div class="home-team-line"><span class="home-team-k">Palmarès</span><span class="home-team-v">🏆 Championnes D2 2024</span></div>
-        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong style="color:#e8a001;">1er</strong> <span style="font-size:10px;color:var(--muted);">(8V · 2D)</span></span></div>
+        <div class="home-team-line"><span class="home-team-k">D1 2026</span><span class="home-team-v"><strong style="color:#b4b8f0;">1er</strong> <span style="font-size:10px;color:var(--muted);">(8V · 2D)</span></span></div>
       </div>
     </div>
 
@@ -2926,6 +2926,34 @@ footer{
 </nav>
 
 <script>
+// ── POOL CARD HEADER EQUALIZER ──
+// Force each left/right card pair to share the same header height
+// so Historique / Palmarès / D1 2026 lines always align horizontally.
+function equalizePoolCards() {
+  var cards = document.querySelectorAll('.pools-layout > .home-team-card');
+  // Reset first so we measure natural heights
+  for (var i = 0; i < cards.length; i++) {
+    var h = cards[i].querySelector('.home-team-head');
+    if (h) h.style.height = '';
+  }
+  // Then set paired max
+  for (var j = 0; j < cards.length; j += 2) {
+    var c1 = cards[j], c2 = cards[j + 1];
+    if (!c1 || !c2) continue;
+    var h1 = c1.querySelector('.home-team-head');
+    var h2 = c2.querySelector('.home-team-head');
+    if (!h1 || !h2) continue;
+    var maxH = Math.max(h1.offsetHeight, h2.offsetHeight);
+    h1.style.height = maxH + 'px';
+    h2.style.height = maxH + 'px';
+  }
+}
+document.addEventListener('DOMContentLoaded', equalizePoolCards);
+window.addEventListener('resize', function() {
+  clearTimeout(window._eqTimer);
+  window._eqTimer = setTimeout(equalizePoolCards, 80);
+});
+
 // ── SECTION NAVIGATION ──
 function showSection(id, tab) {
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
