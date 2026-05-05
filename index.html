@@ -1344,8 +1344,12 @@ footer{
   grid-template-columns:1fr 1fr;
   gap:10px;
   margin-top:.2rem;
+  align-items:start;
 }
-.pool-col{}
+.pool-col{
+  display:flex;
+  flex-direction:column;
+}
 .pool-col-head{
   display:flex;
   align-items:center;
@@ -1363,6 +1367,14 @@ footer{
   display:flex;
   flex-direction:column;
   gap:8px;
+}
+.pool-col-cards .home-team-card{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+.pool-col-cards .home-team-body{
+  flex:1;
 }
 </style>
 </head>
@@ -2569,9 +2581,6 @@ footer{
   </div>
 
   
-  <div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:10px;padding:.9rem 1rem;margin-top:.5rem;font-size:12px;color:var(--muted);text-align:center;">
-    Rosters des autres équipes à compléter · Contactez l'organisation pour mettre à jour votre fiche équipe
-  </div>
 
 </div>
 </div>
@@ -2584,19 +2593,17 @@ footer{
 </div>
 <div class="sec-body">
 
+  <div style="display:flex;margin-bottom:6px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:4px;">
+    <button class="res-tab" onclick="switchRes('r-class',this)" style="flex:1;">Classement</button>
+  </div>
   <div class="res-tabs">
     <button class="res-tab active" onclick="switchRes('r-sam',this)">Sam 23</button>
     <button class="res-tab" onclick="switchRes('r-dim',this)">Dim 24</button>
     <button class="res-tab" onclick="switchRes('r-lun',this)">Lun 25</button>
-    <button class="res-tab" onclick="switchRes('r-class',this)">Classement</button>
   </div>
 
   <!-- Samedi -->
   <div id="r-sam">
-    <div style="background:rgba(74,155,255,0.08);border:1px solid rgba(74,155,255,0.22);border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;font-size:13px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.04em;text-transform:uppercase;">
-      Scores mis à jour en live après chaque match
-    </div>
-
     <div class="res-card"><div class="res-meta"><span class="res-phase">Poule B · Match 1</span><span class="res-status st-soon">À venir · 10h00</span></div><div class="res-score-row"><div class="res-team">Cavigal</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">Pharaons</div></div></div>
     <div class="res-card"><div class="res-meta"><span class="res-phase">Poule A · Match 1</span><span class="res-status st-soon">À venir · 12h15</span></div><div class="res-score-row"><div class="res-team">Grizzlys</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">Wildcats</div></div></div>
     <div class="res-card"><div class="res-meta"><span class="res-phase">Poule B · Match 2</span><span class="res-status st-soon">À venir · 14h30</span></div><div class="res-score-row"><div class="res-team">Pharaons</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">Panthères</div></div></div>
@@ -2640,7 +2647,7 @@ footer{
       </tbody>
     </table>
     <div style="font-size:11px;color:var(--muted);margin-top:.8rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:.06em;">
-      Ra = Différentiel de runs · Top 2 de chaque poule qualifiés pour les demi-finales
+      Ra = Différentiel de runs
     </div>
   </div>
 
