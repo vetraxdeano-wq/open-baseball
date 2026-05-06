@@ -380,17 +380,84 @@ body{
 .badge-semi{background:rgba(240,43,43,0.15);color:#FF7070;}
 .match-teams{
   display:grid;
-  grid-template-columns:1fr 28px 1fr;
-  align-items:center;
-  gap:6px;
+  grid-template-columns:1fr auto 1fr;
+  align-items:stretch;
+  gap:0;
+  border-radius:9px;
+  overflow:hidden;
+  min-height:64px;
 }
+/* Côté VISITOR (gauche) */
+.mt-left{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  padding:.6rem .5rem .6rem .7rem;
+  position:relative;
+}
+/* Côté HOME (droite) */
+.mt-right{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  justify-content:center;
+  padding:.6rem .7rem .6rem .5rem;
+  position:relative;
+}
+.mt-team-inner{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  position:relative;
+  z-index:1;
+}
+.mt-right .mt-team-inner{flex-direction:row-reverse;}
+.mt-logo{
+  width:36px;height:36px;flex-shrink:0;
+  border-radius:50%;
+  background:#fff;
+  border:1.5px solid rgba(255,255,255,0.25);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.mt-logo img{width:100%;height:100%;object-fit:contain;display:block;}
+.mt-name-wrap{
+  display:flex;flex-direction:column;
+  min-width:0;
+}
+.mt-right .mt-name-wrap{align-items:flex-end;text-align:right;}
 .mt-name{
   font-family:'Barlow Condensed',sans-serif;
   font-weight:700;
-  font-size:14px;
-  line-height:1.2;
+  font-size:13px;
+  line-height:1.15;
+  color:var(--white);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:100%;
 }
 .mt-name.right{text-align:right;}
+.mt-sub{
+  font-size:9px;
+  color:rgba(180,200,230,0.55);
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.mt-score-box{
+  display:flex;
+  align-items:center;
+  gap:3px;
+  flex-shrink:0;
+  padding:0 4px;
+  z-index:1;
+}
 .mt-vs{
   text-align:center;
   font-family:'Anton',sans-serif;
@@ -495,11 +562,63 @@ body{
 .st-done{background:rgba(0,212,255,0.1);color:var(--cyan);}
 .st-live{background:rgba(224,43,43,0.15);color:#FF6B6B;}
 .st-soon{background:rgba(255,255,255,0.06);color:var(--muted);}
-.res-score-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;}
-.res-team{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;line-height:1.2;}
+.res-score-row{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:stretch;
+  gap:0;
+  border-radius:8px;
+  overflow:hidden;
+  min-height:58px;
+}
+.res-side{
+  display:flex;
+  align-items:center;
+  padding:.55rem .6rem .55rem .7rem;
+}
+.res-side.right{
+  padding:.55rem .7rem .55rem .6rem;
+  justify-content:flex-end;
+}
+.res-side-inner{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  position:relative;
+  z-index:1;
+}
+.res-side.right .res-side-inner{flex-direction:row-reverse;}
+.res-logo{
+  width:32px;height:32px;flex-shrink:0;
+  border-radius:50%;
+  background:#fff;
+  border:1.5px solid rgba(255,255,255,0.2);
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.res-logo img{width:100%;height:100%;object-fit:contain;display:block;}
+.res-name-wrap{display:flex;flex-direction:column;min-width:0;}
+.res-side.right .res-name-wrap{align-items:flex-end;}
+.res-team{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:.88rem;
+  line-height:1.15;
+  color:var(--white);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
 .res-team.right{text-align:right;}
 .res-team.win{color:var(--cyan);}
-.score-box{display:flex;align-items:center;gap:5px;justify-content:center;}
+.res-city{
+  font-size:9px;
+  color:rgba(180,200,230,0.5);
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.score-box{display:flex;align-items:center;gap:4px;justify-content:center;padding:0 5px;flex-shrink:0;}
 .sc{font-family:'Anton',sans-serif;font-size:2rem;line-height:1;}
 .sc.win{color:var(--cyan);}
 .sc-sep{font-family:'Anton',sans-serif;font-size:1.4rem;color:var(--muted);}
@@ -1722,9 +1841,19 @@ footer{
         <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194434" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
       </div>
       <div class="match-teams">
-        <div class="mt-name">Cavigal<br><span class="mt-sub">VISITOR · Nice</span></div>
+        <div class="mt-left" style="background:linear-gradient(to right,rgba(165,0,22,0.28) 0%,transparent 100%);">
+          <div class="mt-team-inner">
+            <div class="mt-logo"><img src="https://static.wbsc.org/upload/9299e180-0639-6ae2-e61d-a4faf42b7b27.jpg" alt="Cavigal"></div>
+            <div class="mt-name-wrap"><span class="mt-name">Cavigal</span><span class="mt-sub">VISITOR · Nice</span></div>
+          </div>
+        </div>
         <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
-        <div class="mt-name right">Pharaons<br><span class="mt-sub">HOME · Évry-Courcouronnes</span></div>
+        <div class="mt-right" style="background:linear-gradient(to left,rgba(107,0,1,0.28) 0%,transparent 100%);">
+          <div class="mt-team-inner">
+            <div class="mt-logo"><img src="https://static.wbsc.org/upload/07067501-9be9-9d54-0187-4b5ce1bc028d.jpg" alt="Pharaons"></div>
+            <div class="mt-name-wrap"><span class="mt-name right">Pharaons</span><span class="mt-sub">HOME · Évry-Courcouronnes</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1736,9 +1865,19 @@ footer{
         <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194435" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
       </div>
       <div class="match-teams">
-        <div class="mt-name">Grizzlys<br><span class="mt-sub">VISITOR · Grenoble</span></div>
+        <div class="mt-left" style="background:linear-gradient(to right,rgba(216,226,252,0.18) 0%,transparent 100%);">
+          <div class="mt-team-inner">
+            <div class="mt-logo"><img src="https://static.wbsc.org/upload/c6f45770-2b34-bfcf-33e8-1909b6ef7bae.jpg" alt="Grizzlys"></div>
+            <div class="mt-name-wrap"><span class="mt-name">Grizzlys</span><span class="mt-sub">VISITOR · Grenoble</span></div>
+          </div>
+        </div>
         <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
-        <div class="mt-name right">Wildcats<br><span class="mt-sub">HOME · Colombes</span></div>
+        <div class="mt-right" style="background:linear-gradient(to left,rgba(113,122,213,0.28) 0%,transparent 100%);">
+          <div class="mt-team-inner">
+            <div class="mt-logo"><img src="https://static.wbsc.org/upload/00c226d7-a309-43bf-2e34-cf074ffb6e4c.png" alt="Wildcats"></div>
+            <div class="mt-name-wrap"><span class="mt-name right">Wildcats</span><span class="mt-sub">HOME · Colombes</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1750,9 +1889,19 @@ footer{
         <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194436" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
       </div>
       <div class="match-teams">
-        <div class="mt-name">Pharaons<br><span class="mt-sub">VISITOR · Évry-Courcouronnes</span></div>
+        <div class="mt-left" style="background:linear-gradient(to right,rgba(107,0,1,0.28) 0%,transparent 100%);">
+          <div class="mt-team-inner">
+            <div class="mt-logo"><img src="https://static.wbsc.org/upload/07067501-9be9-9d54-0187-4b5ce1bc028d.jpg" alt="Pharaons"></div>
+            <div class="mt-name-wrap"><span class="mt-name">Pharaons</span><span class="mt-sub">VISITOR · Évry-Courcouronnes</span></div>
+          </div>
+        </div>
         <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
-        <div class="mt-name right">Panthères<br><span class="mt-sub">HOME · Pessac</span></div>
+        <div class="mt-right" style="background:linear-gradient(to left,rgba(248,205,92,0.22) 0%,transparent 100%);">
+          <div class="mt-team-inner">
+            <div class="mt-logo"><img src="https://static.wbsc.org/upload/77e94058-ac4d-db29-8258-7b792b239dbc.jpg" alt="Panthères"></div>
+            <div class="mt-name-wrap"><span class="mt-name right">Panthères</span><span class="mt-sub">HOME · Pessac</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1764,9 +1913,19 @@ footer{
         <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194437" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
       </div>
       <div class="match-teams">
-        <div class="mt-name">Wildcats<br><span class="mt-sub">VISITOR · Colombes</span></div>
+        <div class="mt-left" style="background:linear-gradient(to right,rgba(113,122,213,0.28) 0%,transparent 100%);">
+          <div class="mt-team-inner">
+            <div class="mt-logo"><img src="https://static.wbsc.org/upload/00c226d7-a309-43bf-2e34-cf074ffb6e4c.png" alt="Wildcats"></div>
+            <div class="mt-name-wrap"><span class="mt-name">Wildcats</span><span class="mt-sub">VISITOR · Colombes</span></div>
+          </div>
+        </div>
         <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
-        <div class="mt-name right">Comanches<br><span class="mt-sub">HOME · Saint-Raphaël</span></div>
+        <div class="mt-right" style="background:linear-gradient(to left,rgba(176,183,197,0.18) 0%,transparent 100%);">
+          <div class="mt-team-inner">
+            <div class="mt-logo"><img src="https://static.wbsc.org/assets/cms/teams/logo/229a41eb-e61a-7ab8-e29f-3100fc34a2ce.jpg" alt="Comanches"></div>
+            <div class="mt-name-wrap"><span class="mt-name right">Comanches</span><span class="mt-sub">HOME · Saint-Raphaël</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1778,9 +1937,19 @@ footer{
         <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194438" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
       </div>
       <div class="match-teams">
-        <div class="mt-name">Wildcats<br><span class="mt-sub">VISITOR · Colombes</span></div>
+        <div class="mt-left" style="background:linear-gradient(to right,rgba(113,122,213,0.28) 0%,transparent 100%);">
+          <div class="mt-team-inner">
+            <div class="mt-logo"><img src="https://static.wbsc.org/upload/00c226d7-a309-43bf-2e34-cf074ffb6e4c.png" alt="Wildcats"></div>
+            <div class="mt-name-wrap"><span class="mt-name">Wildcats</span><span class="mt-sub">VISITOR · Colombes</span></div>
+          </div>
+        </div>
         <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
-        <div class="mt-name right">Cavigal<br><span class="mt-sub">HOME · Nice</span></div>
+        <div class="mt-right" style="background:linear-gradient(to left,rgba(165,0,22,0.28) 0%,transparent 100%);">
+          <div class="mt-team-inner">
+            <div class="mt-logo"><img src="https://static.wbsc.org/upload/9299e180-0639-6ae2-e61d-a4faf42b7b27.jpg" alt="Cavigal"></div>
+            <div class="mt-name-wrap"><span class="mt-name right">Cavigal</span><span class="mt-sub">HOME · Nice</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1800,9 +1969,19 @@ footer{
         <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194443" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
       </div>
       <div class="match-teams">
-        <div class="mt-name">Comanches<br><span class="mt-sub">VISITOR · Saint-Raphaël</span></div>
+        <div class="mt-left" style="background:linear-gradient(to right,rgba(176,183,197,0.18) 0%,transparent 100%);">
+          <div class="mt-team-inner">
+            <div class="mt-logo"><img src="https://static.wbsc.org/assets/cms/teams/logo/229a41eb-e61a-7ab8-e29f-3100fc34a2ce.jpg" alt="Comanches"></div>
+            <div class="mt-name-wrap"><span class="mt-name">Comanches</span><span class="mt-sub">VISITOR · Saint-Raphaël</span></div>
+          </div>
+        </div>
         <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
-        <div class="mt-name right">Grizzlys<br><span class="mt-sub">HOME · Grenoble</span></div>
+        <div class="mt-right" style="background:linear-gradient(to left,rgba(216,226,252,0.18) 0%,transparent 100%);">
+          <div class="mt-team-inner">
+            <div class="mt-logo"><img src="https://static.wbsc.org/upload/c6f45770-2b34-bfcf-33e8-1909b6ef7bae.jpg" alt="Grizzlys"></div>
+            <div class="mt-name-wrap"><span class="mt-name right">Grizzlys</span><span class="mt-sub">HOME · Grenoble</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1814,9 +1993,17 @@ footer{
         <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194444" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
       </div>
       <div class="match-teams">
-        <div class="mt-name">3e Poule A<br><span class="mt-sub">VISITOR</span></div>
+        <div class="mt-left">
+          <div class="mt-team-inner">
+            <div class="mt-name-wrap"><span class="mt-name" style="color:var(--muted);">3e Poule A</span><span class="mt-sub">VISITOR</span></div>
+          </div>
+        </div>
         <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
-        <div class="mt-name right">2e Poule B<br><span class="mt-sub">HOME</span></div>
+        <div class="mt-right">
+          <div class="mt-team-inner">
+            <div class="mt-name-wrap"><span class="mt-name right" style="color:var(--muted);">2e Poule B</span><span class="mt-sub">HOME</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1828,9 +2015,17 @@ footer{
         <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194445" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
       </div>
       <div class="match-teams">
-        <div class="mt-name">3e Poule B<br><span class="mt-sub">VISITOR</span></div>
+        <div class="mt-left">
+          <div class="mt-team-inner">
+            <div class="mt-name-wrap"><span class="mt-name" style="color:var(--muted);">3e Poule B</span><span class="mt-sub">VISITOR</span></div>
+          </div>
+        </div>
         <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
-        <div class="mt-name right">2e Poule A<br><span class="mt-sub">HOME</span></div>
+        <div class="mt-right">
+          <div class="mt-team-inner">
+            <div class="mt-name-wrap"><span class="mt-name right" style="color:var(--muted);">2e Poule A</span><span class="mt-sub">HOME</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1842,9 +2037,17 @@ footer{
         <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194446" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
       </div>
       <div class="match-teams">
-        <div class="mt-name">Gagnant QF2<br><span class="mt-sub">VISITOR</span></div>
+        <div class="mt-left">
+          <div class="mt-team-inner">
+            <div class="mt-name-wrap"><span class="mt-name" style="color:var(--muted);">Gagnant QF2</span><span class="mt-sub">VISITOR</span></div>
+          </div>
+        </div>
         <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
-        <div class="mt-name right">1er Poule A<br><span class="mt-sub">HOME</span></div>
+        <div class="mt-right">
+          <div class="mt-team-inner">
+            <div class="mt-name-wrap"><span class="mt-name right" style="color:var(--muted);">1er Poule A</span><span class="mt-sub">HOME</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1856,9 +2059,17 @@ footer{
         <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194447" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
       </div>
       <div class="match-teams">
-        <div class="mt-name">Gagnant QF1<br><span class="mt-sub">VISITOR</span></div>
+        <div class="mt-left">
+          <div class="mt-team-inner">
+            <div class="mt-name-wrap"><span class="mt-name" style="color:var(--muted);">Gagnant QF1</span><span class="mt-sub">VISITOR</span></div>
+          </div>
+        </div>
         <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
-        <div class="mt-name right">1er Poule B<br><span class="mt-sub">HOME</span></div>
+        <div class="mt-right">
+          <div class="mt-team-inner">
+            <div class="mt-name-wrap"><span class="mt-name right" style="color:var(--muted);">1er Poule B</span><span class="mt-sub">HOME</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1878,9 +2089,17 @@ footer{
         <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194458" target="_blank" rel="noopener" class="match-ffbs-link">FFBS ↗</a>
       </div>
       <div class="match-teams">
-        <div class="mt-name" style="color:var(--muted);">Perdant DF2<br><span class="mt-sub">VISITOR</span></div>
+        <div class="mt-left">
+          <div class="mt-team-inner">
+            <div class="mt-name-wrap"><span class="mt-name" style="color:var(--muted);">Perdant DF2</span><span class="mt-sub">VISITOR</span></div>
+          </div>
+        </div>
         <div class="mt-score-box"><span class="mt-score">0</span><span class="mt-vs">–</span><span class="mt-score">0</span></div>
-        <div class="mt-name right" style="color:var(--muted);">Perdant DF1<br><span class="mt-sub">HOME</span></div>
+        <div class="mt-right">
+          <div class="mt-team-inner">
+            <div class="mt-name-wrap"><span class="mt-name right" style="color:var(--muted);">Perdant DF1</span><span class="mt-sub">HOME</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1892,9 +2111,17 @@ footer{
         <a href="https://ffbs.wbsc.org/fr/events/2026-challenge-de-france-feminin-de-softball/schedule-and-results/box-score/194459" target="_blank" rel="noopener" class="match-ffbs-link" style="color:var(--gold);">FFBS ↗</a>
       </div>
       <div class="match-teams">
-        <div class="mt-name" style="color:var(--gold);">Vainqueur DF2<br><span class="mt-sub">VISITOR</span></div>
+        <div class="mt-left">
+          <div class="mt-team-inner">
+            <div class="mt-name-wrap"><span class="mt-name" style="color:var(--gold);">Vainqueur DF2</span><span class="mt-sub">VISITOR</span></div>
+          </div>
+        </div>
         <div class="mt-score-box"><span class="mt-score" style="color:var(--gold);">0</span><span class="mt-vs">–</span><span class="mt-score" style="color:var(--gold);">0</span></div>
-        <div class="mt-name right" style="color:var(--gold);">Vainqueur DF1<br><span class="mt-sub">HOME</span></div>
+        <div class="mt-right">
+          <div class="mt-team-inner">
+            <div class="mt-name-wrap"><span class="mt-name right" style="color:var(--gold);">Vainqueur DF1</span><span class="mt-sub">HOME</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -2667,26 +2894,26 @@ footer{
 
   <!-- Samedi -->
   <div id="r-sam">
-    <div class="res-card"><div class="res-meta"><span class="res-phase">Poule B · Match 1</span><span class="res-status st-soon">À venir · 10h00</span></div><div class="res-score-row"><div class="res-team">Cavigal</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">Pharaons</div></div></div>
-    <div class="res-card"><div class="res-meta"><span class="res-phase">Poule A · Match 1</span><span class="res-status st-soon">À venir · 12h15</span></div><div class="res-score-row"><div class="res-team">Grizzlys</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">Wildcats</div></div></div>
-    <div class="res-card"><div class="res-meta"><span class="res-phase">Poule B · Match 2</span><span class="res-status st-soon">À venir · 14h30</span></div><div class="res-score-row"><div class="res-team">Pharaons</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">Panthères</div></div></div>
-    <div class="res-card"><div class="res-meta"><span class="res-phase">Poule A · Match 2</span><span class="res-status st-soon">À venir · 16h45</span></div><div class="res-score-row"><div class="res-team">Wildcats</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">Comanches</div></div></div>
-    <div class="res-card"><div class="res-meta"><span class="res-phase">Match 5 · Calendrier</span><span class="res-status st-soon">À venir · 19h00</span></div><div class="res-score-row"><div class="res-team">Wildcats</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">Cavigal</div></div></div>
+    <div class="res-card"><div class="res-meta"><span class="res-phase">Poule B · Match 1</span><span class="res-status st-soon">À venir · 10h00</span></div><div class="res-score-row"><div class="res-side" style="background:linear-gradient(to right,rgba(165,0,22,0.28) 0%,transparent 100%);"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team" style="">Cavigal</span><span class="res-city">Nice</span></div><div class="res-logo"><img src="https://static.wbsc.org/upload/9299e180-0639-6ae2-e61d-a4faf42b7b27.jpg" alt="Cavigal"></div></div></div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-side right" style="background:linear-gradient(to left,rgba(107,0,1,0.28) 0%,transparent 100%);"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team right" style="">Pharaons</span><span class="res-city">Évry-Courcouronnes</span></div><div class="res-logo"><img src="https://static.wbsc.org/upload/07067501-9be9-9d54-0187-4b5ce1bc028d.jpg" alt="Pharaons"></div></div></div></div></div>
+    <div class="res-card"><div class="res-meta"><span class="res-phase">Poule A · Match 1</span><span class="res-status st-soon">À venir · 12h15</span></div><div class="res-score-row"><div class="res-side" style="background:linear-gradient(to right,rgba(216,226,252,0.18) 0%,transparent 100%);"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team" style="">Grizzlys</span><span class="res-city">Grenoble</span></div><div class="res-logo"><img src="https://static.wbsc.org/upload/c6f45770-2b34-bfcf-33e8-1909b6ef7bae.jpg" alt="Grizzlys"></div></div></div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-side right" style="background:linear-gradient(to left,rgba(113,122,213,0.28) 0%,transparent 100%);"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team right" style="">Wildcats</span><span class="res-city">Colombes</span></div><div class="res-logo"><img src="https://static.wbsc.org/upload/00c226d7-a309-43bf-2e34-cf074ffb6e4c.png" alt="Wildcats"></div></div></div></div></div>
+    <div class="res-card"><div class="res-meta"><span class="res-phase">Poule B · Match 2</span><span class="res-status st-soon">À venir · 14h30</span></div><div class="res-score-row"><div class="res-side" style="background:linear-gradient(to right,rgba(107,0,1,0.28) 0%,transparent 100%);"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team" style="">Pharaons</span><span class="res-city">Évry-Courcouronnes</span></div><div class="res-logo"><img src="https://static.wbsc.org/upload/07067501-9be9-9d54-0187-4b5ce1bc028d.jpg" alt="Pharaons"></div></div></div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-side right" style="background:linear-gradient(to left,rgba(248,205,92,0.22) 0%,transparent 100%);"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team right" style="">Panthères</span><span class="res-city">Pessac</span></div><div class="res-logo"><img src="https://static.wbsc.org/upload/77e94058-ac4d-db29-8258-7b792b239dbc.jpg" alt="Panthères"></div></div></div></div></div>
+    <div class="res-card"><div class="res-meta"><span class="res-phase">Poule A · Match 2</span><span class="res-status st-soon">À venir · 16h45</span></div><div class="res-score-row"><div class="res-side" style="background:linear-gradient(to right,rgba(113,122,213,0.28) 0%,transparent 100%);"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team" style="">Wildcats</span><span class="res-city">Colombes</span></div><div class="res-logo"><img src="https://static.wbsc.org/upload/00c226d7-a309-43bf-2e34-cf074ffb6e4c.png" alt="Wildcats"></div></div></div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-side right" style="background:linear-gradient(to left,rgba(176,183,197,0.18) 0%,transparent 100%);"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team right" style="">Comanches</span><span class="res-city">Saint-Raphaël</span></div><div class="res-logo"><img src="https://static.wbsc.org/assets/cms/teams/logo/229a41eb-e61a-7ab8-e29f-3100fc34a2ce.jpg" alt="Comanches"></div></div></div></div></div>
+    <div class="res-card"><div class="res-meta"><span class="res-phase">Match 5 · Calendrier</span><span class="res-status st-soon">À venir · 19h00</span></div><div class="res-score-row"><div class="res-side" style="background:linear-gradient(to right,rgba(113,122,213,0.28) 0%,transparent 100%);"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team" style="">Wildcats</span><span class="res-city">Colombes</span></div><div class="res-logo"><img src="https://static.wbsc.org/upload/00c226d7-a309-43bf-2e34-cf074ffb6e4c.png" alt="Wildcats"></div></div></div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-side right" style="background:linear-gradient(to left,rgba(165,0,22,0.28) 0%,transparent 100%);"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team right" style="">Cavigal</span><span class="res-city">Nice</span></div><div class="res-logo"><img src="https://static.wbsc.org/upload/9299e180-0639-6ae2-e61d-a4faf42b7b27.jpg" alt="Cavigal"></div></div></div></div></div>
   </div>
 
   <!-- Dimanche -->
   <div id="r-dim" style="display:none;">
-    <div class="res-card"><div class="res-meta"><span class="res-phase">Poule A · Match 3</span><span class="res-status st-soon">À venir · 10h00</span></div><div class="res-score-row"><div class="res-team">Comanches</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">Grizzlys</div></div></div>
-    <div class="res-card"><div class="res-meta"><span class="res-phase">Quart de finale 2</span><span class="res-status st-soon">À venir · 12h15</span></div><div class="res-score-row"><div class="res-team">3e Poule A</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">2e Poule B</div></div></div>
-    <div class="res-card"><div class="res-meta"><span class="res-phase">Quart de finale 1</span><span class="res-status st-soon">À venir · 14h30</span></div><div class="res-score-row"><div class="res-team">3e Poule B</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">2e Poule A</div></div></div>
-    <div class="res-card"><div class="res-meta"><span class="res-phase">Demi-finale 1</span><span class="res-status st-soon">À venir · 16h45</span></div><div class="res-score-row"><div class="res-team">Gagnant QF2</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">1er Poule A</div></div></div>
-    <div class="res-card"><div class="res-meta"><span class="res-phase">Demi-finale 2</span><span class="res-status st-soon">À venir · 19h00</span></div><div class="res-score-row"><div class="res-team">Gagnant QF1</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">1er Poule B</div></div></div>
+    <div class="res-card"><div class="res-meta"><span class="res-phase">Poule A · Match 3</span><span class="res-status st-soon">À venir · 10h00</span></div><div class="res-score-row"><div class="res-side" style="background:linear-gradient(to right,rgba(176,183,197,0.18) 0%,transparent 100%);"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team" style="">Comanches</span><span class="res-city">Saint-Raphaël</span></div><div class="res-logo"><img src="https://static.wbsc.org/assets/cms/teams/logo/229a41eb-e61a-7ab8-e29f-3100fc34a2ce.jpg" alt="Comanches"></div></div></div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-side right" style="background:linear-gradient(to left,rgba(216,226,252,0.18) 0%,transparent 100%);"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team right" style="">Grizzlys</span><span class="res-city">Grenoble</span></div><div class="res-logo"><img src="https://static.wbsc.org/upload/c6f45770-2b34-bfcf-33e8-1909b6ef7bae.jpg" alt="Grizzlys"></div></div></div></div></div>
+    <div class="res-card"><div class="res-meta"><span class="res-phase">Quart de finale 2</span><span class="res-status st-soon">À venir · 12h15</span></div><div class="res-score-row"><div class="res-side"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team" style="color:var(--muted);">3e Poule A</span></div></div></div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-side right"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team right" style="color:var(--muted);">2e Poule B</span></div></div></div></div></div>
+    <div class="res-card"><div class="res-meta"><span class="res-phase">Quart de finale 1</span><span class="res-status st-soon">À venir · 14h30</span></div><div class="res-score-row"><div class="res-side"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team" style="color:var(--muted);">3e Poule B</span></div></div></div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-side right"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team right" style="color:var(--muted);">2e Poule A</span></div></div></div></div></div>
+    <div class="res-card"><div class="res-meta"><span class="res-phase">Demi-finale 1</span><span class="res-status st-soon">À venir · 16h45</span></div><div class="res-score-row"><div class="res-side"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team" style="color:var(--muted);">Gagnant QF2</span></div></div></div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-side right"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team right" style="color:var(--muted);">1er Poule A</span></div></div></div></div></div>
+    <div class="res-card"><div class="res-meta"><span class="res-phase">Demi-finale 2</span><span class="res-status st-soon">À venir · 19h00</span></div><div class="res-score-row"><div class="res-side"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team" style="color:var(--muted);">Gagnant QF1</span></div></div></div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-side right"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team right" style="color:var(--muted);">1er Poule B</span></div></div></div></div></div>
   </div>
 
   <!-- Lundi -->
   <div id="r-lun" style="display:none;">
-    <div class="res-card"><div class="res-meta"><span class="res-phase">Petite finale</span><span class="res-status st-soon">À venir · 10h30</span></div><div class="res-score-row"><div class="res-team">Perdant DF2</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">Perdant DF1</div></div></div>
-    <div class="res-card" style="border-color:rgba(245,201,58,0.35);"><div class="res-meta"><span class="res-phase">Grande finale</span><span class="res-status st-soon">À venir · 14h00</span></div><div class="res-score-row"><div class="res-team">Vainqueur DF2</div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-team right">Vainqueur DF1</div></div></div>
+    <div class="res-card"><div class="res-meta"><span class="res-phase">Petite finale</span><span class="res-status st-soon">À venir · 10h30</span></div><div class="res-score-row"><div class="res-side"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team" style="color:var(--muted);">Perdant DF2</span></div></div></div><div class="score-box"><span class="sc">0</span><span class="sc-sep">-</span><span class="sc">0</span></div><div class="res-side right"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team right" style="color:var(--muted);">Perdant DF1</span></div></div></div></div></div>
+    <div class="res-card" style="border-color:rgba(245,201,58,0.35);"><div class="res-meta"><span class="res-phase">Grande finale</span><span class="res-status st-soon">À venir · 14h00</span></div><div class="res-score-row"><div class="res-side"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team" style="color:var(--gold);">Vainqueur DF2</span></div></div></div><div class="score-box"><span class="sc" style="color:var(--gold);">0</span><span class="sc-sep">-</span><span class="sc" style="color:var(--gold);">0</span></div><div class="res-side right"><div class="res-side-inner"><div class="res-name-wrap"><span class="res-team right" style="color:var(--gold);">Vainqueur DF1</span></div></div></div></div></div>
   </div>
 
   <!-- Classement -->
