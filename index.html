@@ -2554,20 +2554,20 @@ footer{
 <div id="r-class" style="display:none;">
 <div class="pool-label">Poule A</div>
 <table class="classif-table">
-<thead><tr><th>#</th><th>Équipe</th><th>J</th><th>V</th><th>D</th><th>Ra</th><th>Pts</th></tr></thead>
+<thead><tr><th>#</th><th>Équipe</th><th>J</th><th>W</th><th>L</th></tr></thead>
 <tbody>
-<tr data-pool="A" data-team="wildcats"><td><span class="rk top">1</span></td><td>Colombes Wildcats</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-<tr data-pool="A" data-team="comanches"><td><span class="rk">2</span></td><td>Saint-Raphaël Comanches</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-<tr data-pool="A" data-team="grizzlys"><td><span class="rk">3</span></td><td>Grenoble Grizzlys</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr data-pool="A" data-team="wildcats"><td><span class="rk top">1</span></td><td>Colombes Wildcats</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr data-pool="A" data-team="comanches"><td><span class="rk">2</span></td><td>Saint-Raphaël Comanches</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr data-pool="A" data-team="grizzlys"><td><span class="rk">3</span></td><td>Grenoble Grizzlys</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
 </tbody>
 </table>
 <div class="pool-label">Poule B</div>
 <table class="classif-table">
-<thead><tr><th>#</th><th>Équipe</th><th>J</th><th>V</th><th>D</th><th>Ra</th><th>Pts</th></tr></thead>
+<thead><tr><th>#</th><th>Équipe</th><th>J</th><th>W</th><th>L</th></tr></thead>
 <tbody>
-<tr data-pool="B" data-team="cavigal"><td><span class="rk top">1</span></td><td>Nice Cavigal</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-<tr data-pool="B" data-team="pantheres"><td><span class="rk">2</span></td><td>Pessac Panthères</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-<tr data-pool="B" data-team="pharaons"><td><span class="rk">3</span></td><td>Évry-Courcouronnes Pharaons</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr data-pool="B" data-team="cavigal"><td><span class="rk top">1</span></td><td>Nice Cavigal</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr data-pool="B" data-team="pantheres"><td><span class="rk">2</span></td><td>Pessac Panthères</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr data-pool="B" data-team="pharaons"><td><span class="rk">3</span></td><td>Évry-Courcouronnes Pharaons</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
 </tbody>
 </table>
 <div style="font-size:11px;color:var(--muted);margin-top:.8rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:.06em;">
@@ -2936,5 +2936,98 @@ document.addEventListener('DOMContentLoaded', () => {
   loadData();
   subscribeRealtime();
 });
-</script></body>
+</script>
+<script>
+// --- FIX status refresh (done -> soon) ---
+function refreshMatchStates(){
+  document.querySelectorAll('.res-card').forEach(card=>{
+    const status = card.dataset.status;
+    card.classList.remove('st-done','st-live','st-soon');
+    if(status === 'done') card.classList.add('st-done');
+    if(status === 'live') card.classList.add('st-live');
+    if(status === 'soon') card.classList.add('st-soon');
+  });
+}
+
+// --- DASHBOARD BUTTON ---
+const dashBtn = document.createElement('button');
+dashBtn.innerText = '⚙';
+dashBtn.style.position='fixed';
+dashBtn.style.top='10px';
+dashBtn.style.right='10px';
+dashBtn.style.zIndex='999';
+dashBtn.style.opacity='0.4';
+dashBtn.onclick=()=>window.location.href='/dashboard.html';
+document.body.appendChild(dashBtn);
+
+// --- AUTO STANDINGS UPDATE ---
+function updateStandings(){
+  const table = {};
+  document.querySelectorAll('.res-card[data-status="done"]').forEach(card=>{
+    const teams = card.querySelectorAll('.res-team');
+    const scores = card.querySelectorAll('.sc');
+    if(teams.length===2 && scores.length===2){
+      const t1 = teams[0].innerText;
+      const t2 = teams[1].innerText;
+      const s1 = parseInt(scores[0].innerText);
+      const s2 = parseInt(scores[1].innerText);
+
+      table[t1] = table[t1] || {W:0,L:0};
+      table[t2] = table[t2] || {W:0,L:0};
+
+      if(s1 > s2){ table[t1].W++; table[t2].L++; }
+      else { table[t2].W++; table[t1].L++; }
+    }
+  });
+
+  console.log('Standings:', table);
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  refreshMatchStates();
+  updateStandings();
+});
+</script>
+<script>
+// Replace standings display with W/L format
+function renderStandingsWL(){
+  document.querySelectorAll('.classif-table tbody tr').forEach(row=>{
+    const w = row.dataset.w || '0';
+    const l = row.dataset.l || '0';
+    const cells = row.querySelectorAll('td');
+    if(cells.length >= 4){
+      cells[2].innerText = w;
+      cells[3].innerText = l;
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded', renderStandingsWL);
+</script>
+<script>
+// Force headers in results tab to W/L
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.classif-table thead th').forEach(th=>{
+    if(th.innerText.toLowerCase().includes('point')) th.innerText='W';
+    if(th.innerText === 'V') th.innerText='W';
+    if(th.innerText === 'D') th.innerText='L';
+  });
+});
+</script>
+<script>
+// Remove extra trailing W column if present
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.classif-table').forEach(table=>{
+    const rows = table.querySelectorAll('tr');
+    rows.forEach(row=>{
+      if(row.children.length > 0){
+        const last = row.children[row.children.length -1];
+        if(last && last.innerText.trim() === 'W'){
+          last.remove();
+        }
+      }
+    });
+  });
+});
+</script>
+</body>
 </html>
