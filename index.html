@@ -625,7 +625,10 @@ body{
 .res-detail{text-align:center;margin-top:6px;font-size:11px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;}
 
 /* CLASSEMENT TABLE */
-.classif-table{width:100%;border-collapse:collapse;font-family:'Barlow Condensed',sans-serif;margin-top:.5rem;}
+.classif-table{width:100%;border-collapse:collapse;font-family:'Barlow Condensed',sans-serif;margin-top:.5rem;table-layout:fixed;}
+.classif-table col.col-rk{width:32px;}
+.classif-table col.col-team{width:auto;}
+.classif-table col.col-num{width:30px;}
 .classif-table th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:.5rem .4rem;border-bottom:1px solid var(--border);text-align:center;}
 .classif-table th:first-child,.classif-table th:nth-child(2){text-align:left;}
 .classif-table td{padding:.65rem .4rem;font-size:13px;font-weight:600;border-bottom:1px solid var(--border);text-align:center;color:var(--white);}
@@ -2554,6 +2557,7 @@ footer{
 <div id="r-class" style="display:none;">
 <div class="pool-label">Poule A</div>
 <table class="classif-table">
+<colgroup><col class="col-rk"/><col class="col-team"/><col class="col-num"/><col class="col-num"/><col class="col-num"/></colgroup>
 <thead><tr><th>#</th><th>Équipe</th><th>J</th><th>W</th><th>L</th></tr></thead>
 <tbody>
 <tr data-pool="A" data-team="wildcats"><td><span class="rk top">1</span></td><td>Colombes Wildcats</td><td>0</td><td>0</td><td>0</td></tr>
@@ -2563,6 +2567,7 @@ footer{
 </table>
 <div class="pool-label">Poule B</div>
 <table class="classif-table">
+<colgroup><col class="col-rk"/><col class="col-team"/><col class="col-num"/><col class="col-num"/><col class="col-num"/></colgroup>
 <thead><tr><th>#</th><th>Équipe</th><th>J</th><th>W</th><th>L</th></tr></thead>
 <tbody>
 <tr data-pool="B" data-team="cavigal"><td><span class="rk top">1</span></td><td>Nice Cavigal</td><td>0</td><td>0</td><td>0</td></tr>
@@ -2570,9 +2575,6 @@ footer{
 <tr data-pool="B" data-team="pharaons"><td><span class="rk">3</span></td><td>Évry-Courcouronnes Pharaons</td><td>0</td><td>0</td><td>0</td></tr>
 </tbody>
 </table>
-<div style="font-size:11px;color:var(--muted);margin-top:.8rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:.06em;">
-      Ra = Différentiel de runs
-    </div>
 </div>
 </div>
 </div>
@@ -2897,18 +2899,16 @@ function applyStanding(row) {
   const tr = document.querySelector('[data-pool="' + row.pool + '"][data-team="' + row.team + '"]');
   if (!tr) return;
   const cells = tr.querySelectorAll('td');
-  if (cells.length < 7) return;
+  if (cells.length < 5) return;
   // Rank cell has a <span> inside
   const rkSpan = cells[0].querySelector('.rk');
   if (rkSpan) {
-    rkSpan.textContent = row.rank;
+    rkSpan.textContent = row.rank ?? '';
     rkSpan.className   = 'rk' + (row.rank === 1 ? ' top' : '');
   }
-  cells[2].textContent = row.j;
-  cells[3].textContent = row.v;
-  cells[4].textContent = row.d;
-  cells[5].textContent = row.ra >= 0 ? '+' + row.ra : row.ra;
-  cells[6].textContent = row.pts;
+  cells[2].textContent = row.j  ?? 0;
+  cells[3].textContent = row.v  ?? 0;
+  cells[4].textContent = row.d  ?? 0;
 }
 
 // ── Initial load ─────────────────────────────────────────────
