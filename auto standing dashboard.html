@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin · Open Softball 2026 · Valenciennes</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Barlow+Condensed:wght@400;600;700&family=Anton&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+:root {
+  --navy:   #050D1C;
+  --card:   #0A1829;
+  --card2:  #0F2040;
+  --card3:  #162B54;
+  --blue:   #1E6FE8;
+  --blue2:  #4A9BFF;
+  --cyan:   #00D4FF;
+  --red:    #E02B2B;
+  --gold:   #F5C93A;
+  --green:  #00E676;
+  --white:  #E8F1FF;
+  --muted:  #4D78AA;
+  --border: rgba(74,155,255,0.18);
+  --border2:rgba(74,155,255,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--navy);
+  color:var(--white);
+  font-family:'JetBrains Mono',monospace;
+  font-size:14px;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── SCANLINES OVERLAY ── */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.05) 2px,
+    rgba(0,0,0,0.05) 4px
+  );
+  pointer-events:none;
+  z-index:9999;
+}
+
+/* ── HEADER ── */
+.admin-header{
+  background:rgba(10,24,41,0.98);
+  border-bottom:2px solid var(--cyan);
+  padding:1rem 2rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 2px 30px rgba(0,212,255,0.15);
+}
+.header-left{display:flex;align-items:center;gap:14px;}
+.header-logo{
+  font-family:'Anton',sans-serif;
+  font-size:1.3rem;
+  letter-spacing:.08em;
+  color:var(--cyan);
+  text-transform:uppercase;
+}
+.header-badge{
+  background:rgba(0,212,255,0.1);
+  border:1px solid rgba(0,212,255,0.3);
+  color:var(--cyan);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  padding:3px 10px;
+  border-radius:4px;
+  font-family:'Barlow Condensed',sans-serif;
+}
+.status-indicator{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:11px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.status-dot{
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px var(--green);
+  animation:pulse 2s ease infinite;
+}
+.status-dot.offline{background:var(--red);box-shadow:0 0 8px var(--red);animation:none;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── MAIN LAYOUT ── */
+.admin-main{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  min-height:calc(100vh - 65px);
+}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  background:rgba(10,24,41,0.6);
+  border-right:1px solid var(--border2);
+  padding:1.5rem 0;
+  position:sticky;
+  top:65px;
+  height:calc(100vh - 65px);
+  overflow-y:auto;
+}
+.sidebar-section{
+  padding:0 1rem;
+  margin-bottom:1.5rem;
+}
+.sidebar-label{
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-family:'Barlow Condensed',sans-serif;
+  margin-bottom:.6rem;
+  padding:0 .5rem;
+}
+.nav-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:.6rem .8rem;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:600;
+  color:var(--muted);
+  letter-spacing:.04em;
+  transition:all .18s;
+  border:1px solid transparent;
+  margin-bottom:2px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;
+}
+.nav-item:hover{background:rgba(74,155,255,0.07);color:var(--white);}
+.nav-item.active{
+  background:rgba(0,212,255,0.1);
+  border-color:rgba(0,212,255,0.25);
+  color:var(--cyan);
+}
+.nav-icon{font-size:15px;flex-shrink:0;}
+
+.sidebar-divider{
+  height:1px;
+  background:var(--border);
+  margin:1rem 1.5rem;
+}
+
+/* ── CONTENT AREA ── */
+.content{
+  padding:2rem;
+  overflow-y:auto;
+}
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* ── PAGE TITLE ── */
+.page-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--cyan);
+  margin-bottom:.3rem;
+}
+.page-h1{
+  font-family:'Anton',sans-serif;
+  font-size:2rem;
+  text-transform:uppercase;
+  margin-bottom:1.5rem;
+  line-height:1;
+}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;
+  bottom:2rem;
+  right:2rem;
+  z-index:9998;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.toast-msg{
+  background:var(--card2);
+  border:1px solid var(--border2);
+  border-left:3px solid var(--green);
+  color:var(--white);
+  padding:.7rem 1.2rem;
+  border-radius:8px;
+  font-size:12px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  letter-spacing:.05em;
+  box-shadow:0 4px 20px rgba(0,0,0,0.4);
+  animation:slideIn .2s ease;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  max-width:320px;
+}
+.toast-msg.error{border-left-color:var(--red);}
+@keyframes slideIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ── CARD ── */
+.dash-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  margin-bottom:1.2rem;
+}
+.dash-card-head{
+  background:var(--card2);
+  padding:.8rem 1.2rem;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.dash-card-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:13px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--blue2);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.dash-card-body{padding:1.2rem;}
+
+/* ── MATCH EDITOR ── */
+.match-editor{
+  display:grid;
+  gap:10px;
+}
+.match-row{
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.9rem 1rem;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:1rem;
+  align-items:center;
+  transition:border-color .18s;
+}
+.match-row:hover{border-color:var(--border2);}
+.match-row.live-match{border-color:rgba(224,43,43,0.5);}
+.match-id-badge{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  background:rgba(74,155,255,0.1);
+  color:var(--blue2);
+  padding:2px 8px;
+  border-radius:4px;
+  border:1px solid var(--border);
+  min-width:36px;
+  text-align:center;
+}
+.match-teams-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:14px;
+  color:var(--white);
+  margin-bottom:2px;
+}
+.match-meta-label{
+  font-size:11px;
+  color:var(--muted);
+  font-family:'Barlow Condensed',sans-serif;
+  letter-spacing:.04em;
+}
+.match-controls{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+/* ── INPUTS ── */
+.inp{
+  background:var(--navy);
+  border:1px solid var(--border2);
+  border-radius:6px;
+  color:var(--white);
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  padding:.45rem .7rem;
+  outline:none;
+  transition:border-color .18s, box-shadow .18s;
+  width:100%;
+}
+.inp:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,212,255,0.12);}
+.inp-score{
+  width:58px;
+  text-align:center;
+  font-size:1.2rem;
+  font-weight:700;
+  padding:.35rem .4rem;
+  font-family:'Anton',sans-serif;
+}
+.inp-sm{width:90px;}
+
+select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%234D78AA'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .7rem center;padding-right:2rem;}
+
+/* Score stepper */
+.score-stepper{
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+.step-btn{
+  background:var(--card3);
+  border:1px solid var(--border2);
+  border-radius:5px;
+  color:var(--white);
+  width:26px;
+  height:26px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  font-weight:700;
+  transition:background .15s;
+  flex-shrink:0;
+}
+.step-btn:hover{background:var(--blue);}
+
+/* ── STATUS SELECT ── */
+.status-select{
+  display:flex;
+  gap:4px;
+}
+.status-btn{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:4px 10px;
+  border-radius:5px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  transition:all .15s;
+}
+.status-btn:hover{border-color:var(--border2);color:var(--white);}
+.status-btn.active-soon{background:rgba(77,120,170,0.2);border-color:rgba(77,120,170,0.5);color:var(--muted);}
+.status-btn.active-live{background:rgba(224,43,43,0.2);border-color:rgba(224,43,43,0.5);color:#FF6B6B;}
+.status-btn.active-done{background:rgba(0,212,255,0.12);border-color:rgba(0,212,255,0.35);color:var(--cyan);}
+
+/* ── SAVE BTN ── */
+.btn{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:.5rem 1.1rem;
+  border-radius:7px;
+  border:none;
+  cursor:pointer;
+  transition:all .18s;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.btn-primary{background:var(--blue);color:#fff;}
+.btn-primary:hover{background:#2575f0;box-shadow:0 2px 14px rgba(30,111,232,0.4);}
+.btn-cyan{background:rgba(0,212,255,0.15);color:var(--cyan);border:1px solid rgba(0,212,255,0.3);}
+.btn-cyan:hover{background:rgba(0,212,255,0.25);}
+.btn-sm{padding:.35rem .8rem;font-size:11px;}
+.btn-danger{background:rgba(224,43,43,0.15);color:#FF6B6B;border:1px solid rgba(224,43,43,0.3);}
+.btn-danger:hover{background:rgba(224,43,43,0.25);}
+.btn-green{background:rgba(0,230,118,0.15);color:var(--green);border:1px solid rgba(0,230,118,0.3);}
+.btn-green:hover{background:rgba(0,230,118,0.25);}
+
+/* ── STANDINGS TABLE ── */
+.standing-table{width:100%;border-collapse:collapse;}
+.standing-table th{
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:700;
+  padding:.5rem .8rem;
+  border-bottom:1px solid var(--border2);
+  text-align:center;
+  font-family:'Barlow Condensed',sans-serif;
+}
+.standing-table th:first-child,.standing-table th:nth-child(2){text-align:left;}
+.standing-table td{
+  padding:.55rem .8rem;
+  border-bottom:1px solid var(--border);
+  vertical-align:middle;
+  text-align:center;
+}
+.standing-table td:nth-child(2){text-align:left;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;}
+.standing-table tr:last-child td{border-bottom:none;}
+.standing-table input{
+  background:var(--navy);
+  border:1px solid var(--border2);
+  border-radius:5px;
+  color:var(--white);
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  padding:.3rem .4rem;
+  text-align:center;
+  width:52px;
+  outline:none;
+}
+.standing-table input:focus{border-color:var(--cyan);}
+
+/* ── POOL SECTION HEADER ── */
+.pool-header{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  padding:.5rem .8rem .4rem;
+  margin-bottom:.3rem;
+}
+.pool-header.pool-a{color:var(--blue2);}
+.pool-header.pool-b{color:var(--cyan);}
+
+/* ── RANK INPUT ── */
+.rank-inp{width:42px !important;}
+
+/* ── GRID ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+
+/* ── STAT CARDS ── */
+.stat-card{
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1rem;
+  text-align:center;
+}
+.stat-num{
+  font-family:'Anton',sans-serif;
+  font-size:2.2rem;
+  line-height:1;
+  color:var(--cyan);
+  display:block;
+}
+.stat-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-top:5px;
+}
+
+/* ── BRACKET EDITOR ── */
+.bracket-slot-editor{
+  display:grid;
+  gap:8px;
+}
+.bracket-row{
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:.8rem 1rem;
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+.bracket-row-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:13px;
+  color:var(--gold);
+  min-width:140px;
+}
+
+/* ── LOADING OVERLAY ── */
+.loading{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:3rem;
+  color:var(--muted);
+  font-family:'Barlow Condensed',sans-serif;
+  letter-spacing:.1em;
+  font-size:13px;
+  gap:10px;
+}
+.spinner{
+  width:20px;height:20px;
+  border:2px solid var(--border2);
+  border-top-color:var(--cyan);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  flex-shrink:0;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── SECTION TABS ── */
+.day-tabs-row{
+  display:flex;
+  gap:6px;
+  margin-bottom:1.2rem;
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:4px;
+  width:fit-content;
+}
+.day-tab-btn{
+  background:transparent;
+  border:none;
+  color:var(--muted);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  padding:8px 18px;
+  border-radius:7px;
+  cursor:pointer;
+  transition:all .18s;
+}
+.day-tab-btn.active{background:var(--blue);color:#fff;}
+.day-tab-btn:hover:not(.active){background:rgba(74,155,255,0.07);color:var(--white);}
+
+/* ── ACTION BAR ── */
+.action-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:1rem;
+  flex-wrap:wrap;
+  gap:.5rem;
+}
+
+/* ── QUICK SCORE SECTION ── */
+.quick-match{
+  background:linear-gradient(135deg, rgba(30,111,232,0.12), rgba(0,212,255,0.06));
+  border:1px solid var(--border2);
+  border-radius:12px;
+  padding:1.2rem;
+  display:flex;
+  align-items:center;
+  gap:1.2rem;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.qm-teams{
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:.8rem;
+  align-items:center;
+}
+.qm-team{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:15px;
+}
+.qm-team.right{text-align:right;}
+.qm-sep{font-family:'Anton',sans-serif;color:var(--muted);text-align:center;}
+
+/* Mobile */
+@media(max-width:768px){
+  .admin-main{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .grid-2,.grid-3{grid-template-columns:1fr;}
+  .content{padding:1rem;}
+  .match-row{grid-template-columns:1fr;gap:.6rem;}
+  .match-controls{flex-wrap:wrap;}
+  .qm-teams{grid-template-columns:1fr;gap:.4rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="admin-header">
+  <div class="header-left">
+    <div class="header-logo">⚾ Admin Panel</div>
+    <div class="header-badge">Open Softball 2026 · Valenciennes</div>
+  </div>
+  <div class="status-indicator">
+    <div class="status-dot" id="connDot"></div>
+    <span id="connLabel" style="color:var(--muted);">Connexion…</span>
+  </div>
+</header>
+
+<!-- ═══ MAIN ═══ -->
+<div class="admin-main">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Navigation</div>
+      <div class="nav-item active" onclick="showPanel('panel-scores',this)"><span class="nav-icon">⚡</span>Scores en direct</div>
+      <div class="nav-item" onclick="showPanel('panel-standings',this)"><span class="nav-icon">📊</span>Classements</div>
+      <div class="nav-item" onclick="showPanel('panel-bracket',this)"><span class="nav-icon">🏆</span>Bracket</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Actions rapides</div>
+      <div class="nav-item" onclick="refreshAll()"><span class="nav-icon">🔄</span>Recharger les données</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Infos</div>
+      <div style="padding:.5rem .8rem;font-size:11px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;line-height:1.7;">
+        Toute modification ici est répercutée <strong style="color:var(--cyan);">en temps réel</strong> sur le site public via Supabase Realtime.
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- ═══ PANEL: SCORES ═══ -->
+    <div class="panel active" id="panel-scores">
+      <div class="page-title">Gestion en direct</div>
+      <div class="page-h1">Scores & Statuts</div>
+
+      <div class="day-tabs-row">
+        <button class="day-tab-btn active" onclick="switchDay('sam',this)">🗓 Sam 23/05</button>
+        <button class="day-tab-btn" onclick="switchDay('dim',this)">🗓 Dim 24/05</button>
+        <button class="day-tab-btn" onclick="switchDay('lun',this)">🗓 Lun 25/05</button>
+      </div>
+
+      <div class="loading" id="scores-loading"><div class="spinner"></div>Chargement des données…</div>
+
+      <!-- SAMEDI -->
+      <div id="day-sam" class="match-editor" style="display:none;">
+        <div class="dash-card">
+          <div class="dash-card-head">
+            <div class="dash-card-title">⚾ Samedi 23 mai · Matchs de poules</div>
+          </div>
+          <div class="dash-card-body" style="display:flex;flex-direction:column;gap:12px;">
+
+            <!-- m1 -->
+            <div class="quick-match" id="editor-m1">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M1 · Poule B · 10h00</div>
+                <div class="qm-teams">
+                  <div class="qm-team">Pharaons<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Évry</span></div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m1',0,-1)">−</button>
+                    <input class="inp inp-score" id="m1-ls" value="0" min="0" oninput="markDirty('m1')"/>
+                    <button class="step-btn" onclick="stepScore('m1',0,1)">+</button>
+                  </div>
+                  <div class="qm-sep">—</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m1',1,-1)">−</button>
+                    <input class="inp inp-score" id="m1-rs" value="0" min="0" oninput="markDirty('m1')"/>
+                    <button class="step-btn" onclick="stepScore('m1',1,1)">+</button>
+                  </div>
+                  <div class="qm-team right">Cavigal<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Nice</span></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div class="status-select" id="status-m1">
+                  <button class="status-btn" onclick="setStatus('m1','soon')">À venir</button>
+                  <button class="status-btn" onclick="setStatus('m1','live')">🔴 Live</button>
+                  <button class="status-btn" onclick="setStatus('m1','done')">Terminé</button>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="saveMatch('m1')">💾 Sauvegarder</button>
+              </div>
+            </div>
+
+            <!-- m2 -->
+            <div class="quick-match" id="editor-m2">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M2 · Poule A · 12h15</div>
+                <div class="qm-teams">
+                  <div class="qm-team">Wildcats<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Colombes</span></div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m2',0,-1)">−</button>
+                    <input class="inp inp-score" id="m2-ls" value="0" min="0" oninput="markDirty('m2')"/>
+                    <button class="step-btn" onclick="stepScore('m2',0,1)">+</button>
+                  </div>
+                  <div class="qm-sep">—</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m2',1,-1)">−</button>
+                    <input class="inp inp-score" id="m2-rs" value="0" min="0" oninput="markDirty('m2')"/>
+                    <button class="step-btn" onclick="stepScore('m2',1,1)">+</button>
+                  </div>
+                  <div class="qm-team right">Grizzlys<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Grenoble</span></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div class="status-select" id="status-m2">
+                  <button class="status-btn" onclick="setStatus('m2','soon')">À venir</button>
+                  <button class="status-btn" onclick="setStatus('m2','live')">🔴 Live</button>
+                  <button class="status-btn" onclick="setStatus('m2','done')">Terminé</button>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="saveMatch('m2')">💾 Sauvegarder</button>
+              </div>
+            </div>
+
+            <!-- m3 -->
+            <div class="quick-match" id="editor-m3">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M3 · Poule B · 14h30</div>
+                <div class="qm-teams">
+                  <div class="qm-team">Panthères<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Pessac</span></div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m3',0,-1)">−</button>
+                    <input class="inp inp-score" id="m3-ls" value="0" min="0" oninput="markDirty('m3')"/>
+                    <button class="step-btn" onclick="stepScore('m3',0,1)">+</button>
+                  </div>
+                  <div class="qm-sep">—</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m3',1,-1)">−</button>
+                    <input class="inp inp-score" id="m3-rs" value="0" min="0" oninput="markDirty('m3')"/>
+                    <button class="step-btn" onclick="stepScore('m3',1,1)">+</button>
+                  </div>
+                  <div class="qm-team right">Pharaons<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Évry</span></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div class="status-select" id="status-m3">
+                  <button class="status-btn" onclick="setStatus('m3','soon')">À venir</button>
+                  <button class="status-btn" onclick="setStatus('m3','live')">🔴 Live</button>
+                  <button class="status-btn" onclick="setStatus('m3','done')">Terminé</button>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="saveMatch('m3')">💾 Sauvegarder</button>
+              </div>
+            </div>
+
+            <!-- m4 -->
+            <div class="quick-match" id="editor-m4">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M4 · Poule A · 16h45</div>
+                <div class="qm-teams">
+                  <div class="qm-team">Comanches<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Saint-Raphaël</span></div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m4',0,-1)">−</button>
+                    <input class="inp inp-score" id="m4-ls" value="0" min="0" oninput="markDirty('m4')"/>
+                    <button class="step-btn" onclick="stepScore('m4',0,1)">+</button>
+                  </div>
+                  <div class="qm-sep">—</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m4',1,-1)">−</button>
+                    <input class="inp inp-score" id="m4-rs" value="0" min="0" oninput="markDirty('m4')"/>
+                    <button class="step-btn" onclick="stepScore('m4',1,1)">+</button>
+                  </div>
+                  <div class="qm-team right">Wildcats<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Colombes</span></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div class="status-select" id="status-m4">
+                  <button class="status-btn" onclick="setStatus('m4','soon')">À venir</button>
+                  <button class="status-btn" onclick="setStatus('m4','live')">🔴 Live</button>
+                  <button class="status-btn" onclick="setStatus('m4','done')">Terminé</button>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="saveMatch('m4')">💾 Sauvegarder</button>
+              </div>
+            </div>
+
+            <!-- m5 -->
+            <div class="quick-match" id="editor-m5">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M5 · 19h00</div>
+                <div class="qm-teams">
+                  <div class="qm-team">Cavigal<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Nice</span></div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m5',0,-1)">−</button>
+                    <input class="inp inp-score" id="m5-ls" value="0" min="0" oninput="markDirty('m5')"/>
+                    <button class="step-btn" onclick="stepScore('m5',0,1)">+</button>
+                  </div>
+                  <div class="qm-sep">—</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m5',1,-1)">−</button>
+                    <input class="inp inp-score" id="m5-rs" value="0" min="0" oninput="markDirty('m5')"/>
+                    <button class="step-btn" onclick="stepScore('m5',1,1)">+</button>
+                  </div>
+                  <div class="qm-team right">Wildcats<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Colombes</span></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div class="status-select" id="status-m5">
+                  <button class="status-btn" onclick="setStatus('m5','soon')">À venir</button>
+                  <button class="status-btn" onclick="setStatus('m5','live')">🔴 Live</button>
+                  <button class="status-btn" onclick="setStatus('m5','done')">Terminé</button>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="saveMatch('m5')">💾 Sauvegarder</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- DIMANCHE -->
+      <div id="day-dim" class="match-editor" style="display:none;">
+        <div class="dash-card">
+          <div class="dash-card-head">
+            <div class="dash-card-title">⚡ Dimanche 24 mai · Phase éliminatoire</div>
+          </div>
+          <div class="dash-card-body" style="display:flex;flex-direction:column;gap:12px;">
+
+            <!-- m6 -->
+            <div class="quick-match" id="editor-m6">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M6 · Poule A · 10h00</div>
+                <div class="qm-teams">
+                  <div class="qm-team">Grizzlys<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Grenoble</span></div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m6',0,-1)">−</button>
+                    <input class="inp inp-score" id="m6-ls" value="0" min="0" oninput="markDirty('m6')"/>
+                    <button class="step-btn" onclick="stepScore('m6',0,1)">+</button>
+                  </div>
+                  <div class="qm-sep">—</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m6',1,-1)">−</button>
+                    <input class="inp inp-score" id="m6-rs" value="0" min="0" oninput="markDirty('m6')"/>
+                    <button class="step-btn" onclick="stepScore('m6',1,1)">+</button>
+                  </div>
+                  <div class="qm-team right">Comanches<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Saint-Raphaël</span></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div class="status-select" id="status-m6">
+                  <button class="status-btn" onclick="setStatus('m6','soon')">À venir</button>
+                  <button class="status-btn" onclick="setStatus('m6','live')">🔴 Live</button>
+                  <button class="status-btn" onclick="setStatus('m6','done')">Terminé</button>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="saveMatch('m6')">💾 Sauvegarder</button>
+              </div>
+            </div>
+
+            <!-- m7 -->
+            <div class="quick-match" id="editor-m7">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M7 · Quart de finale 2 · 12h15</div>
+                <div class="qm-teams">
+                  <div class="qm-team">2e Poule B</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m7',0,-1)">−</button>
+                    <input class="inp inp-score" id="m7-ls" value="0" min="0" oninput="markDirty('m7')"/>
+                    <button class="step-btn" onclick="stepScore('m7',0,1)">+</button>
+                  </div>
+                  <div class="qm-sep">—</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m7',1,-1)">−</button>
+                    <input class="inp inp-score" id="m7-rs" value="0" min="0" oninput="markDirty('m7')"/>
+                    <button class="step-btn" onclick="stepScore('m7',1,1)">+</button>
+                  </div>
+                  <div class="qm-team right">3e Poule A</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div class="status-select" id="status-m7">
+                  <button class="status-btn" onclick="setStatus('m7','soon')">À venir</button>
+                  <button class="status-btn" onclick="setStatus('m7','live')">🔴 Live</button>
+                  <button class="status-btn" onclick="setStatus('m7','done')">Terminé</button>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="saveMatch('m7')">💾 Sauvegarder</button>
+              </div>
+            </div>
+
+            <!-- m8 -->
+            <div class="quick-match" id="editor-m8">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M8 · Quart de finale 1 · 14h30</div>
+                <div class="qm-teams">
+                  <div class="qm-team">2e Poule A</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m8',0,-1)">−</button>
+                    <input class="inp inp-score" id="m8-ls" value="0" min="0" oninput="markDirty('m8')"/>
+                    <button class="step-btn" onclick="stepScore('m8',0,1)">+</button>
+                  </div>
+                  <div class="qm-sep">—</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m8',1,-1)">−</button>
+                    <input class="inp inp-score" id="m8-rs" value="0" min="0" oninput="markDirty('m8')"/>
+                    <button class="step-btn" onclick="stepScore('m8',1,1)">+</button>
+                  </div>
+                  <div class="qm-team right">3e Poule B</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div class="status-select" id="status-m8">
+                  <button class="status-btn" onclick="setStatus('m8','soon')">À venir</button>
+                  <button class="status-btn" onclick="setStatus('m8','live')">🔴 Live</button>
+                  <button class="status-btn" onclick="setStatus('m8','done')">Terminé</button>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="saveMatch('m8')">💾 Sauvegarder</button>
+              </div>
+            </div>
+
+            <!-- m9 -->
+            <div class="quick-match" id="editor-m9">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M9 · Demi-finale 1 · 16h45</div>
+                <div class="qm-teams">
+                  <div class="qm-team">1er Poule A</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m9',0,-1)">−</button>
+                    <input class="inp inp-score" id="m9-ls" value="0" min="0" oninput="markDirty('m9')"/>
+                    <button class="step-btn" onclick="stepScore('m9',0,1)">+</button>
+                  </div>
+                  <div class="qm-sep">—</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m9',1,-1)">−</button>
+                    <input class="inp inp-score" id="m9-rs" value="0" min="0" oninput="markDirty('m9')"/>
+                    <button class="step-btn" onclick="stepScore('m9',1,1)">+</button>
+                  </div>
+                  <div class="qm-team right">Gagnant QF2</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div class="status-select" id="status-m9">
+                  <button class="status-btn" onclick="setStatus('m9','soon')">À venir</button>
+                  <button class="status-btn" onclick="setStatus('m9','live')">🔴 Live</button>
+                  <button class="status-btn" onclick="setStatus('m9','done')">Terminé</button>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="saveMatch('m9')">💾 Sauvegarder</button>
+              </div>
+            </div>
+
+            <!-- m10 -->
+            <div class="quick-match" id="editor-m10">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M10 · Demi-finale 2 · 19h00</div>
+                <div class="qm-teams">
+                  <div class="qm-team">1er Poule B</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m10',0,-1)">−</button>
+                    <input class="inp inp-score" id="m10-ls" value="0" min="0" oninput="markDirty('m10')"/>
+                    <button class="step-btn" onclick="stepScore('m10',0,1)">+</button>
+                  </div>
+                  <div class="qm-sep">—</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m10',1,-1)">−</button>
+                    <input class="inp inp-score" id="m10-rs" value="0" min="0" oninput="markDirty('m10')"/>
+                    <button class="step-btn" onclick="stepScore('m10',1,1)">+</button>
+                  </div>
+                  <div class="qm-team right">Gagnant QF1</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div class="status-select" id="status-m10">
+                  <button class="status-btn" onclick="setStatus('m10','soon')">À venir</button>
+                  <button class="status-btn" onclick="setStatus('m10','live')">🔴 Live</button>
+                  <button class="status-btn" onclick="setStatus('m10','done')">Terminé</button>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="saveMatch('m10')">💾 Sauvegarder</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- LUNDI -->
+      <div id="day-lun" class="match-editor" style="display:none;">
+        <div class="dash-card">
+          <div class="dash-card-head">
+            <div class="dash-card-title">🏆 Lundi 25 mai · Finales</div>
+          </div>
+          <div class="dash-card-body" style="display:flex;flex-direction:column;gap:12px;">
+
+            <!-- m11 -->
+            <div class="quick-match" id="editor-m11">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M11 · Petite finale · 10h30</div>
+                <div class="qm-teams">
+                  <div class="qm-team">Perdant DF1</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m11',0,-1)">−</button>
+                    <input class="inp inp-score" id="m11-ls" value="0" min="0" oninput="markDirty('m11')"/>
+                    <button class="step-btn" onclick="stepScore('m11',0,1)">+</button>
+                  </div>
+                  <div class="qm-sep">—</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m11',1,-1)">−</button>
+                    <input class="inp inp-score" id="m11-rs" value="0" min="0" oninput="markDirty('m11')"/>
+                    <button class="step-btn" onclick="stepScore('m11',1,1)">+</button>
+                  </div>
+                  <div class="qm-team right">Perdant DF2</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div class="status-select" id="status-m11">
+                  <button class="status-btn" onclick="setStatus('m11','soon')">À venir</button>
+                  <button class="status-btn" onclick="setStatus('m11','live')">🔴 Live</button>
+                  <button class="status-btn" onclick="setStatus('m11','done')">Terminé</button>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="saveMatch('m11')">💾 Sauvegarder</button>
+              </div>
+            </div>
+
+            <!-- m12 -->
+            <div class="quick-match" id="editor-m12" style="background:linear-gradient(135deg,rgba(245,201,58,0.1),rgba(245,201,58,0.04));border-color:rgba(245,201,58,0.35);">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">M12 · 🏆 Grande Finale · 14h00</div>
+                <div class="qm-teams">
+                  <div class="qm-team" style="color:var(--gold);">Vainqueur DF1</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m12',0,-1)">−</button>
+                    <input class="inp inp-score" id="m12-ls" value="0" min="0" oninput="markDirty('m12')" style="color:var(--gold);border-color:rgba(245,201,58,0.4);"/>
+                    <button class="step-btn" onclick="stepScore('m12',0,1)">+</button>
+                  </div>
+                  <div class="qm-sep" style="color:var(--gold);">—</div>
+                  <div class="score-stepper">
+                    <button class="step-btn" onclick="stepScore('m12',1,-1)">−</button>
+                    <input class="inp inp-score" id="m12-rs" value="0" min="0" oninput="markDirty('m12')" style="color:var(--gold);border-color:rgba(245,201,58,0.4);"/>
+                    <button class="step-btn" onclick="stepScore('m12',1,1)">+</button>
+                  </div>
+                  <div class="qm-team right" style="color:var(--gold);">Vainqueur DF2</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div class="status-select" id="status-m12">
+                  <button class="status-btn" onclick="setStatus('m12','soon')">À venir</button>
+                  <button class="status-btn" onclick="setStatus('m12','live')">🔴 Live</button>
+                  <button class="status-btn" onclick="setStatus('m12','done')">Terminé</button>
+                </div>
+                <button class="btn btn-sm" style="background:rgba(245,201,58,0.2);color:var(--gold);border:1px solid rgba(245,201,58,0.4);" onclick="saveMatch('m12')">💾 Sauvegarder</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /panel-scores -->
+
+    <!-- ═══ PANEL: STANDINGS ═══ -->
+    <div class="panel" id="panel-standings">
+      <div class="page-title">Classements des poules</div>
+      <div class="page-h1">Standings</div>
+
+      <div class="loading" id="standings-loading"><div class="spinner"></div>Chargement…</div>
+      <div id="standings-content" style="display:none;">
+        <div class="grid-2">
+
+          <!-- POULE A -->
+          <div class="dash-card">
+            <div class="dash-card-head">
+              <div class="dash-card-title" style="color:var(--blue2);">🔵 Poule A</div>
+              <button class="btn btn-cyan btn-sm" onclick="saveStandings('A')">💾 Sauvegarder Poule A</button>
+            </div>
+            <div class="dash-card-body" style="padding:0;">
+              <table class="standing-table">
+                <thead>
+                  <tr><th>#</th><th>Équipe</th><th>J</th><th>V</th><th>D</th><th>Ra</th><th>Pts</th></tr>
+                </thead>
+                <tbody id="tbody-A">
+                  <tr>
+                    <td><input value="1" id="A-wildcats-rank" class="rank-inp" style="width:42px;"/></td>
+                    <td>Wildcats <span style="font-size:11px;color:var(--muted);">Colombes</span></td>
+                    <td><input value="0" id="A-wildcats-j"/></td>
+                    <td><input value="0" id="A-wildcats-v"/></td>
+                    <td><input value="0" id="A-wildcats-d"/></td>
+                    <td><input value="0" id="A-wildcats-ra"/></td>
+                    <td><input value="0" id="A-wildcats-pts"/></td>
+                  </tr>
+                  <tr>
+                    <td><input value="2" id="A-comanches-rank" class="rank-inp" style="width:42px;"/></td>
+                    <td>Comanches <span style="font-size:11px;color:var(--muted);">Saint-Raphaël</span></td>
+                    <td><input value="0" id="A-comanches-j"/></td>
+                    <td><input value="0" id="A-comanches-v"/></td>
+                    <td><input value="0" id="A-comanches-d"/></td>
+                    <td><input value="0" id="A-comanches-ra"/></td>
+                    <td><input value="0" id="A-comanches-pts"/></td>
+                  </tr>
+                  <tr>
+                    <td><input value="3" id="A-grizzlys-rank" class="rank-inp" style="width:42px;"/></td>
+                    <td>Grizzlys <span style="font-size:11px;color:var(--muted);">Grenoble</span></td>
+                    <td><input value="0" id="A-grizzlys-j"/></td>
+                    <td><input value="0" id="A-grizzlys-v"/></td>
+                    <td><input value="0" id="A-grizzlys-d"/></td>
+                    <td><input value="0" id="A-grizzlys-ra"/></td>
+                    <td><input value="0" id="A-grizzlys-pts"/></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- POULE B -->
+          <div class="dash-card">
+            <div class="dash-card-head">
+              <div class="dash-card-title" style="color:var(--cyan);">🩵 Poule B</div>
+              <button class="btn btn-cyan btn-sm" onclick="saveStandings('B')">💾 Sauvegarder Poule B</button>
+            </div>
+            <div class="dash-card-body" style="padding:0;">
+              <table class="standing-table">
+                <thead>
+                  <tr><th>#</th><th>Équipe</th><th>J</th><th>V</th><th>D</th><th>Ra</th><th>Pts</th></tr>
+                </thead>
+                <tbody id="tbody-B">
+                  <tr>
+                    <td><input value="1" id="B-cavigal-rank" class="rank-inp" style="width:42px;"/></td>
+                    <td>Cavigal <span style="font-size:11px;color:var(--muted);">Nice</span></td>
+                    <td><input value="0" id="B-cavigal-j"/></td>
+                    <td><input value="0" id="B-cavigal-v"/></td>
+                    <td><input value="0" id="B-cavigal-d"/></td>
+                    <td><input value="0" id="B-cavigal-ra"/></td>
+                    <td><input value="0" id="B-cavigal-pts"/></td>
+                  </tr>
+                  <tr>
+                    <td><input value="2" id="B-pantheres-rank" class="rank-inp" style="width:42px;"/></td>
+                    <td>Panthères <span style="font-size:11px;color:var(--muted);">Pessac</span></td>
+                    <td><input value="0" id="B-pantheres-j"/></td>
+                    <td><input value="0" id="B-pantheres-v"/></td>
+                    <td><input value="0" id="B-pantheres-d"/></td>
+                    <td><input value="0" id="B-pantheres-ra"/></td>
+                    <td><input value="0" id="B-pantheres-pts"/></td>
+                  </tr>
+                  <tr>
+                    <td><input value="3" id="B-pharaons-rank" class="rank-inp" style="width:42px;"/></td>
+                    <td>Pharaons <span style="font-size:11px;color:var(--muted);">Évry-Courcouronnes</span></td>
+                    <td><input value="0" id="B-pharaons-j"/></td>
+                    <td><input value="0" id="B-pharaons-v"/></td>
+                    <td><input value="0" id="B-pharaons-d"/></td>
+                    <td><input value="0" id="B-pharaons-ra"/></td>
+                    <td><input value="0" id="B-pharaons-pts"/></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.2);border-radius:10px;padding:1rem 1.2rem;font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);line-height:1.7;">
+          <strong style="color:var(--cyan);">💡 Astuce :</strong> Modifiez les cellules directement puis cliquez sur <strong>Sauvegarder</strong> pour envoyer les données à Supabase. Le site public se met à jour instantanément via Realtime.<br/>
+          <strong>Ra</strong> = Différentiel de runs (peut être négatif). <strong>Pts</strong> = Points (1 victoire = 1 pt).
+        </div>
+      </div>
+    </div><!-- /panel-standings -->
+
+    <!-- ═══ PANEL: BRACKET ═══ -->
+    <div class="panel" id="panel-bracket">
+      <div class="page-title">Phase éliminatoire</div>
+      <div class="page-h1">Bracket</div>
+      <div style="background:rgba(245,201,58,0.06);border:1px solid rgba(245,201,58,0.25);border-radius:10px;padding:1rem 1.2rem;font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);margin-bottom:1.5rem;line-height:1.7;">
+        <strong style="color:var(--gold);">ℹ️ Bracket automatique :</strong> Le bracket du site est statique (HTML). Pour le mettre à jour, modifiez directement les matchs M7–M12 dans l'onglet <strong style="color:var(--cyan);">Scores en direct</strong> — les scores s'afficheront en temps réel. La structure du bracket (noms des équipes qualifiées) peut être mise à jour via les <strong>scores des matchs de poules</strong> + classements.
+      </div>
+
+      <div class="dash-card">
+        <div class="dash-card-head">
+          <div class="dash-card-title">🏆 Vue du bracket — données actuelles</div>
+          <button class="btn btn-cyan btn-sm" onclick="refreshBracket()">🔄 Rafraîchir</button>
+        </div>
+        <div class="dash-card-body">
+          <div id="bracket-view" class="loading"><div class="spinner"></div>Chargement…</div>
+        </div>
+      </div>
+    </div><!-- /panel-bracket -->
+
+  </main>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+// SUPABASE SETUP
+// ══════════════════════════════════════════════
+const SUPA_URL = 'https://qiosvlxidqwcvxqvheie.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpb3N2bHhpZHF3Y3Z4cXZoZWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwNjIwMDMsImV4cCI6MjA5MzYzODAwM30.lUHvK8QEBP2nYWqaBstiFEhmE_gxGq2YKJJ4peIovvE';
+const db = supabase.createClient(SUPA_URL, SUPA_KEY, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+    detectSessionInUrl: false
+  },
+  global: {
+    fetch: (url, options = {}) => {
+      const safeHeaders = options.headers
+        ? Object.fromEntries(new Headers(options.headers).entries())
+        : {};
+      return fetch(url, { ...options, headers: safeHeaders });
+    }
+  }
+});
+
+// ── State ──
+const matchState = {};     // { m1: { left_score, right_score, status } }
+const dirtyMatches = {};   // which matches have unsaved edits
+
+// ══════════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════════
+function showPanel(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(el) el.classList.add('active');
+}
+
+function switchDay(day, el) {
+  document.querySelectorAll('[id^="day-"]').forEach(d => d.style.display='none');
+  document.getElementById('day-'+day).style.display='';
+  document.querySelectorAll('.day-tab-btn').forEach(b => b.classList.remove('active'));
+  if(el) el.classList.add('active');
+}
+
+// ══════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════
+function toast(msg, type='ok') {
+  const div = document.createElement('div');
+  div.className = 'toast-msg' + (type==='error'?' error':'');
+  div.innerHTML = (type==='ok'?'✅':'❌') + ' ' + msg;
+  document.getElementById('toast').appendChild(div);
+  setTimeout(() => div.remove(), 3500);
+}
+
+// ══════════════════════════════════════════════
+// CONNECTION STATUS
+// ══════════════════════════════════════════════
+function setConnected(ok) {
+  const dot = document.getElementById('connDot');
+  const lbl = document.getElementById('connLabel');
+  dot.className = 'status-dot' + (ok?'':' offline');
+  lbl.textContent = ok ? 'Connecté · Realtime actif' : 'Hors ligne';
+  lbl.style.color = ok ? 'var(--green)' : 'var(--red)';
+}
+
+// ══════════════════════════════════════════════
+// SCORES: LOAD + APPLY
+// ══════════════════════════════════════════════
+async function loadScores() {
+  try {
+    const { data, error } = await db.from('matches').select('*');
+    if(error) throw error;
+    document.getElementById('scores-loading').style.display='none';
+    document.getElementById('day-sam').style.display='';
+    setConnected(true);
+    (data || []).forEach(row => {
+      matchState[row.id] = { ...row };
+      applyMatchToEditor(row);
+    });
+  } catch(e) {
+    setConnected(false);
+    document.getElementById('scores-loading').innerHTML = '❌ Erreur de connexion Supabase : ' + e.message;
+  }
+}
+
+function applyMatchToEditor(row) {
+  const lsEl = document.getElementById(row.id+'-ls');
+  const rsEl = document.getElementById(row.id+'-rs');
+  if(lsEl) lsEl.value = row.left_score ?? 0;
+  if(rsEl) rsEl.value = row.right_score ?? 0;
+  setStatus(row.id, row.status || 'soon', false); // false = don't mark dirty
+  // Highlight if live
+  const editor = document.getElementById('editor-'+row.id);
+  if(editor) {
+    editor.style.borderColor = row.status==='live' ? 'rgba(224,43,43,0.5)' : '';
+  }
+}
+
+function markDirty(matchId) {
+  dirtyMatches[matchId] = true;
+}
+
+// ══════════════════════════════════════════════
+// SCORES: STEPPER
+// ══════════════════════════════════════════════
+function stepScore(matchId, side, delta) {
+  const key = side===0 ? matchId+'-ls' : matchId+'-rs';
+  const el = document.getElementById(key);
+  if(!el) return;
+  let val = parseInt(el.value)||0;
+  val = Math.max(0, val + delta);
+  el.value = val;
+  markDirty(matchId);
+}
+
+// ══════════════════════════════════════════════
+// STATUS BUTTON
+// ══════════════════════════════════════════════
+const STATUS_CLASSES = { soon:'active-soon', live:'active-live', done:'active-done' };
+
+function setStatus(matchId, status, dirty=true) {
+  if(!matchState[matchId]) matchState[matchId] = {};
+  matchState[matchId].status = status;
+  const container = document.getElementById('status-'+matchId);
+  if(!container) return;
+  container.querySelectorAll('.status-btn').forEach((btn,i) => {
+    btn.classList.remove('active-soon','active-live','active-done');
+    const s = ['soon','live','done'][i];
+    if(s===status) btn.classList.add(STATUS_CLASSES[s]);
+  });
+  // Update editor border
+  const editor = document.getElementById('editor-'+matchId);
+  if(editor) {
+    editor.style.borderColor = status==='live' ? 'rgba(224,43,43,0.5)' :
+                               status==='done' ? 'rgba(0,212,255,0.25)' : '';
+  }
+  if(dirty) markDirty(matchId);
+}
+
+// ══════════════════════════════════════════════
+// SCORES: SAVE
+// ══════════════════════════════════════════════
+async function saveMatch(matchId) {
+  const lsEl = document.getElementById(matchId+'-ls');
+  const rsEl = document.getElementById(matchId+'-rs');
+  const left_score  = parseInt(lsEl?.value) || 0;
+  const right_score = parseInt(rsEl?.value) || 0;
+  const status = matchState[matchId]?.status || 'soon';
+
+  try {
+    const { error } = await db.from('matches').upsert({
+      id: matchId,
+      left_score,
+      right_score,
+      status
+    });
+    if(error) throw error;
+    delete dirtyMatches[matchId];
+    if(status === 'done' && MATCH_TEAM_MAP[matchId]) {
+      await recomputeStandingsFromFinishedMatches();
+    }
+    toast(`Match ${matchId.toUpperCase()} sauvegardé — ${left_score}–${right_score} · ${status}`);
+  } catch(e) {
+    toast('Erreur : ' + e.message, 'error');
+  }
+}
+
+
+// ══════════════════════════════════════════════
+// AUTO STANDINGS FROM FINISHED POOL MATCH
+// ══════════════════════════════════════════════
+const MATCH_TEAM_MAP = {
+  m1:{pool:'B', left:'pharaons', right:'cavigal'},
+  m2:{pool:'A', left:'wildcats', right:'grizzlys'},
+  m3:{pool:'B', left:'pantheres', right:'pharaons'},
+  m4:{pool:'A', left:'comanches', right:'wildcats'},
+  m5:{pool:'B', left:'cavigal', right:'wildcats'} // inter-pool exhibition? ignored below if pools mismatch
+};
+
+async function recomputeStandingsFromFinishedMatches() {
+  try {
+    const { data: matches } = await db.from('matches').select('*');
+    if(!matches) return;
+
+    const standings = {
+      A:{
+        wildcats:{pool:'A',team:'wildcats',j:0,v:0,d:0,ra:0,pts:0},
+        comanches:{pool:'A',team:'comanches',j:0,v:0,d:0,ra:0,pts:0},
+        grizzlys:{pool:'A',team:'grizzlys',j:0,v:0,d:0,ra:0,pts:0}
+      },
+      B:{
+        cavigal:{pool:'B',team:'cavigal',j:0,v:0,d:0,ra:0,pts:0},
+        pantheres:{pool:'B',team:'pantheres',j:0,v:0,d:0,ra:0,pts:0},
+        pharaons:{pool:'B',team:'pharaons',j:0,v:0,d:0,ra:0,pts:0}
+      }
+    };
+
+    (matches || []).forEach(m => {
+      const cfg = MATCH_TEAM_MAP[m.id];
+      if(!cfg || m.status !== 'done') return;
+      const { pool, left, right } = cfg;
+      if(!standings[pool][left] || !standings[pool][right]) return;
+
+      const ls = parseInt(m.left_score)||0;
+      const rs = parseInt(m.right_score)||0;
+
+      standings[pool][left].j++;
+      standings[pool][right].j++;
+      standings[pool][left].ra += (ls-rs);
+      standings[pool][right].ra += (rs-ls);
+
+      if(ls > rs){
+        standings[pool][left].v++;
+        standings[pool][left].pts++;
+        standings[pool][right].d++;
+      } else if(rs > ls){
+        standings[pool][right].v++;
+        standings[pool][right].pts++;
+        standings[pool][left].d++;
+      }
+    });
+
+    const rows = [];
+    ['A','B'].forEach(pool => {
+      const arr = Object.values(standings[pool]).sort((a,b)=>
+        b.pts - a.pts || b.ra - a.ra || b.v - a.v || a.team.localeCompare(b.team)
+      );
+      arr.forEach((t,i)=> {
+        t.rank = i+1;
+        rows.push(t);
+      });
+    });
+
+    const { error } = await db.from('standings').upsert(rows, { onConflict:'pool,team' });
+    if(error) throw error;
+
+    await loadStandings();
+    toast('Classements recalculés automatiquement ✓');
+  } catch(e) {
+    toast('Auto standings erreur : ' + e.message, 'error');
+  }
+}
+
+
+// ══════════════════════════════════════════════
+// STANDINGS: LOAD
+// ══════════════════════════════════════════════
+async function loadStandings() {
+  try {
+    const { data, error } = await db.from('standings').select('*');
+    if(error) throw error;
+    document.getElementById('standings-loading').style.display = 'none';
+    document.getElementById('standings-content').style.display = '';
+    (data || []).forEach(row => {
+      const prefix = row.pool + '-' + row.team + '-';
+      const set = (field, val) => {
+        const el = document.getElementById(prefix+field);
+        if(el) el.value = val ?? 0;
+      };
+      set('rank', row.rank);
+      set('j', row.j);
+      set('v', row.v);
+      set('d', row.d);
+      set('ra', row.ra);
+      set('pts', row.pts);
+    });
+  } catch(e) {
+    document.getElementById('standings-loading').innerHTML = '❌ Erreur : ' + e.message;
+  }
+}
+
+async function saveStandings(pool) {
+  const teams = pool==='A'
+    ? ['wildcats','comanches','grizzlys']
+    : ['cavigal','pantheres','pharaons'];
+
+  const rows = teams.map(team => {
+    const g = id => parseInt(document.getElementById(pool+'-'+team+'-'+id)?.value)||0;
+    return {
+      pool,
+      team,
+      rank: g('rank'),
+      j:    g('j'),
+      v:    g('v'),
+      d:    g('d'),
+      ra:   g('ra'),
+      pts:  g('pts')
+    };
+  });
+
+  try {
+    const { error } = await db.from('standings').upsert(rows, { onConflict: 'pool,team' });
+    if(error) throw error;
+    toast(`Classement Poule ${pool} mis à jour ✓`);
+  } catch(e) {
+    toast('Erreur : ' + e.message, 'error');
+  }
+}
+
+// ══════════════════════════════════════════════
+// BRACKET VIEW
+// ══════════════════════════════════════════════
+async function refreshBracket() {
+  const el = document.getElementById('bracket-view');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement…</div>';
+  try {
+    const [{ data: matches }, { data: standings }] = await Promise.all([
+      db.from('matches').select('*'),
+      db.from('standings').select('*')
+    ]);
+
+    const matchMap = {};
+    (matches||[]).forEach(m => matchMap[m.id] = m);
+
+    const standMap = {};
+    (standings||[]).forEach(s => { if(!standMap[s.pool]) standMap[s.pool]=[]; standMap[s.pool].push(s); });
+    ['A','B'].forEach(p => { if(standMap[p]) standMap[p].sort((a,b)=>a.rank-b.rank); });
+
+    const teamName = (pool, rank) => {
+      const t = (standMap[pool]||[]).find(s=>s.rank===rank);
+      return t ? t.team.charAt(0).toUpperCase()+t.team.slice(1) : `${rank}e Poule ${pool}`;
+    };
+
+    const mScore = (id) => {
+      const m = matchMap[id];
+      if(!m) return '- / -';
+      return `${m.left_score ?? 0} – ${m.right_score ?? 0}`;
+    };
+    const mStatus = (id) => matchMap[id]?.status || 'soon';
+
+    const statusBadge = s => {
+      if(s==='live') return '<span style="color:#FF6B6B;font-size:11px;">🔴 LIVE</span>';
+      if(s==='done') return '<span style="color:var(--cyan);font-size:11px;">✅ Terminé</span>';
+      return '<span style="color:var(--muted);font-size:11px;">⏳ À venir</span>';
+    };
+
+    el.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;overflow-x:auto;">
+        <!-- QFs -->
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--cyan);margin-bottom:.8rem;text-transform:uppercase;">Quarts · Dim.</div>
+          <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:.8rem;margin-bottom:.8rem;">
+            <div style="font-size:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;margin-bottom:.4rem;">QF2 · 12h15 · ${statusBadge(mStatus('m7'))}</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">${teamName('B',2)} vs ${teamName('A',3)}</div>
+            <div style="font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--white);">${mScore('m7')}</div>
+          </div>
+          <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:.8rem;">
+            <div style="font-size:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;margin-bottom:.4rem;">QF1 · 14h30 · ${statusBadge(mStatus('m8'))}</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">${teamName('A',2)} vs ${teamName('B',3)}</div>
+            <div style="font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--white);">${mScore('m8')}</div>
+          </div>
+        </div>
+        <!-- Demis -->
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--blue2);margin-bottom:.8rem;text-transform:uppercase;">Demies · Dim.</div>
+          <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:.8rem;margin-bottom:.8rem;">
+            <div style="font-size:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;margin-bottom:.4rem;">DF1 · 16h45 · ${statusBadge(mStatus('m9'))}</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">${teamName('A',1)} vs Gag. QF2</div>
+            <div style="font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--white);">${mScore('m9')}</div>
+          </div>
+          <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:.8rem;">
+            <div style="font-size:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;margin-bottom:.4rem;">DF2 · 19h00 · ${statusBadge(mStatus('m10'))}</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">${teamName('B',1)} vs Gag. QF1</div>
+            <div style="font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--white);">${mScore('m10')}</div>
+          </div>
+        </div>
+        <!-- Finales -->
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--gold);margin-bottom:.8rem;text-transform:uppercase;">Finales · Lun.</div>
+          <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:.8rem;margin-bottom:.8rem;">
+            <div style="font-size:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;margin-bottom:.4rem;">Petite finale · 10h30 · ${statusBadge(mStatus('m11'))}</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">Perd. DF1 vs Perd. DF2</div>
+            <div style="font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--white);">${mScore('m11')}</div>
+          </div>
+          <div style="background:linear-gradient(135deg,rgba(245,201,58,0.1),rgba(245,201,58,0.04));border:1px solid rgba(245,201,58,0.4);border-radius:8px;padding:.8rem;">
+            <div style="font-size:10px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:.4rem;">🏆 GRANDE FINALE · 14h00 · ${statusBadge(mStatus('m12'))}</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;color:var(--gold);">Vaincq. DF1 vs Vaincq. DF2</div>
+            <div style="font-family:'Anton',sans-serif;font-size:1.5rem;color:var(--gold);">${mScore('m12')}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  } catch(e) {
+    el.innerHTML = '❌ Erreur : ' + e.message;
+  }
+}
+
+// ══════════════════════════════════════════════
+// REALTIME
+// ══════════════════════════════════════════════
+function subscribeRealtime() {
+  db.channel('admin-live')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, payload => {
+      if(payload.new) {
+        matchState[payload.new.id] = { ...matchState[payload.new.id], ...payload.new };
+        // Only sync if not dirty (local edits take priority)
+        if(!dirtyMatches[payload.new.id]) {
+          applyMatchToEditor(payload.new);
+        }
+      }
+    })
+    .subscribe(status => {
+      setConnected(status === 'SUBSCRIBED');
+    });
+}
+
+// ══════════════════════════════════════════════
+// REFRESH ALL
+// ══════════════════════════════════════════════
+async function refreshAll() {
+  await loadScores();
+  await loadStandings();
+  await refreshBracket();
+  toast('Données rechargées depuis Supabase');
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  loadScores();
+  loadStandings();
+  refreshBracket();
+  subscribeRealtime();
+});
+</script>
+</body>
+</html>
