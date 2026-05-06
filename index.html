@@ -2894,6 +2894,21 @@ function applyMatch(row) {
   }
 }
 
+// ── Sort a standings tbody by rank (ascending) ───────────────
+function sortStandingsTable(pool) {
+  const anchor = document.querySelector('.classif-table tbody [data-pool="' + pool + '"]');
+  if (!anchor) return;
+  const tbody = anchor.closest('tbody');
+  if (!tbody) return;
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  rows.sort((a, b) => {
+    const ra = parseInt(a.querySelector('.rk')?.textContent) || 99;
+    const rb = parseInt(b.querySelector('.rk')?.textContent) || 99;
+    return ra - rb;
+  });
+  rows.forEach(r => tbody.appendChild(r));
+}
+
 // ── Apply standings row ──────────────────────────────────────
 function applyStanding(row) {
   const tr = document.querySelector('[data-pool="' + row.pool + '"][data-team="' + row.team + '"]');
@@ -2909,6 +2924,7 @@ function applyStanding(row) {
   cells[2].textContent = row.j  ?? 0;
   cells[3].textContent = row.v  ?? 0;
   cells[4].textContent = row.d  ?? 0;
+  sortStandingsTable(row.pool);
 }
 
 // ── Initial load ─────────────────────────────────────────────
@@ -2957,7 +2973,14 @@ dashBtn.style.top='10px';
 dashBtn.style.right='10px';
 dashBtn.style.zIndex='999';
 dashBtn.style.opacity='0.4';
-dashBtn.onclick=()=>window.location.href='/dashboard.html';
+dashBtn.onclick=()=>{
+  const code = prompt('Code d\'accès :');
+  if (code === '0210') {
+    window.open('/dashboard.html', '_blank');
+  } else if (code !== null) {
+    alert('Code incorrect.');
+  }
+};
 document.body.appendChild(dashBtn);
 
 // --- AUTO STANDINGS UPDATE ---
