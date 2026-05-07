@@ -1591,11 +1591,11 @@ footer{
 <div class="cd-block"><span class="cd-num" id="cd-s">--</span><span class="cd-lbl">Sec</span></div>
 </div>
 <div style="display:flex;gap:10px;margin-top:1.4rem;width:100%;max-width:360px;">
-<button onclick="showSection('sec-infos',document.querySelectorAll('.bot-tab')[5])" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;background:rgba(0,212,255,0.1);border:1.5px solid rgba(0,212,255,0.4);border-radius:12px;padding:.85rem .6rem;cursor:pointer;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.3;transition:background .2s,border-color .2s;">
-<span style="font-size:1.4rem;">📍</span>Comment y accéder ?
+<button onclick="showSection('sec-infos',document.querySelectorAll('.bot-tab')[5])" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:rgba(0,212,255,0.1);border:1.5px solid rgba(0,212,255,0.4);border-radius:12px;padding:.85rem .6rem;cursor:pointer;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.3;transition:background .2s,border-color .2s;">
+<div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:2rem;">📍</div>Comment y accéder ?
 </button>
-<a href="https://www.youtube.com/@viperes_va" target="_blank" rel="noopener" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;background:rgba(224,43,43,0.12);border:1.5px solid rgba(224,43,43,0.4);border-radius:12px;padding:.85rem .6rem;text-decoration:none;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.3;transition:background .2s,border-color .2s;">
-<img src="https://i.goopics.net/ls0yxs.png" alt="Vipères TV" style="width:48px;height:48px;object-fit:contain;"/>Comment regarder les matchs ?
+<a href="https://www.youtube.com/@viperes_va" target="_blank" rel="noopener" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:rgba(224,43,43,0.12);border:1.5px solid rgba(224,43,43,0.4);border-radius:12px;padding:.85rem .6rem;text-decoration:none;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.3;transition:background .2s,border-color .2s;">
+<div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;"><img src="https://i.goopics.net/ls0yxs.png" alt="Vipères TV" style="width:48px;height:48px;object-fit:contain;"/></div>Comment regarder les matchs ?
 </a>
 </div>
 </div>
@@ -1751,8 +1751,8 @@ footer{
 <div class="home-qi-item">
 <span class="home-qi-icon">📍</span>
 <div>
-<div class="home-qi-title">Lieu</div>
-<div class="home-qi-val">114 rue du Vert Gazon, Valenciennes</div>
+<div class="home-qi-title">Accès</div>
+<div class="home-qi-val">Parking ésad · 132 faubourg de Cambrai</div>
 </div>
 </div>
 <div class="home-qi-item">
@@ -2563,26 +2563,156 @@ footer{
 </div>
 <!-- Classement -->
 <div id="r-class" style="display:none;">
-<div class="pool-label">Poule A</div>
-<table class="classif-table">
-<colgroup><col class="col-rk"/><col class="col-team"/><col class="col-num"/><col class="col-num"/><col class="col-num"/></colgroup>
-<thead><tr><th>#</th><th>Équipe</th><th>J</th><th>W</th><th>L</th></tr></thead>
-<tbody>
-<tr data-pool="A" data-team="wildcats"><td><span class="rk top">1</span></td><td>Colombes Wildcats</td><td>0</td><td>0</td><td>0</td></tr>
-<tr data-pool="A" data-team="comanches"><td><span class="rk">2</span></td><td>Saint-Raphaël Comanches</td><td>0</td><td>0</td><td>0</td></tr>
-<tr data-pool="A" data-team="grizzlys"><td><span class="rk">3</span></td><td>Grenoble Grizzlys</td><td>0</td><td>0</td><td>0</td></tr>
-</tbody>
-</table>
-<div class="pool-label">Poule B</div>
-<table class="classif-table">
-<colgroup><col class="col-rk"/><col class="col-team"/><col class="col-num"/><col class="col-num"/><col class="col-num"/></colgroup>
-<thead><tr><th>#</th><th>Équipe</th><th>J</th><th>W</th><th>L</th></tr></thead>
-<tbody>
-<tr data-pool="B" data-team="cavigal"><td><span class="rk top">1</span></td><td>Nice Cavigal</td><td>0</td><td>0</td><td>0</td></tr>
-<tr data-pool="B" data-team="pantheres"><td><span class="rk">2</span></td><td>Pessac Panthères</td><td>0</td><td>0</td><td>0</td></tr>
-<tr data-pool="B" data-team="pharaons"><td><span class="rk">3</span></td><td>Évry-Courcouronnes Pharaons</td><td>0</td><td>0</td><td>0</td></tr>
-</tbody>
-</table>
+
+<!-- ── Styles classement enrichi ── -->
+<style>
+.stand-pool-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.4rem 0 .5rem;margin-top:1rem;}
+.stand-table{width:100%;border-collapse:collapse;margin-bottom:.5rem;}
+.stand-head{display:flex;align-items:center;padding:.35rem .5rem;border-bottom:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.stand-head-rk{width:32px;flex-shrink:0;}
+.stand-head-team{flex:1;}
+.stand-head-num{width:36px;text-align:center;flex-shrink:0;}
+.stand-row{display:flex;align-items:center;border-radius:10px;overflow:hidden;margin-bottom:6px;border:1px solid var(--border);min-height:54px;position:relative;}
+.stand-rk-col{width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;z-index:1;padding-left:4px;}
+.stand-rk{font-family:'Anton',sans-serif;font-size:1rem;color:var(--muted);}
+.stand-rk.top{color:var(--cyan);}
+.stand-team-side{flex:1;display:flex;align-items:center;gap:9px;padding:.5rem .6rem .5rem .3rem;position:relative;overflow:hidden;}
+.stand-team-bg{position:absolute;inset:0;pointer-events:none;}
+.stand-logo{width:34px;height:34px;border-radius:50%;background:#fff;border:1.5px solid rgba(255,255,255,0.2);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;}
+.stand-logo img{width:100%;height:100%;object-fit:contain;display:block;}
+.stand-team-info{position:relative;z-index:1;min-width:0;}
+.stand-team-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--white);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stand-team-city{font-size:10px;color:rgba(180,200,230,0.55);font-family:'Barlow Condensed',sans-serif;}
+.stand-stats{display:flex;flex-shrink:0;}
+.stand-stat{width:36px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--white);border-left:1px solid var(--border);padding:.4rem 0;}
+</style>
+
+<div class="stand-pool-label" style="color:var(--blue2);">Poule A</div>
+<div class="stand-head">
+  <div class="stand-head-rk">#</div>
+  <div class="stand-head-team">Équipe</div>
+  <div class="stand-head-num">J</div>
+  <div class="stand-head-num">W</div>
+  <div class="stand-head-num">L</div>
+</div>
+
+<!-- Wildcats -->
+<div class="stand-row" data-pool="A" data-team="wildcats" style="border-color:rgba(113,122,213,0.4);">
+  <div class="stand-rk-col"><span class="stand-rk top rk">1</span></div>
+  <div class="stand-team-side">
+    <div class="stand-team-bg" style="background:linear-gradient(to right,rgba(113,122,213,0.28) 0%,transparent 70%);"></div>
+    <div class="stand-logo"><img src="https://i.goopics.net/31c1r9.png" alt="Wildcats"/></div>
+    <div class="stand-team-info">
+      <div class="stand-team-name">Wildcats</div>
+      <div class="stand-team-city">Colombes</div>
+    </div>
+  </div>
+  <div class="stand-stats">
+    <div class="stand-stat" data-stat="j">0</div>
+    <div class="stand-stat" data-stat="w">0</div>
+    <div class="stand-stat" data-stat="l">0</div>
+  </div>
+</div>
+
+<!-- Comanches -->
+<div class="stand-row" data-pool="A" data-team="comanches" style="border-color:rgba(176,183,197,0.3);">
+  <div class="stand-rk-col"><span class="stand-rk rk">2</span></div>
+  <div class="stand-team-side">
+    <div class="stand-team-bg" style="background:linear-gradient(to right,rgba(176,183,197,0.18) 0%,transparent 70%);"></div>
+    <div class="stand-logo"><img src="https://i.goopics.net/cyng3i.png" alt="Comanches"/></div>
+    <div class="stand-team-info">
+      <div class="stand-team-name">Comanches</div>
+      <div class="stand-team-city">Saint-Raphaël</div>
+    </div>
+  </div>
+  <div class="stand-stats">
+    <div class="stand-stat" data-stat="j">0</div>
+    <div class="stand-stat" data-stat="w">0</div>
+    <div class="stand-stat" data-stat="l">0</div>
+  </div>
+</div>
+
+<!-- Grizzlys -->
+<div class="stand-row" data-pool="A" data-team="grizzlys" style="border-color:rgba(216,226,252,0.2);">
+  <div class="stand-rk-col"><span class="stand-rk rk">3</span></div>
+  <div class="stand-team-side">
+    <div class="stand-team-bg" style="background:linear-gradient(to right,rgba(216,226,252,0.12) 0%,transparent 70%);"></div>
+    <div class="stand-logo"><img src="https://i.goopics.net/7hjqer.png" alt="Grizzlys"/></div>
+    <div class="stand-team-info">
+      <div class="stand-team-name">Grizzlys</div>
+      <div class="stand-team-city">Grenoble</div>
+    </div>
+  </div>
+  <div class="stand-stats">
+    <div class="stand-stat" data-stat="j">0</div>
+    <div class="stand-stat" data-stat="w">0</div>
+    <div class="stand-stat" data-stat="l">0</div>
+  </div>
+</div>
+
+<div class="stand-pool-label" style="color:var(--cyan);margin-top:1.2rem;">Poule B</div>
+<div class="stand-head">
+  <div class="stand-head-rk">#</div>
+  <div class="stand-head-team">Équipe</div>
+  <div class="stand-head-num">J</div>
+  <div class="stand-head-num">W</div>
+  <div class="stand-head-num">L</div>
+</div>
+
+<!-- Cavigal -->
+<div class="stand-row" data-pool="B" data-team="cavigal" style="border-color:rgba(165,0,22,0.4);">
+  <div class="stand-rk-col"><span class="stand-rk top rk">1</span></div>
+  <div class="stand-team-side">
+    <div class="stand-team-bg" style="background:linear-gradient(to right,rgba(165,0,22,0.22) 0%,transparent 70%);"></div>
+    <div class="stand-logo"><img src="https://i.goopics.net/jnbdbw.png" alt="Cavigal"/></div>
+    <div class="stand-team-info">
+      <div class="stand-team-name">Cavigal</div>
+      <div class="stand-team-city">Nice</div>
+    </div>
+  </div>
+  <div class="stand-stats">
+    <div class="stand-stat" data-stat="j">0</div>
+    <div class="stand-stat" data-stat="w">0</div>
+    <div class="stand-stat" data-stat="l">0</div>
+  </div>
+</div>
+
+<!-- Panthères -->
+<div class="stand-row" data-pool="B" data-team="pantheres" style="border-color:rgba(248,205,92,0.3);">
+  <div class="stand-rk-col"><span class="stand-rk rk">2</span></div>
+  <div class="stand-team-side">
+    <div class="stand-team-bg" style="background:linear-gradient(to right,rgba(248,205,92,0.15) 0%,transparent 70%);"></div>
+    <div class="stand-logo"><img src="https://i.goopics.net/tjm4s1.png" alt="Panthères"/></div>
+    <div class="stand-team-info">
+      <div class="stand-team-name">Panthères</div>
+      <div class="stand-team-city">Pessac</div>
+    </div>
+  </div>
+  <div class="stand-stats">
+    <div class="stand-stat" data-stat="j">0</div>
+    <div class="stand-stat" data-stat="w">0</div>
+    <div class="stand-stat" data-stat="l">0</div>
+  </div>
+</div>
+
+<!-- Pharaons -->
+<div class="stand-row" data-pool="B" data-team="pharaons" style="border-color:rgba(107,0,1,0.4);">
+  <div class="stand-rk-col"><span class="stand-rk rk">3</span></div>
+  <div class="stand-team-side">
+    <div class="stand-team-bg" style="background:linear-gradient(to right,rgba(107,0,1,0.22) 0%,transparent 70%);"></div>
+    <div class="stand-logo"><img src="https://i.goopics.net/4bcdyc.png" alt="Pharaons"/></div>
+    <div class="stand-team-info">
+      <div class="stand-team-name">Pharaons</div>
+      <div class="stand-team-city">Évry-Courcouronnes</div>
+    </div>
+  </div>
+  <div class="stand-stats">
+    <div class="stand-stat" data-stat="j">0</div>
+    <div class="stand-stat" data-stat="w">0</div>
+    <div class="stand-stat" data-stat="l">0</div>
+  </div>
+</div>
+
 </div>
 </div>
 </div>
@@ -2902,36 +3032,34 @@ function applyMatch(row) {
   }
 }
 
-// ── Sort a standings tbody by rank (ascending) ───────────────
+// ── Sort standings rows by rank (ascending) ─────────────────
 function sortStandingsTable(pool) {
-  const anchor = document.querySelector('.classif-table tbody [data-pool="' + pool + '"]');
-  if (!anchor) return;
-  const tbody = anchor.closest('tbody');
-  if (!tbody) return;
-  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const rows = Array.from(document.querySelectorAll('.stand-row[data-pool="' + pool + '"]'));
+  if (!rows.length) return;
+  const container = rows[0].parentNode;
   rows.sort((a, b) => {
     const ra = parseInt(a.querySelector('.rk')?.textContent) || 99;
     const rb = parseInt(b.querySelector('.rk')?.textContent) || 99;
     return ra - rb;
   });
-  rows.forEach(r => tbody.appendChild(r));
+  rows.forEach(r => container.appendChild(r));
 }
 
 // ── Apply standings row ──────────────────────────────────────
 function applyStanding(row) {
-  const tr = document.querySelector('[data-pool="' + row.pool + '"][data-team="' + row.team + '"]');
-  if (!tr) return;
-  const cells = tr.querySelectorAll('td');
-  if (cells.length < 5) return;
-  // Rank cell has a <span> inside
-  const rkSpan = cells[0].querySelector('.rk');
+  const el = document.querySelector('.stand-row[data-pool="' + row.pool + '"][data-team="' + row.team + '"]');
+  if (!el) return;
+  const rkSpan = el.querySelector('.rk');
   if (rkSpan) {
     rkSpan.textContent = row.rank ?? '';
-    rkSpan.className   = 'rk' + (row.rank === 1 ? ' top' : '');
+    rkSpan.className   = 'stand-rk rk' + (row.rank === 1 ? ' top' : '');
   }
-  cells[2].textContent = row.j  ?? 0;
-  cells[3].textContent = row.v  ?? 0;
-  cells[4].textContent = row.d  ?? 0;
+  const stats = el.querySelectorAll('.stand-stat');
+  if (stats.length >= 3) {
+    stats[0].textContent = row.j ?? 0;
+    stats[1].textContent = row.v ?? 0;
+    stats[2].textContent = row.d ?? 0;
+  }
   sortStandingsTable(row.pool);
 }
 
