@@ -835,7 +835,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
             <!-- m5 -->
             <div class="quick-match" id="editor-m5">
               <div>
-                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M5 · 19h00</div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M5 · Poule B · 19h00</div>
                 <div class="qm-teams">
                   <div class="qm-team">Cavigal<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Nice</span></div>
                   <div class="score-stepper">
@@ -849,7 +849,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
                     <input class="inp inp-score" id="m5-rs" value="0" min="0" oninput="markDirty('m5')"/>
                     <button class="step-btn" onclick="stepScore('m5',1,1)">+</button>
                   </div>
-                  <div class="qm-team right">Wildcats<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Colombes</span></div>
+                  <div class="qm-team right">Panthères<br/><span style="font-size:11px;color:var(--muted);font-weight:400;">Pessac</span></div>
                 </div>
               </div>
               <div style="display:flex;flex-direction:column;gap:6px;">
@@ -1397,7 +1397,7 @@ const MATCH_TEAM_MAP = {
   m2:{pool:'A', left:'wildcats', right:'grizzlys'},
   m3:{pool:'B', left:'pantheres', right:'pharaons'},
   m4:{pool:'A', left:'comanches', right:'wildcats'},
-  m5:{pool:'B', left:'cavigal', right:'wildcats'} // inter-pool exhibition? ignored below if pools mismatch
+  m5:{pool:'B', left:'cavigal', right:'pantheres'}, // Nice vs Pessac (Poule B)
 };
 
 async function recomputeStandingsFromFinishedMatches() {
