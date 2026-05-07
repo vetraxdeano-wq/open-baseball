@@ -2817,11 +2817,11 @@ footer{
 <div class="bt-col">
 <div class="bt-col-label">Demi-finales<br/>Dim. 24/05</div>
 <div class="bt-match" style="margin-bottom:32px;">
-<div class="bt-slot tbd"><span class="bt-seed">DF1</span><span class="bt-slot-text">Gagnant QF2</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-bracket-slot="qf2-winner"><div class="bt-slot-bg"></div><span class="bt-seed">DF1</span><span class="bt-slot-logo" style="display:none;"><img src="" alt=""/></span><span class="bt-slot-text">Gagnant QF2</span><span class="bt-score">-</span></div>
 <div class="bt-slot tbd" data-preview-slot="A1"><div class="bt-slot-bg"></div><span class="bt-seed">A1</span><span class="bt-slot-logo"><img src="" alt=""/></span><span class="bt-slot-text">1er Poule A</span><span class="bt-score">-</span></div>
 </div>
 <div class="bt-match">
-<div class="bt-slot tbd"><span class="bt-seed">DF2</span><span class="bt-slot-text">Gagnant QF1</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-bracket-slot="qf1-winner"><div class="bt-slot-bg"></div><span class="bt-seed">DF2</span><span class="bt-slot-logo" style="display:none;"><img src="" alt=""/></span><span class="bt-slot-text">Gagnant QF1</span><span class="bt-score">-</span></div>
 <div class="bt-slot tbd" data-preview-slot="B1"><div class="bt-slot-bg"></div><span class="bt-seed">B1</span><span class="bt-slot-logo"><img src="" alt=""/></span><span class="bt-slot-text">1er Poule B</span><span class="bt-score">-</span></div>
 </div>
 </div>
@@ -2829,20 +2829,20 @@ footer{
 <div class="bt-col" style="justify-content:center;">
 <div class="bt-col-label">Grande Finale<br/>Lun. 25/05 · 14h00</div>
 <div class="bt-match gold-match">
-<div class="bt-slot tbd gold-slot"><span class="bt-seed" style="color:var(--gold);">VDF2</span>Vainqueur DF2<span class="bt-score">-</span></div>
-<div class="bt-slot tbd gold-slot"><span class="bt-seed" style="color:var(--gold);">VDF1</span>Vainqueur DF1<span class="bt-score">-</span></div>
+<div class="bt-slot tbd gold-slot" data-bracket-slot="df2-winner"><div class="bt-slot-bg"></div><span class="bt-seed" style="color:var(--gold);">VDF2</span><span class="bt-slot-logo" style="display:none;"><img src="" alt=""/></span><span class="bt-slot-text">Vainqueur DF2</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd gold-slot" data-bracket-slot="df1-winner"><div class="bt-slot-bg"></div><span class="bt-seed" style="color:var(--gold);">VDF1</span><span class="bt-slot-logo" style="display:none;"><img src="" alt=""/></span><span class="bt-slot-text">Vainqueur DF1</span><span class="bt-score">-</span></div>
 </div>
 </div>
 <div class="bt-connectors" style="width:18px;"><div class="bt-conn-single" style="border-top:2px solid rgba(245,201,58,0.5);"></div></div>
-<div class="bt-champion"><div class="bt-trophy">🏆</div><div class="bt-champ-label">Championne</div><div class="bt-champ-name">À couronner</div></div>
+<div class="bt-champion"><div class="bt-trophy">🏆</div><div class="bt-champ-label">Championne</div><div class="bt-champ-name" id="bt-champ-name">À couronner</div></div>
 </div>
 </div>
 <div style="margin-top:1.5rem;">
 <div class="bt-round-title">3e / 4e Place · Lun. 25 Mai à 10h30</div>
 <div style="display:flex;gap:10px;align-items:center;">
 <div class="bt-match bronze-match" style="flex:1;">
-<div class="bt-slot tbd"><span class="bt-seed">PDF2</span>Perdant DF2<span class="bt-score">-</span></div>
-<div class="bt-slot tbd"><span class="bt-seed">PDF1</span>Perdant DF1<span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-bracket-slot="df2-loser"><div class="bt-slot-bg"></div><span class="bt-slot-logo" style="display:none;"><img src="" alt=""/></span><span class="bt-seed">PDF2</span><span class="bt-slot-text">Perdant DF2</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-bracket-slot="df1-loser"><div class="bt-slot-bg"></div><span class="bt-slot-logo" style="display:none;"><img src="" alt=""/></span><span class="bt-seed">PDF1</span><span class="bt-slot-text">Perdant DF1</span><span class="bt-score">-</span></div>
 </div>
 <div style="text-align:center;width:48px;flex-shrink:0;"><div style="font-size:1.5rem;">🥉</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue2);">Bronze</div></div>
 </div>
@@ -3468,6 +3468,185 @@ document.addEventListener('DOMContentLoaded', function() {
   updateBracketUI();
   window.addEventListener('resize', scaleBracket);
 });
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// PLAYOFF TEAM NAME RESOLUTION — index.html
+// Intercepte applyMatch / onStandingUpdated pour mettre à jour
+// dynamiquement les noms d'équipes dans les res-cards m7→m12
+// et dans l'arbre du bracket, en appliquant la même logique
+// que le dashboard (standings + résultats QF/DF).
+// ═══════════════════════════════════════════════════════════════
+(function () {
+  'use strict';
+
+  /* ── Cache des données match Supabase ────────────────────── */
+  var _mc = {}; // matchId → row
+
+  /* ── Interception de applyMatch ──────────────────────────── */
+  var _origAM = typeof applyMatch === 'function' ? applyMatch : null;
+  window.applyMatch = function (row) {
+    if (_origAM) _origAM(row);
+    _mc[row.id] = row;
+    _refresh();
+  };
+
+  /* ── Interception de onStandingUpdated ───────────────────── */
+  var _origOSU = typeof onStandingUpdated === 'function' ? onStandingUpdated : null;
+  window.onStandingUpdated = function () {
+    if (_origOSU) _origOSU();
+    _refresh();
+  };
+
+  /* ── Calcul du gagnant / perdant d'un match ─────────────── */
+  function _winner(mid, leftName, rightName) {
+    var m = _mc[mid];
+    if (!m || m.status !== 'done' || !leftName || !rightName) return { w: null, l: null };
+    var ls = parseInt(m.left_score)  || 0;
+    var rs = parseInt(m.right_score) || 0;
+    if (ls === rs) return { w: null, l: null };
+    return ls > rs
+      ? { w: leftName,  l: rightName }
+      : { w: rightName, l: leftName  };
+  }
+
+  /* ── Mise à jour d'un .res-team span ─────────────────────── */
+  function _setRes(mid, side, name, official) {
+    var card = document.querySelector('[data-match="' + mid + '"]');
+    if (!card) return;
+    var spans = card.querySelectorAll('.res-team');
+    var span  = side === 'left' ? spans[0] : spans[1];
+    if (!span) return;
+    span.textContent = name;
+    span.style.color = official ? 'var(--white)' : 'var(--muted)';
+
+    if (!official || typeof TEAM_VISUALS === 'undefined') return;
+    var vis = TEAM_VISUALS[name];
+    if (!vis) return;
+
+    // Fond coloré sur le côté
+    var sideEl = side === 'left'
+      ? card.querySelector('.res-side:not(.right)')
+      : card.querySelector('.res-side.right');
+    if (sideEl) {
+      var dir = side === 'left' ? 'to right' : 'to left';
+      sideEl.style.background = 'linear-gradient(' + dir + ',' + vis.color + ' 0%,transparent 100%)';
+      // Logo
+      var logoWrap = sideEl.querySelector('.res-logo');
+      if (logoWrap) {
+        var img = logoWrap.querySelector('img');
+        if (!img) { img = document.createElement('img'); logoWrap.appendChild(img); }
+        img.src = vis.logo; img.alt = name;
+      } else {
+        var ld = document.createElement('div');
+        ld.className = 'res-logo';
+        ld.innerHTML = '<img src="' + vis.logo + '" alt="' + name + '"/>';
+        var inner = sideEl.querySelector('.res-side-inner');
+        if (inner) inner.appendChild(ld);
+      }
+    }
+  }
+
+  /* ── Mise à jour d'un slot du bracket tree ───────────────── */
+  function _setSlot(attr, name, official) {
+    var el = document.querySelector('[data-bracket-slot="' + attr + '"]');
+    if (!el) return;
+    var txt = el.querySelector('.bt-slot-text');
+    if (txt) {
+      txt.textContent = name;
+      txt.style.color = official ? 'var(--white)' : 'var(--muted)';
+    }
+    if (official) el.classList.remove('tbd');
+    else          el.classList.add('tbd');
+
+    if (!official || typeof TEAM_VISUALS === 'undefined') return;
+    var vis = TEAM_VISUALS[name];
+    if (!vis) return;
+    var bg   = el.querySelector('.bt-slot-bg');
+    var logo = el.querySelector('.bt-slot-logo');
+    if (bg)   bg.style.background = 'linear-gradient(to right,' + vis.color + ' 0%,transparent 80%)';
+    if (logo) {
+      var img = logo.querySelector('img');
+      if (img) { img.src = vis.logo; img.alt = name; }
+      logo.style.background = vis.logoBg || '#fff';
+      logo.style.display    = 'flex';
+    }
+  }
+
+  /* ── Fonction principale ─────────────────────────────────── */
+  function _refresh() {
+    var teams    = typeof getStandingsFromDOM === 'function' ? getStandingsFromDOM() : {};
+    var finished = typeof checkPoolsFinished  === 'function' ? checkPoolsFinished()  : false;
+
+    /* Noms de base depuis les classements */
+    var a1 = (finished && teams.A1) ? teams.A1 : '1er Poule A';
+    var a2 = (finished && teams.A2) ? teams.A2 : '2e Poule A';
+    var a3 = (finished && teams.A3) ? teams.A3 : '3e Poule A';
+    var b1 = (finished && teams.B1) ? teams.B1 : '1er Poule B';
+    var b2 = (finished && teams.B2) ? teams.B2 : '2e Poule B';
+    var b3 = (finished && teams.B3) ? teams.B3 : '3e Poule B';
+
+    /* QF2 (m7) : B2 vs A3 */
+    _setRes('m7', 'left',  b2, finished);
+    _setRes('m7', 'right', a3, finished);
+
+    /* QF1 (m8) : A2 vs B3 */
+    _setRes('m8', 'left',  a2, finished);
+    _setRes('m8', 'right', b3, finished);
+
+    /* Gagnants QF */
+    var qf2 = _winner('m7', b2, a3);
+    var qf1 = _winner('m8', a2, b3);
+
+    /* DF1 (m9) : A1 vs Gagnant QF2 */
+    var df1R = qf2.w || 'Gagnant QF2';
+    _setRes('m9', 'left',  a1,   finished);
+    _setRes('m9', 'right', df1R, qf2.w !== null);
+
+    /* DF2 (m10) : B1 vs Gagnant QF1 */
+    var df2R = qf1.w || 'Gagnant QF1';
+    _setRes('m10', 'left',  b1,   finished);
+    _setRes('m10', 'right', df2R, qf1.w !== null);
+
+    /* Gagnants / perdants DF */
+    var df1 = _winner('m9',  a1, df1R);
+    var df2 = _winner('m10', b1, df2R);
+
+    /* Petite finale (m11) */
+    _setRes('m11', 'left',  df1.l || 'Perdant DF1',   df1.l !== null);
+    _setRes('m11', 'right', df2.l || 'Perdant DF2',   df2.l !== null);
+
+    /* Grande finale (m12) */
+    _setRes('m12', 'left',  df1.w || 'Vainqueur DF1', df1.w !== null);
+    _setRes('m12', 'right', df2.w || 'Vainqueur DF2', df2.w !== null);
+
+    /* ── Bracket tree ── */
+    _setSlot('qf2-winner', qf2.w || 'Gagnant QF2',   qf2.w !== null);
+    _setSlot('qf1-winner', qf1.w || 'Gagnant QF1',   qf1.w !== null);
+    _setSlot('df1-winner', df1.w || 'Vainqueur DF1', df1.w !== null);
+    _setSlot('df2-winner', df2.w || 'Vainqueur DF2', df2.w !== null);
+    _setSlot('df1-loser',  df1.l || 'Perdant DF1',   df1.l !== null);
+    _setSlot('df2-loser',  df2.l || 'Perdant DF2',   df2.l !== null);
+
+    /* Champion */
+    var champEl = document.getElementById('bt-champ-name');
+    if (champEl) {
+      var champ = null;
+      if (df1.w && df2.w) {
+        var m12r = _winner('m12', df1.w, df2.w);
+        champ = m12r.w;
+      }
+      champEl.textContent = champ || 'À couronner';
+      champEl.style.color = champ ? 'var(--gold)' : '';
+    }
+  }
+
+  /* Passe initiale après chargement DOM (au cas où loadData() serait
+     déjà terminé quand ce script s'exécute) */
+  document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(_refresh, 300);
+  });
+})();
 </script>
 </body>
 </html>
