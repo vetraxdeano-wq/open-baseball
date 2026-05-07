@@ -455,6 +455,10 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 /* ── RANK INPUT ── */
 .rank-inp{width:42px !important;}
 
+/* ── STANDING STEPPER ── */
+.stand-stepper{display:inline-flex;align-items:center;gap:3px;}
+.stand-stepper .step-btn{width:22px;height:22px;font-size:12px;}
+
 /* ── GRID ── */
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
@@ -1124,25 +1128,25 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
                 </thead>
                 <tbody id="tbody-A">
                   <tr>
-                    <td><input value="1" id="A-wildcats-rank" class="rank-inp" style="width:42px;"/></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('A-wildcats-rank',-1)">−</button><input value="1" id="A-wildcats-rank" class="rank-inp"/><button class="step-btn" onclick="stepStanding('A-wildcats-rank',1)">+</button></div></td>
                     <td>Wildcats <span style="font-size:11px;color:var(--muted);">Colombes</span></td>
-                    <td><input value="0" id="A-wildcats-j"/></td>
-                    <td><input value="0" id="A-wildcats-v" style="color:var(--green);"/></td>
-                    <td><input value="0" id="A-wildcats-d" style="color:#FF6B6B;"/></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('A-wildcats-j',-1)">−</button><input value="0" id="A-wildcats-j"/><button class="step-btn" onclick="stepStanding('A-wildcats-j',1)">+</button></div></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('A-wildcats-v',-1)">−</button><input value="0" id="A-wildcats-v" style="color:var(--green);"/><button class="step-btn" onclick="stepStanding('A-wildcats-v',1)">+</button></div></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('A-wildcats-d',-1)">−</button><input value="0" id="A-wildcats-d" style="color:#FF6B6B;"/><button class="step-btn" onclick="stepStanding('A-wildcats-d',1)">+</button></div></td>
                   </tr>
                   <tr>
-                    <td><input value="2" id="A-comanches-rank" class="rank-inp" style="width:42px;"/></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('A-comanches-rank',-1)">−</button><input value="2" id="A-comanches-rank" class="rank-inp"/><button class="step-btn" onclick="stepStanding('A-comanches-rank',1)">+</button></div></td>
                     <td>Comanches <span style="font-size:11px;color:var(--muted);">Saint-Raphaël</span></td>
-                    <td><input value="0" id="A-comanches-j"/></td>
-                    <td><input value="0" id="A-comanches-v" style="color:var(--green);"/></td>
-                    <td><input value="0" id="A-comanches-d" style="color:#FF6B6B;"/></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('A-comanches-j',-1)">−</button><input value="0" id="A-comanches-j"/><button class="step-btn" onclick="stepStanding('A-comanches-j',1)">+</button></div></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('A-comanches-v',-1)">−</button><input value="0" id="A-comanches-v" style="color:var(--green);"/><button class="step-btn" onclick="stepStanding('A-comanches-v',1)">+</button></div></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('A-comanches-d',-1)">−</button><input value="0" id="A-comanches-d" style="color:#FF6B6B;"/><button class="step-btn" onclick="stepStanding('A-comanches-d',1)">+</button></div></td>
                   </tr>
                   <tr>
-                    <td><input value="3" id="A-grizzlys-rank" class="rank-inp" style="width:42px;"/></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('A-grizzlys-rank',-1)">−</button><input value="3" id="A-grizzlys-rank" class="rank-inp"/><button class="step-btn" onclick="stepStanding('A-grizzlys-rank',1)">+</button></div></td>
                     <td>Grizzlys <span style="font-size:11px;color:var(--muted);">Grenoble</span></td>
-                    <td><input value="0" id="A-grizzlys-j"/></td>
-                    <td><input value="0" id="A-grizzlys-v" style="color:var(--green);"/></td>
-                    <td><input value="0" id="A-grizzlys-d" style="color:#FF6B6B;"/></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('A-grizzlys-j',-1)">−</button><input value="0" id="A-grizzlys-j"/><button class="step-btn" onclick="stepStanding('A-grizzlys-j',1)">+</button></div></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('A-grizzlys-v',-1)">−</button><input value="0" id="A-grizzlys-v" style="color:var(--green);"/><button class="step-btn" onclick="stepStanding('A-grizzlys-v',1)">+</button></div></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('A-grizzlys-d',-1)">−</button><input value="0" id="A-grizzlys-d" style="color:#FF6B6B;"/><button class="step-btn" onclick="stepStanding('A-grizzlys-d',1)">+</button></div></td>
                   </tr>
                 </tbody>
               </table>
@@ -1162,25 +1166,25 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
                 </thead>
                 <tbody id="tbody-B">
                   <tr>
-                    <td><input value="1" id="B-cavigal-rank" class="rank-inp" style="width:42px;"/></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('B-cavigal-rank',-1)">−</button><input value="1" id="B-cavigal-rank" class="rank-inp"/><button class="step-btn" onclick="stepStanding('B-cavigal-rank',1)">+</button></div></td>
                     <td>Cavigal <span style="font-size:11px;color:var(--muted);">Nice</span></td>
-                    <td><input value="0" id="B-cavigal-j"/></td>
-                    <td><input value="0" id="B-cavigal-v" style="color:var(--green);"/></td>
-                    <td><input value="0" id="B-cavigal-d" style="color:#FF6B6B;"/></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('B-cavigal-j',-1)">−</button><input value="0" id="B-cavigal-j"/><button class="step-btn" onclick="stepStanding('B-cavigal-j',1)">+</button></div></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('B-cavigal-v',-1)">−</button><input value="0" id="B-cavigal-v" style="color:var(--green);"/><button class="step-btn" onclick="stepStanding('B-cavigal-v',1)">+</button></div></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('B-cavigal-d',-1)">−</button><input value="0" id="B-cavigal-d" style="color:#FF6B6B;"/><button class="step-btn" onclick="stepStanding('B-cavigal-d',1)">+</button></div></td>
                   </tr>
                   <tr>
-                    <td><input value="2" id="B-pantheres-rank" class="rank-inp" style="width:42px;"/></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('B-pantheres-rank',-1)">−</button><input value="2" id="B-pantheres-rank" class="rank-inp"/><button class="step-btn" onclick="stepStanding('B-pantheres-rank',1)">+</button></div></td>
                     <td>Panthères <span style="font-size:11px;color:var(--muted);">Pessac</span></td>
-                    <td><input value="0" id="B-pantheres-j"/></td>
-                    <td><input value="0" id="B-pantheres-v" style="color:var(--green);"/></td>
-                    <td><input value="0" id="B-pantheres-d" style="color:#FF6B6B;"/></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('B-pantheres-j',-1)">−</button><input value="0" id="B-pantheres-j"/><button class="step-btn" onclick="stepStanding('B-pantheres-j',1)">+</button></div></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('B-pantheres-v',-1)">−</button><input value="0" id="B-pantheres-v" style="color:var(--green);"/><button class="step-btn" onclick="stepStanding('B-pantheres-v',1)">+</button></div></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('B-pantheres-d',-1)">−</button><input value="0" id="B-pantheres-d" style="color:#FF6B6B;"/><button class="step-btn" onclick="stepStanding('B-pantheres-d',1)">+</button></div></td>
                   </tr>
                   <tr>
-                    <td><input value="3" id="B-pharaons-rank" class="rank-inp" style="width:42px;"/></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('B-pharaons-rank',-1)">−</button><input value="3" id="B-pharaons-rank" class="rank-inp"/><button class="step-btn" onclick="stepStanding('B-pharaons-rank',1)">+</button></div></td>
                     <td>Pharaons <span style="font-size:11px;color:var(--muted);">Évry-Courcouronnes</span></td>
-                    <td><input value="0" id="B-pharaons-j"/></td>
-                    <td><input value="0" id="B-pharaons-v" style="color:var(--green);"/></td>
-                    <td><input value="0" id="B-pharaons-d" style="color:#FF6B6B;"/></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('B-pharaons-j',-1)">−</button><input value="0" id="B-pharaons-j"/><button class="step-btn" onclick="stepStanding('B-pharaons-j',1)">+</button></div></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('B-pharaons-v',-1)">−</button><input value="0" id="B-pharaons-v" style="color:var(--green);"/><button class="step-btn" onclick="stepStanding('B-pharaons-v',1)">+</button></div></td>
+                    <td><div class="stand-stepper"><button class="step-btn" onclick="stepStanding('B-pharaons-d',-1)">−</button><input value="0" id="B-pharaons-d" style="color:#FF6B6B;"/><button class="step-btn" onclick="stepStanding('B-pharaons-d',1)">+</button></div></td>
                   </tr>
                 </tbody>
               </table>
