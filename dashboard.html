@@ -646,10 +646,30 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
   .sidebar{display:none;}
   .mobile-nav{display:block;}
   .grid-2,.grid-3{grid-template-columns:1fr;}
-  .content{padding:1rem;padding-bottom:90px;}
+  .content{padding:.75rem;padding-bottom:90px;}
   .match-row{grid-template-columns:1fr;gap:.6rem;}
   .match-controls{flex-wrap:wrap;}
-  .qm-teams{grid-template-columns:1fr;gap:.4rem;}
+  .qm-teams{
+    grid-template-columns:1fr auto auto auto 1fr;
+    gap:.3rem;
+    align-items:center;
+  }
+  .qm-team{font-size:13px;}
+  .qm-team.right{text-align:right;}
+  .inp-score{width:48px;font-size:1rem;}
+  .step-btn{width:30px;height:30px;font-size:16px;}
+  .dash-card-head{flex-wrap:wrap;gap:.4rem;}
+  .standing-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;}
+  .standing-table{min-width:420px;}
+  .stand-stepper{display:inline-flex;}
+  .stand-stepper .step-btn{width:26px;height:26px;}
+  .standing-table input{width:44px;font-size:12px;}
+  .page-h1{font-size:1.5rem;}
+  .quick-match{flex-direction:column;gap:.8rem;}
+  .status-select{flex-wrap:wrap;}
+  .status-btn{font-size:10px;padding:3px 8px;}
+  .day-tabs-row{width:100%;}
+  .day-tab-btn{flex:1;padding:8px 6px;font-size:12px;}
 }
 </style>
 </head>
@@ -913,7 +933,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
               <div>
                 <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M7 · Quart de finale 2 · 12h15</div>
                 <div class="qm-teams">
-                  <div class="qm-team">2e Poule B</div>
+                  <div class="qm-team" id="m7-left-label">2e Poule B</div>
                   <div class="score-stepper">
                     <button class="step-btn" onclick="stepScore('m7',0,-1)">−</button>
                     <input class="inp inp-score" id="m7-ls" value="0" min="0" oninput="markDirty('m7')"/>
@@ -925,7 +945,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
                     <input class="inp inp-score" id="m7-rs" value="0" min="0" oninput="markDirty('m7')"/>
                     <button class="step-btn" onclick="stepScore('m7',1,1)">+</button>
                   </div>
-                  <div class="qm-team right">3e Poule A</div>
+                  <div class="qm-team right" id="m7-right-label">3e Poule A</div>
                 </div>
               </div>
               <div style="display:flex;flex-direction:column;gap:6px;">
@@ -943,7 +963,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
               <div>
                 <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M8 · Quart de finale 1 · 14h30</div>
                 <div class="qm-teams">
-                  <div class="qm-team">2e Poule A</div>
+                  <div class="qm-team" id="m8-left-label">2e Poule A</div>
                   <div class="score-stepper">
                     <button class="step-btn" onclick="stepScore('m8',0,-1)">−</button>
                     <input class="inp inp-score" id="m8-ls" value="0" min="0" oninput="markDirty('m8')"/>
@@ -955,7 +975,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
                     <input class="inp inp-score" id="m8-rs" value="0" min="0" oninput="markDirty('m8')"/>
                     <button class="step-btn" onclick="stepScore('m8',1,1)">+</button>
                   </div>
-                  <div class="qm-team right">3e Poule B</div>
+                  <div class="qm-team right" id="m8-right-label">3e Poule B</div>
                 </div>
               </div>
               <div style="display:flex;flex-direction:column;gap:6px;">
@@ -973,7 +993,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
               <div>
                 <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M9 · Demi-finale 1 · 16h45</div>
                 <div class="qm-teams">
-                  <div class="qm-team">1er Poule A</div>
+                  <div class="qm-team" id="m9-left-label">1er Poule A</div>
                   <div class="score-stepper">
                     <button class="step-btn" onclick="stepScore('m9',0,-1)">−</button>
                     <input class="inp inp-score" id="m9-ls" value="0" min="0" oninput="markDirty('m9')"/>
@@ -985,7 +1005,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
                     <input class="inp inp-score" id="m9-rs" value="0" min="0" oninput="markDirty('m9')"/>
                     <button class="step-btn" onclick="stepScore('m9',1,1)">+</button>
                   </div>
-                  <div class="qm-team right">Gagnant QF2</div>
+                  <div class="qm-team right" id="m9-right-label">Gagnant QF2</div>
                 </div>
               </div>
               <div style="display:flex;flex-direction:column;gap:6px;">
@@ -1003,7 +1023,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
               <div>
                 <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M10 · Demi-finale 2 · 19h00</div>
                 <div class="qm-teams">
-                  <div class="qm-team">1er Poule B</div>
+                  <div class="qm-team" id="m10-left-label">1er Poule B</div>
                   <div class="score-stepper">
                     <button class="step-btn" onclick="stepScore('m10',0,-1)">−</button>
                     <input class="inp inp-score" id="m10-ls" value="0" min="0" oninput="markDirty('m10')"/>
@@ -1015,7 +1035,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
                     <input class="inp inp-score" id="m10-rs" value="0" min="0" oninput="markDirty('m10')"/>
                     <button class="step-btn" onclick="stepScore('m10',1,1)">+</button>
                   </div>
-                  <div class="qm-team right">Gagnant QF1</div>
+                  <div class="qm-team right" id="m10-right-label">Gagnant QF1</div>
                 </div>
               </div>
               <div style="display:flex;flex-direction:column;gap:6px;">
@@ -1045,7 +1065,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
               <div>
                 <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">M11 · Petite finale · 10h30</div>
                 <div class="qm-teams">
-                  <div class="qm-team">Perdant DF1</div>
+                  <div class="qm-team" id="m11-left-label">Perdant DF1</div>
                   <div class="score-stepper">
                     <button class="step-btn" onclick="stepScore('m11',0,-1)">−</button>
                     <input class="inp inp-score" id="m11-ls" value="0" min="0" oninput="markDirty('m11')"/>
@@ -1057,7 +1077,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
                     <input class="inp inp-score" id="m11-rs" value="0" min="0" oninput="markDirty('m11')"/>
                     <button class="step-btn" onclick="stepScore('m11',1,1)">+</button>
                   </div>
-                  <div class="qm-team right">Perdant DF2</div>
+                  <div class="qm-team right" id="m11-right-label">Perdant DF2</div>
                 </div>
               </div>
               <div style="display:flex;flex-direction:column;gap:6px;">
@@ -1075,7 +1095,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
               <div>
                 <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">M12 · 🏆 Grande Finale · 14h00</div>
                 <div class="qm-teams">
-                  <div class="qm-team" style="color:var(--gold);">Vainqueur DF1</div>
+                  <div class="qm-team" id="m12-left-label" style="color:var(--gold);">Vainqueur DF1</div>
                   <div class="score-stepper">
                     <button class="step-btn" onclick="stepScore('m12',0,-1)">−</button>
                     <input class="inp inp-score" id="m12-ls" value="0" min="0" oninput="markDirty('m12')" style="color:var(--gold);border-color:rgba(245,201,58,0.4);"/>
@@ -1087,7 +1107,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
                     <input class="inp inp-score" id="m12-rs" value="0" min="0" oninput="markDirty('m12')" style="color:var(--gold);border-color:rgba(245,201,58,0.4);"/>
                     <button class="step-btn" onclick="stepScore('m12',1,1)">+</button>
                   </div>
-                  <div class="qm-team right" style="color:var(--gold);">Vainqueur DF2</div>
+                  <div class="qm-team right" id="m12-right-label" style="color:var(--gold);">Vainqueur DF2</div>
                 </div>
               </div>
               <div style="display:flex;flex-direction:column;gap:6px;">
@@ -1122,6 +1142,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
               <button class="btn btn-cyan btn-sm" onclick="saveStandings('A')">💾 Sauvegarder Poule A</button>
             </div>
             <div class="dash-card-body" style="padding:0;">
+              <div class="standing-table-wrap">
               <table class="standing-table">
                 <thead>
                   <tr><th>#</th><th>Équipe</th><th>J</th><th>W</th><th>L</th></tr>
@@ -1150,6 +1171,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
                   </tr>
                 </tbody>
               </table>
+              </div>
             </div>
           </div>
 
@@ -1160,6 +1182,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
               <button class="btn btn-cyan btn-sm" onclick="saveStandings('B')">💾 Sauvegarder Poule B</button>
             </div>
             <div class="dash-card-body" style="padding:0;">
+              <div class="standing-table-wrap">
               <table class="standing-table">
                 <thead>
                   <tr><th>#</th><th>Équipe</th><th>J</th><th>W</th><th>L</th></tr>
@@ -1188,10 +1211,9 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
                   </tr>
                 </tbody>
               </table>
+              </div>
             </div>
           </div>
-
-        </div>
 
         <div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.2);border-radius:10px;padding:1rem 1.2rem;font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);line-height:1.7;">
           <strong style="color:var(--cyan);">💡 Astuce :</strong> Modifiez les cellules directement puis cliquez sur <strong>Sauvegarder</strong> pour envoyer les données à Supabase. Le site public se met à jour instantanément via Realtime.<br/>
@@ -1518,8 +1540,34 @@ async function saveStandings(pool) {
 }
 
 // ══════════════════════════════════════════════
-// BRACKET VIEW
+// BRACKET: TEAM NAME RESOLUTION + PROGRESSION
 // ══════════════════════════════════════════════
+
+// Resolve team name from standings map
+function getTeamName(standMap, pool, rank) {
+  const t = (standMap[pool]||[]).find(s => s.rank === rank);
+  if (!t) return null;
+  return t.team.charAt(0).toUpperCase() + t.team.slice(1);
+}
+
+// Compute winner/loser of a match
+function getMatchWinner(matchMap, mid) {
+  const m = matchMap[mid];
+  if (!m || m.status !== 'done') return { winner: null, loser: null };
+  const ls = parseInt(m.left_score)||0;
+  const rs = parseInt(m.right_score)||0;
+  if (ls === rs) return { winner: null, loser: null };
+  return ls > rs
+    ? { winner: m._leftTeam, loser: m._rightTeam }
+    : { winner: m._rightTeam, loser: m._leftTeam };
+}
+
+// Check if all 6 pool teams have j >= 2
+function poolsComplete(standMap) {
+  const allTeams = [...(standMap['A']||[]), ...(standMap['B']||[])];
+  return allTeams.length >= 6 && allTeams.every(t => (t.j||0) >= 2);
+}
+
 async function refreshBracket() {
   const el = document.getElementById('bracket-view');
   el.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement…</div>';
@@ -1533,13 +1581,63 @@ async function refreshBracket() {
     (matches||[]).forEach(m => matchMap[m.id] = m);
 
     const standMap = {};
-    (standings||[]).forEach(s => { if(!standMap[s.pool]) standMap[s.pool]=[]; standMap[s.pool].push(s); });
-    ['A','B'].forEach(p => { if(standMap[p]) standMap[p].sort((a,b)=>a.rank-b.rank); });
+    (standings||[]).forEach(s => {
+      if(!standMap[s.pool]) standMap[s.pool]=[];
+      standMap[s.pool].push(s);
+    });
+    ['A','B'].forEach(p => {
+      if(standMap[p]) standMap[p].sort((a,b)=>a.rank-b.rank);
+    });
 
-    const teamName = (pool, rank) => {
-      const t = (standMap[pool]||[]).find(s=>s.rank===rank);
-      return t ? t.team.charAt(0).toUpperCase()+t.team.slice(1) : `${rank}e Poule ${pool}`;
+    const complete = poolsComplete(standMap);
+
+    // Resolve team names for all slots
+    const tn = (pool, rank) => {
+      const t = getTeamName(standMap, pool, rank);
+      return t || `${rank}e Poule ${pool}`;
     };
+
+    // Store team names on matchMap entries so we can compute winner/loser
+    // QF2 (m7): 2eB vs 3eA
+    matchMap['m7'] = { ...(matchMap['m7']||{}), _leftTeam: tn('B',2), _rightTeam: tn('A',3) };
+    // QF1 (m8): 2eA vs 3eB
+    matchMap['m8'] = { ...(matchMap['m8']||{}), _leftTeam: tn('A',2), _rightTeam: tn('B',3) };
+
+    const qf2 = getMatchWinner(matchMap, 'm7');
+    const qf1 = getMatchWinner(matchMap, 'm8');
+
+    // DF1 (m9): 1eA vs Gagnant QF2
+    const df1Left  = complete ? tn('A',1) : `1er Poule A`;
+    const df1Right = qf2.winner || (complete ? `Gagnant QF2` : `Gagnant QF2`);
+    matchMap['m9'] = { ...(matchMap['m9']||{}), _leftTeam: df1Left, _rightTeam: df1Right };
+
+    // DF2 (m10): 1eB vs Gagnant QF1
+    const df2Left  = complete ? tn('B',1) : `1er Poule B`;
+    const df2Right = qf1.winner || `Gagnant QF1`;
+    matchMap['m10'] = { ...(matchMap['m10']||{}), _leftTeam: df2Left, _rightTeam: df2Right };
+
+    const df1 = getMatchWinner(matchMap, 'm9');
+    const df2 = getMatchWinner(matchMap, 'm10');
+
+    // Petite finale (m11): Perdant DF1 vs Perdant DF2
+    matchMap['m11'] = { ...(matchMap['m11']||{}),
+      _leftTeam:  df1.loser  || `Perdant DF1`,
+      _rightTeam: df2.loser  || `Perdant DF2`
+    };
+
+    // Grande finale (m12): Vainqueur DF1 vs Vainqueur DF2
+    matchMap['m12'] = { ...(matchMap['m12']||{}),
+      _leftTeam:  df1.winner || `Vainqueur DF1`,
+      _rightTeam: df2.winner || `Vainqueur DF2`
+    };
+
+    // Update editor labels (for the Scores panel)
+    updateMatchEditorLabel('m7', matchMap['m7']._leftTeam, matchMap['m7']._rightTeam, complete);
+    updateMatchEditorLabel('m8', matchMap['m8']._leftTeam, matchMap['m8']._rightTeam, complete);
+    updateMatchEditorLabel('m9', matchMap['m9']._leftTeam, matchMap['m9']._rightTeam, complete);
+    updateMatchEditorLabel('m10', matchMap['m10']._leftTeam, matchMap['m10']._rightTeam, complete);
+    updateMatchEditorLabel('m11', matchMap['m11']._leftTeam, matchMap['m11']._rightTeam, false);
+    updateMatchEditorLabel('m12', matchMap['m12']._leftTeam, matchMap['m12']._rightTeam, false);
 
     const mScore = (id) => {
       const m = matchMap[id];
@@ -1554,19 +1652,27 @@ async function refreshBracket() {
       return '<span style="color:var(--muted);font-size:11px;">⏳ À venir</span>';
     };
 
+    const teamLabel = (name, isReal) =>
+      `<span style="color:${isReal?'var(--white)':'var(--muted)'};">${name}</span>`;
+
+    const isRealQF = complete;
+    const isRealDF1 = qf2.winner !== null;
+    const isRealDF2 = qf1.winner !== null;
+
     el.innerHTML = `
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;overflow-x:auto;">
+      <div style="overflow-x:auto;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;min-width:520px;">
         <!-- QFs -->
         <div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--cyan);margin-bottom:.8rem;text-transform:uppercase;">Quarts · Dim.</div>
-          <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:.8rem;margin-bottom:.8rem;">
+          <div style="background:var(--card2);border:1px solid ${isRealQF?'var(--border2)':'var(--border)'};border-radius:8px;padding:.8rem;margin-bottom:.8rem;">
             <div style="font-size:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;margin-bottom:.4rem;">QF2 · 12h15 · ${statusBadge(mStatus('m7'))}</div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">${teamName('B',2)} vs ${teamName('A',3)}</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">${teamLabel(matchMap['m7']._leftTeam,isRealQF)} vs ${teamLabel(matchMap['m7']._rightTeam,isRealQF)}</div>
             <div style="font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--white);">${mScore('m7')}</div>
           </div>
-          <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:.8rem;">
+          <div style="background:var(--card2);border:1px solid ${isRealQF?'var(--border2)':'var(--border)'};border-radius:8px;padding:.8rem;">
             <div style="font-size:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;margin-bottom:.4rem;">QF1 · 14h30 · ${statusBadge(mStatus('m8'))}</div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">${teamName('A',2)} vs ${teamName('B',3)}</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">${teamLabel(matchMap['m8']._leftTeam,isRealQF)} vs ${teamLabel(matchMap['m8']._rightTeam,isRealQF)}</div>
             <div style="font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--white);">${mScore('m8')}</div>
           </div>
         </div>
@@ -1575,12 +1681,12 @@ async function refreshBracket() {
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--blue2);margin-bottom:.8rem;text-transform:uppercase;">Demies · Dim.</div>
           <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:.8rem;margin-bottom:.8rem;">
             <div style="font-size:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;margin-bottom:.4rem;">DF1 · 16h45 · ${statusBadge(mStatus('m9'))}</div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">${teamName('A',1)} vs Gag. QF2</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">${teamLabel(matchMap['m9']._leftTeam,complete)} vs ${teamLabel(matchMap['m9']._rightTeam,isRealDF1)}</div>
             <div style="font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--white);">${mScore('m9')}</div>
           </div>
           <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:.8rem;">
             <div style="font-size:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;margin-bottom:.4rem;">DF2 · 19h00 · ${statusBadge(mStatus('m10'))}</div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">${teamName('B',1)} vs Gag. QF1</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">${teamLabel(matchMap['m10']._leftTeam,complete)} vs ${teamLabel(matchMap['m10']._rightTeam,isRealDF2)}</div>
             <div style="font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--white);">${mScore('m10')}</div>
           </div>
         </div>
@@ -1589,19 +1695,35 @@ async function refreshBracket() {
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--gold);margin-bottom:.8rem;text-transform:uppercase;">Finales · Lun.</div>
           <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:.8rem;margin-bottom:.8rem;">
             <div style="font-size:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;margin-bottom:.4rem;">Petite finale · 10h30 · ${statusBadge(mStatus('m11'))}</div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">Perd. DF1 vs Perd. DF2</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;">${teamLabel(matchMap['m11']._leftTeam,df1.loser!==null)} vs ${teamLabel(matchMap['m11']._rightTeam,df2.loser!==null)}</div>
             <div style="font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--white);">${mScore('m11')}</div>
           </div>
           <div style="background:linear-gradient(135deg,rgba(245,201,58,0.1),rgba(245,201,58,0.04));border:1px solid rgba(245,201,58,0.4);border-radius:8px;padding:.8rem;">
             <div style="font-size:10px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:.4rem;">🏆 GRANDE FINALE · 14h00 · ${statusBadge(mStatus('m12'))}</div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;color:var(--gold);">Vaincq. DF1 vs Vaincq. DF2</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:3px;color:var(--gold);">${teamLabel(matchMap['m12']._leftTeam,df1.winner!==null)} vs ${teamLabel(matchMap['m12']._rightTeam,df2.winner!==null)}</div>
             <div style="font-family:'Anton',sans-serif;font-size:1.5rem;color:var(--gold);">${mScore('m12')}</div>
           </div>
         </div>
       </div>
+      </div>
+      ${complete ? '' : `<div style="margin-top:1rem;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);"><span style="color:var(--gold);">ℹ️</span> Les noms officiels apparaîtront quand toutes les équipes auront joué 2 matchs.</div>`}
     `;
   } catch(e) {
     el.innerHTML = '❌ Erreur : ' + e.message;
+  }
+}
+
+// Update labels in the match editor (Scores panel)
+function updateMatchEditorLabel(mid, leftName, rightName, isOfficial) {
+  const lEl = document.getElementById(mid+'-left-label');
+  const rEl = document.getElementById(mid+'-right-label');
+  if (lEl) {
+    lEl.textContent = leftName;
+    lEl.style.color = isOfficial ? 'var(--white)' : 'var(--muted)';
+  }
+  if (rEl) {
+    rEl.textContent = rightName;
+    rEl.style.color = isOfficial ? 'var(--white)' : 'var(--muted)';
   }
 }
 
