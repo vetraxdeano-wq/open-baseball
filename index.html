@@ -2728,6 +2728,18 @@ footer{
 <div class="sec-head">
 <div class="sec-eyebrow">Phase éliminatoire</div>
 <div class="sec-title">Bracket</div>
+<div style="margin-top:.7rem;">
+  <button id="btn-preview-bracket" onclick="toggleBracketPreview()" style="display:flex;align-items:center;gap:7px;background:rgba(0,212,255,0.1);border:1.5px solid rgba(0,212,255,0.35);color:var(--cyan);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:8px;cursor:pointer;transition:all .2s;">
+    <span style="font-size:13px;">🔮</span> Aperçu "Si les poules finissaient maintenant"
+  </button>
+</div>
+</div>
+<div id="bracket-preview-banner" style="display:none;margin:0;background:rgba(245,201,58,0.08);border-bottom:1px solid rgba(245,201,58,0.3);padding:.9rem 1.5rem;align-items:flex-start;gap:10px;">
+  <span style="font-size:1.3rem;flex-shrink:0;">🔮</span>
+  <div>
+    <div id="bracket-banner-title" style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;">Mode aperçu activé</div>
+    <div id="bracket-banner-text" style="font-size:12px;color:rgba(232,241,255,.7);line-height:1.5;">Les équipes affichées correspondent aux classements <strong style="color:var(--white);">actuels des poules</strong>. Les gagnants des QF et DF ne peuvent pas être prédits — ces cases restent à déterminer.</div>
+  </div>
 </div>
 <div class="sec-body">
 <div class="bracket-tree">
@@ -2736,25 +2748,25 @@ footer{
 <div class="bt-col-label">Quarts<br/>Dim. 24/05</div>
 <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin:0 0 6px;text-align:center;">QF2</div>
 <div class="bt-match" style="margin-bottom:20px;">
-<div class="bt-slot tbd"><span class="bt-seed">QF2</span>3e Poule A<span class="bt-score">-</span></div>
-<div class="bt-slot tbd"><span class="bt-seed">B2</span>2e Poule B<span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-preview-slot="A3"><span class="bt-seed">QF2</span><span class="bt-slot-text">3e Poule A</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-preview-slot="B2"><span class="bt-seed">B2</span><span class="bt-slot-text">2e Poule B</span><span class="bt-score">-</span></div>
 </div>
 <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin:0 0 6px;text-align:center;">QF1</div>
 <div class="bt-match">
-<div class="bt-slot tbd"><span class="bt-seed">QF1</span>3e Poule B<span class="bt-score">-</span></div>
-<div class="bt-slot tbd"><span class="bt-seed">A2</span>2e Poule A<span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-preview-slot="B3"><span class="bt-seed">QF1</span><span class="bt-slot-text">3e Poule B</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-preview-slot="A2"><span class="bt-seed">A2</span><span class="bt-slot-text">2e Poule A</span><span class="bt-score">-</span></div>
 </div>
 </div>
 <div class="bt-connectors"><div class="bt-conn-pair"><div class="bt-conn-top"></div><div class="bt-conn-bot"></div></div><div class="bt-conn-mid"></div><div class="bt-conn-pair"><div class="bt-conn-top"></div><div class="bt-conn-bot"></div></div></div>
 <div class="bt-col">
 <div class="bt-col-label">Demi-finales<br/>Dim. 24/05</div>
 <div class="bt-match" style="margin-bottom:32px;">
-<div class="bt-slot tbd"><span class="bt-seed">DF1</span>Gagnant QF2<span class="bt-score">-</span></div>
-<div class="bt-slot tbd"><span class="bt-seed">A1</span>1er Poule A<span class="bt-score">-</span></div>
+<div class="bt-slot tbd"><span class="bt-seed">DF1</span><span class="bt-slot-text">Gagnant QF2</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-preview-slot="A1"><span class="bt-seed">A1</span><span class="bt-slot-text">1er Poule A</span><span class="bt-score">-</span></div>
 </div>
 <div class="bt-match">
-<div class="bt-slot tbd"><span class="bt-seed">DF2</span>Gagnant QF1<span class="bt-score">-</span></div>
-<div class="bt-slot tbd"><span class="bt-seed">B1</span>1er Poule B<span class="bt-score">-</span></div>
+<div class="bt-slot tbd"><span class="bt-seed">DF2</span><span class="bt-slot-text">Gagnant QF1</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-preview-slot="B1"><span class="bt-seed">B1</span><span class="bt-slot-text">1er Poule B</span><span class="bt-score">-</span></div>
 </div>
 </div>
 <div class="bt-connectors"><div class="bt-conn-pair"><div class="bt-conn-top"></div><div class="bt-conn-bot"></div></div><div class="bt-conn-mid"></div><div class="bt-conn-pair"><div class="bt-conn-top"></div><div class="bt-conn-bot"></div></div></div>
@@ -2782,8 +2794,8 @@ footer{
 <div style="margin-top:1.5rem;">
 <div class="bt-round-title">Qualifications depuis les poules</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-<div class="pool-box"><div class="pool-box-head">Poule A</div><div class="pool-box-row qualif"><span class="pool-rank q">1</span><span>À déterminer</span><span class="qualif-arrow">→ DF1</span></div><div class="pool-box-row qualif"><span class="pool-rank q">2</span><span>À déterminer</span><span class="qualif-arrow">→ QF1</span></div><div class="pool-box-row qualif"><span class="pool-rank q">3</span><span>À déterminer</span><span class="qualif-arrow">→ QF2</span></div></div>
-<div class="pool-box"><div class="pool-box-head" style="color:var(--cyan);">Poule B</div><div class="pool-box-row qualif"><span class="pool-rank q">1</span><span>À déterminer</span><span class="qualif-arrow">→ DF2</span></div><div class="pool-box-row qualif"><span class="pool-rank q">2</span><span>À déterminer</span><span class="qualif-arrow">→ QF2</span></div><div class="pool-box-row qualif"><span class="pool-rank q">3</span><span>À déterminer</span><span class="qualif-arrow">→ QF1</span></div></div>
+<div class="pool-box"><div class="pool-box-head">Poule A</div><div class="pool-box-row qualif" data-preview-slot="A1"><span class="pool-rank q">1</span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ DF1</span></div><div class="pool-box-row qualif" data-preview-slot="A2"><span class="pool-rank q">2</span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ QF1</span></div><div class="pool-box-row qualif" data-preview-slot="A3"><span class="pool-rank q">3</span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ QF2</span></div></div>
+<div class="pool-box"><div class="pool-box-head" style="color:var(--cyan);">Poule B</div><div class="pool-box-row qualif" data-preview-slot="B1"><span class="pool-rank q">1</span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ DF2</span></div><div class="pool-box-row qualif" data-preview-slot="B2"><span class="pool-rank q">2</span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ QF2</span></div><div class="pool-box-row qualif" data-preview-slot="B3"><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ QF1</span></div></div>
 </div>
 </div>
 </div></div>
@@ -3070,6 +3082,7 @@ function applyStanding(row) {
     stats[2].textContent = row.d ?? 0;
   }
   sortStandingsTable(row.pool);
+  if (typeof onStandingUpdated === 'function') onStandingUpdated();
 }
 
 // ── Initial load ─────────────────────────────────────────────
@@ -3195,6 +3208,176 @@ document.addEventListener('DOMContentLoaded', ()=>{
       }
     });
   });
+});
+</script>
+<script>
+// ── BRACKET PREVIEW / OFFICIEL MODE ──────────────────────────
+//
+// Deux états possibles selon les données Supabase :
+//
+// [POULES EN COURS]  Toutes les équipes n'ont pas encore atteint 2 matchs joués.
+//   → Bouton "Aperçu si les poules finissaient maintenant" / "Revenir à l'original"
+//   → Comportement toggle manuel, identique à l'ancienne logique.
+//
+// [POULES TERMINÉES] Toutes les 6 équipes ont j >= 2 dans standings.
+//   → Le bracket affiche automatiquement les vraies équipes (bracket officiel).
+//   → Bannière différente : "Bracket officiel des play-offs".
+//   → Le bouton toggle disparaît (les poules sont finies, plus de mode "aperçu").
+//
+// Si on repasse en dessous de 6 équipes à 2 matchs (ex: reset Supabase pour les tests),
+// on revient au comportement avec bouton toggle.
+// ─────────────────────────────────────────────────────────────
+
+var _bracketPreviewActive = false;  // état du toggle (mode poules en cours seulement)
+var _poolsFinished = false;          // true quand toutes les équipes ont j>=2
+
+// Libellés génériques par défaut
+var BRACKET_DEFAULTS = {
+  A1: '1er Poule A', A2: '2e Poule A', A3: '3e Poule A',
+  B1: '1er Poule B', B2: '2e Poule B', B3: '3e Poule B'
+};
+
+// ── Lire les classements depuis le DOM ───────────────────────
+function getStandingsFromDOM() {
+  var result = {};
+  ['A','B'].forEach(function(pool) {
+    var rows = Array.from(document.querySelectorAll('.stand-row[data-pool="' + pool + '"]'));
+    rows.sort(function(a, b) {
+      var ra = parseInt(a.querySelector('.rk')?.textContent) || 99;
+      var rb = parseInt(b.querySelector('.rk')?.textContent) || 99;
+      return ra - rb;
+    });
+    rows.forEach(function(row, idx) {
+      var name = row.querySelector('.stand-team-name')?.textContent?.trim() || ('Équipe ' + (idx+1));
+      result[pool + (idx + 1)] = name;
+    });
+  });
+  return result;
+}
+
+// ── Vérifier si toutes les équipes ont j >= 2 ───────────────
+function checkPoolsFinished() {
+  var rows = Array.from(document.querySelectorAll('.stand-row'));
+  if (rows.length < 6) return false; // pas encore toutes chargées
+  return rows.every(function(row) {
+    var jStat = row.querySelector('.stand-stat[data-stat="j"]');
+    return jStat && parseInt(jStat.textContent) >= 2;
+  });
+}
+
+// ── Appliquer les noms d'équipes dans les slots ──────────────
+function applyTeamsToSlots(teams, isOfficial) {
+  document.querySelectorAll('[data-preview-slot]').forEach(function(el) {
+    var key = el.getAttribute('data-preview-slot');
+    var team = teams[key];
+    if (!team) return;
+    var textSpan = el.querySelector('.bt-slot-text') || el.querySelector('.pb-team-text');
+    if (textSpan) {
+      textSpan.textContent = team;
+      textSpan.style.color = 'var(--white)';
+      textSpan.style.fontStyle = 'normal';
+    }
+    if (isOfficial) {
+      el.style.borderLeft = '3px solid rgba(0,212,255,0.7)';
+      el.style.paddingLeft = '.35rem';
+    } else {
+      el.style.borderLeft = '3px solid rgba(0,212,255,0.35)';
+      el.style.paddingLeft = '.35rem';
+    }
+  });
+}
+
+// ── Réinitialiser les slots aux libellés génériques ──────────
+function resetSlots() {
+  document.querySelectorAll('[data-preview-slot]').forEach(function(el) {
+    var key = el.getAttribute('data-preview-slot');
+    var textSpan = el.querySelector('.bt-slot-text') || el.querySelector('.pb-team-text');
+    if (textSpan) {
+      textSpan.textContent = BRACKET_DEFAULTS[key] || '';
+      textSpan.style.color = '';
+      textSpan.style.fontStyle = '';
+    }
+    el.style.borderLeft = '';
+    el.style.paddingLeft = '';
+  });
+}
+
+// ── Mettre à jour l'UI du bouton et bannière ─────────────────
+function updateBracketUI() {
+  var btn    = document.getElementById('btn-preview-bracket');
+  var banner = document.getElementById('bracket-preview-banner');
+  var bannerTitle = document.getElementById('bracket-banner-title');
+  var bannerText  = document.getElementById('bracket-banner-text');
+  if (!btn || !banner) return;
+
+  if (_poolsFinished) {
+    // ── Mode officiel : bracket figé, pas de toggle ──────────
+    var teams = getStandingsFromDOM();
+    applyTeamsToSlots(teams, true);
+
+    // Bouton masqué (poules terminées, plus besoin d'un aperçu)
+    btn.style.display = 'none';
+
+    // Bannière officielle (cyan)
+    banner.style.display = 'flex';
+    banner.style.background = 'rgba(0,212,255,0.07)';
+    banner.style.borderBottomColor = 'rgba(0,212,255,0.35)';
+    if (bannerTitle) { bannerTitle.textContent = 'Bracket officiel des play-offs'; bannerTitle.style.color = 'var(--cyan)'; }
+    if (bannerText)  { bannerText.innerHTML = 'Les poules sont terminées. Les affrontements du bracket reflètent les <strong style="color:var(--white);">classements officiels finaux</strong>. Les gagnants des QF et DF seront déterminés lors des matchs.'; }
+
+  } else {
+    // ── Mode poules en cours : toggle manuel ─────────────────
+    btn.style.display = 'flex';
+
+    if (_bracketPreviewActive) {
+      var teams2 = getStandingsFromDOM();
+      applyTeamsToSlots(teams2, false);
+      banner.style.display = 'flex';
+      banner.style.background = 'rgba(245,201,58,0.08)';
+      banner.style.borderBottomColor = 'rgba(245,201,58,0.3)';
+      if (bannerTitle) { bannerTitle.textContent = 'Mode aperçu activé'; bannerTitle.style.color = 'var(--gold)'; }
+      if (bannerText)  { bannerText.innerHTML = 'Les équipes affichées correspondent aux classements <strong style="color:var(--white);">actuels des poules</strong>. Les poules ne sont pas encore terminées et les classements peuvent encore évoluer. Les gagnants des QF et DF ne peuvent pas être prédits — ces cases restent à déterminer.'; }
+      btn.style.background   = 'rgba(245,201,58,0.15)';
+      btn.style.borderColor  = 'rgba(245,201,58,0.6)';
+      btn.style.color        = 'var(--gold)';
+      btn.innerHTML = '<span style="font-size:13px;">↩</span> Revenir à la version originale';
+    } else {
+      resetSlots();
+      banner.style.display = 'none';
+      btn.style.background   = 'rgba(0,212,255,0.1)';
+      btn.style.borderColor  = 'rgba(0,212,255,0.35)';
+      btn.style.color        = 'var(--cyan)';
+      btn.innerHTML = '<span style="font-size:13px;">🔮</span> Aperçu "Si les poules finissaient maintenant"';
+    }
+  }
+}
+
+// ── Réévaluer l'état à chaque mise à jour standings ──────────
+// Appelée depuis applyStanding (existant) après chaque update Supabase
+function onStandingUpdated() {
+  var wasFinished = _poolsFinished;
+  _poolsFinished = checkPoolsFinished();
+
+  if (!_poolsFinished && wasFinished) {
+    // Retour en arrière (ex: reset Supabase pour tests) → reset complet
+    _bracketPreviewActive = false;
+  }
+
+  // Si le mode officiel vient de s'activer, on force la mise à jour
+  updateBracketUI();
+}
+
+// ── Toggle manuel (bouton cliqué) ────────────────────────────
+function toggleBracketPreview() {
+  if (_poolsFinished) return; // ne rien faire si officiel
+  _bracketPreviewActive = !_bracketPreviewActive;
+  updateBracketUI();
+}
+
+// ── Initialisation au chargement ────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  // L'état sera réévalué dès que Supabase renverra les standings via loadData()
+  updateBracketUI();
 });
 </script>
 </body>
