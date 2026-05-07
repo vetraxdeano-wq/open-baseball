@@ -2595,6 +2595,7 @@ footer{
   <div class="stand-head-num">W</div>
   <div class="stand-head-num">L</div>
 </div>
+<div id="stand-pool-a">
 
 <!-- Wildcats -->
 <div class="stand-row" data-pool="A" data-team="wildcats" style="border-color:rgba(113,122,213,0.4);">
@@ -2650,6 +2651,8 @@ footer{
   </div>
 </div>
 
+</div><!-- /stand-pool-a -->
+
 <div class="stand-pool-label" style="color:var(--cyan);margin-top:1.2rem;">Poule B</div>
 <div class="stand-head">
   <div class="stand-head-rk">#</div>
@@ -2657,6 +2660,8 @@ footer{
   <div class="stand-head-num">J</div>
   <div class="stand-head-num">W</div>
   <div class="stand-head-num">L</div>
+</div>
+<div id="stand-pool-b">
 </div>
 
 <!-- Cavigal -->
@@ -2712,6 +2717,8 @@ footer{
     <div class="stand-stat" data-stat="l">0</div>
   </div>
 </div>
+
+</div><!-- /stand-pool-b -->
 
 </div>
 </div>
@@ -3034,9 +3041,11 @@ function applyMatch(row) {
 
 // ── Sort standings rows by rank (ascending) ─────────────────
 function sortStandingsTable(pool) {
-  const rows = Array.from(document.querySelectorAll('.stand-row[data-pool="' + pool + '"]'));
+  const containerId = pool === 'A' ? 'stand-pool-a' : 'stand-pool-b';
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const rows = Array.from(container.querySelectorAll('.stand-row[data-pool="' + pool + '"]'));
   if (!rows.length) return;
-  const container = rows[0].parentNode;
   rows.sort((a, b) => {
     const ra = parseInt(a.querySelector('.rk')?.textContent) || 99;
     const rb = parseInt(b.querySelector('.rk')?.textContent) || 99;
