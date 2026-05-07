@@ -694,7 +694,8 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
   <nav class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-label">Navigation</div>
-      <div class="nav-item active" onclick="showPanel('panel-scores',this)"><span class="nav-icon">⚡</span>Scores en direct</div>
+      <div class="nav-item active" id="nav-dashboard" onclick="showPanel('panel-dashboard',this)"><span class="nav-icon">🖥</span>Dashboard</div>
+      <div class="nav-item" onclick="showPanel('panel-scores',this)"><span class="nav-icon">⚡</span>Scores en direct</div>
       <div class="nav-item" onclick="showPanel('panel-standings',this)"><span class="nav-icon">📊</span>Classements</div>
       <div class="nav-item" onclick="showPanel('panel-bracket',this)"><span class="nav-icon">🏆</span>Bracket</div>
     </div>
@@ -715,8 +716,51 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
   <!-- CONTENT -->
   <main class="content">
 
+    <!-- ═══ PANEL: DASHBOARD ═══ -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="page-title">Vue d'ensemble</div>
+      <div class="page-h1">Dashboard</div>
+
+      <!-- Stat cards -->
+      <div class="grid-3" id="dash-stats" style="margin-bottom:1.5rem;">
+        <div class="stat-card">
+          <span class="stat-num" id="dash-done-count">—</span>
+          <div class="stat-label">Matchs terminés</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num" id="dash-live-count" style="color:var(--red);">—</span>
+          <div class="stat-label">En cours (LIVE)</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num" id="dash-soon-count" style="color:var(--muted);">—</span>
+          <div class="stat-label">À venir</div>
+        </div>
+      </div>
+
+      <!-- Bracket live -->
+      <div class="dash-card">
+        <div class="dash-card-head">
+          <div class="dash-card-title">🏆 Bracket — état actuel</div>
+          <button class="btn btn-cyan btn-sm" onclick="refreshBracket()">🔄 Rafraîchir</button>
+        </div>
+        <div class="dash-card-body">
+          <div id="dashboard-bracket-view" class="loading"><div class="spinner"></div>Chargement…</div>
+        </div>
+      </div>
+
+      <!-- Derniers matchs terminés -->
+      <div class="dash-card" style="margin-top:1.2rem;">
+        <div class="dash-card-head">
+          <div class="dash-card-title">✅ Derniers résultats</div>
+        </div>
+        <div class="dash-card-body" id="dash-recent-results">
+          <div style="color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:13px;">Chargement…</div>
+        </div>
+      </div>
+    </div><!-- /panel-dashboard -->
+
     <!-- ═══ PANEL: SCORES ═══ -->
-    <div class="panel active" id="panel-scores">
+    <div class="panel" id="panel-scores">
       <div class="page-title">Gestion en direct</div>
       <div class="page-h1">Scores & Statuts</div>
 
@@ -1408,6 +1452,7 @@ async function saveMatch(matchId) {
     if(status === 'done' && MATCH_TEAM_MAP[matchId]) {
       await recomputeStandingsFromFinishedMatches();
     }
+    await refreshBracket();
     toast(`Match ${matchId.toUpperCase()} sauvegardé — ${left_score}–${right_score} · ${status}`);
   } catch(e) {
     toast('Erreur : ' + e.message, 'error');
@@ -1481,6 +1526,7 @@ async function recomputeStandingsFromFinishedMatches() {
     if(error) throw error;
 
     await loadStandings();
+    // bracket labels will be refreshed by the caller (saveMatch → refreshBracket)
     toast('Classements W/L recalculés automatiquement ✓');
   } catch(e) {
     toast('Auto standings erreur : ' + e.message, 'error');
@@ -1540,6 +1586,110 @@ async function saveStandings(pool) {
 }
 
 // ══════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════
+async function refreshDashboard() {
+  try {
+    const { data: matches } = await db.from('matches').select('*');
+    if (!matches) return;
+
+    const MATCH_LABELS = {
+      m1:  { label:'M1 · Poule B', left:'Pharaons', right:'Cavigal' },
+      m2:  { label:'M2 · Poule A', left:'Wildcats', right:'Grizzlys' },
+      m3:  { label:'M3 · Poule B', left:'Panthères', right:'Pharaons' },
+      m4:  { label:'M4 · Poule A', left:'Comanches', right:'Wildcats' },
+      m5:  { label:'M5 · Poule B', left:'Cavigal', right:'Panthères' },
+      m6:  { label:'M6 · Poule A', left:'Grizzlys', right:'Comanches' },
+      m7:  { label:'M7 · QF2', left: null, right: null },
+      m8:  { label:'M8 · QF1', left: null, right: null },
+      m9:  { label:'M9 · DF1', left: null, right: null },
+      m10: { label:'M10 · DF2', left: null, right: null },
+      m11: { label:'M11 · Petite Finale', left: null, right: null },
+      m12: { label:'M12 · Grande Finale', left: null, right: null },
+    };
+
+    let done=0, live=0, soon=0;
+    const doneMatches = [];
+
+    matches.forEach(m => {
+      if(m.status === 'done') { done++; doneMatches.push(m); }
+      else if(m.status === 'live') live++;
+      else soon++;
+    });
+
+    document.getElementById('dash-done-count').textContent = done;
+    document.getElementById('dash-live-count').textContent = live;
+    document.getElementById('dash-soon-count').textContent = 12 - done - live;
+
+    // Recent results
+    const rr = document.getElementById('dash-recent-results');
+    if(doneMatches.length === 0) {
+      rr.innerHTML = '<div style="color:var(--muted);font-family:\'Barlow Condensed\',sans-serif;font-size:13px;">Aucun match terminé pour l\'instant.</div>';
+    } else {
+      // Sort by id desc (m12 > m1)
+      doneMatches.sort((a,b) => {
+        const n = id => parseInt(id.replace('m',''));
+        return n(b.id) - n(a.id);
+      });
+      // Need bracket resolution for labels
+      const { data: standings } = await db.from('standings').select('*');
+      const standMap = {};
+      (standings||[]).forEach(s => {
+        if(!standMap[s.pool]) standMap[s.pool]=[];
+        standMap[s.pool].push(s);
+      });
+      ['A','B'].forEach(p => { if(standMap[p]) standMap[p].sort((a,b)=>a.rank-b.rank); });
+      const tn = (pool, rank) => {
+        const t = (standMap[pool]||[]).find(s => s.rank === rank);
+        return t ? (t.team.charAt(0).toUpperCase() + t.team.slice(1)) : null;
+      };
+      // Populate dynamic match labels
+      MATCH_LABELS.m7.left  = tn('B',2); MATCH_LABELS.m7.right  = tn('A',3);
+      MATCH_LABELS.m8.left  = tn('A',2); MATCH_LABELS.m8.right  = tn('B',3);
+      MATCH_LABELS.m9.left  = tn('A',1);
+      MATCH_LABELS.m10.left = tn('B',1);
+
+      const matchMap = {};
+      matches.forEach(m => matchMap[m.id] = m);
+      const gmw = (mid) => {
+        const mm = matchMap[mid];
+        if(!mm || mm.status!=='done') return null;
+        const ls=parseInt(mm.left_score)||0, rs=parseInt(mm.right_score)||0;
+        if(ls===rs) return null;
+        const lName = MATCH_LABELS[mid]?.left || '?';
+        const rName = MATCH_LABELS[mid]?.right || '?';
+        return ls > rs ? lName : rName;
+      };
+
+      MATCH_LABELS.m7.right = tn('A',3);
+      MATCH_LABELS.m8.right = tn('B',3);
+      MATCH_LABELS.m9.right  = gmw('m7');
+      MATCH_LABELS.m10.right = gmw('m8');
+      const df1w = gmw('m9'), df1l = MATCH_LABELS.m9.left && MATCH_LABELS.m9.right ? (gmw('m9') === MATCH_LABELS.m9.left ? MATCH_LABELS.m9.right : MATCH_LABELS.m9.left) : null;
+      const df2w = gmw('m10'), df2l = MATCH_LABELS.m10.left && MATCH_LABELS.m10.right ? (gmw('m10') === MATCH_LABELS.m10.left ? MATCH_LABELS.m10.right : MATCH_LABELS.m10.left) : null;
+      MATCH_LABELS.m11.left  = df1l; MATCH_LABELS.m11.right = df2l;
+      MATCH_LABELS.m12.left  = df1w; MATCH_LABELS.m12.right = df2w;
+
+      rr.innerHTML = doneMatches.slice(0,6).map(m => {
+        const cfg = MATCH_LABELS[m.id];
+        const leftName  = cfg?.left  || m.id.toUpperCase() + ' Gauche';
+        const rightName = cfg?.right || m.id.toUpperCase() + ' Droite';
+        const ls = parseInt(m.left_score)||0, rs = parseInt(m.right_score)||0;
+        const leftWin = ls > rs, rightWin = rs > ls;
+        return `<div style="display:flex;align-items:center;justify-content:space-between;padding:.55rem .8rem;border-radius:8px;background:var(--card2);border:1px solid var(--border);margin-bottom:6px;gap:.8rem;font-family:'Barlow Condensed',sans-serif;">
+          <span style="font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;min-width:90px;">${cfg?.label||m.id.toUpperCase()}</span>
+          <span style="font-weight:700;font-size:14px;color:${leftWin?'var(--white)':'var(--muted)'};">${leftName||'?'}</span>
+          <span style="font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--cyan);">${ls} – ${rs}</span>
+          <span style="font-weight:700;font-size:14px;color:${rightWin?'var(--white)':'var(--muted)'};">${rightName||'?'}</span>
+        </div>`;
+      }).join('');
+    }
+  } catch(e) {
+    console.error('Dashboard refresh error', e);
+  }
+}
+
+// ══════════════════════════════════════════════
 // BRACKET: TEAM NAME RESOLUTION + PROGRESSION
 // ══════════════════════════════════════════════
 
@@ -1570,7 +1720,9 @@ function poolsComplete(standMap) {
 
 async function refreshBracket() {
   const el = document.getElementById('bracket-view');
-  el.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement…</div>';
+  const dashEl = document.getElementById('dashboard-bracket-view');
+  if(el) el.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement…</div>';
+  if(dashEl) dashEl.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement…</div>';
   try {
     const [{ data: matches }, { data: standings }] = await Promise.all([
       db.from('matches').select('*'),
@@ -1708,8 +1860,12 @@ async function refreshBracket() {
       </div>
       ${complete ? '' : `<div style="margin-top:1rem;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);"><span style="color:var(--gold);">ℹ️</span> Les noms officiels apparaîtront quand toutes les équipes auront joué 2 matchs.</div>`}
     `;
+    if(dashEl) dashEl.innerHTML = el.innerHTML;
+    await refreshDashboard();
   } catch(e) {
-    el.innerHTML = '❌ Erreur : ' + e.message;
+    const msg = '❌ Erreur : ' + e.message;
+    if(el) el.innerHTML = msg;
+    if(dashEl) dashEl.innerHTML = msg;
   }
 }
 
@@ -1752,7 +1908,7 @@ function subscribeRealtime() {
 async function refreshAll() {
   await loadScores();
   await loadStandings();
-  await refreshBracket();
+  await refreshBracket(); // refreshBracket calls refreshDashboard internally
   toast('Données rechargées depuis Supabase');
 }
 
@@ -1762,7 +1918,7 @@ async function refreshAll() {
 document.addEventListener('DOMContentLoaded', () => {
   loadScores();
   loadStandings();
-  refreshBracket();
+  refreshBracket(); // also populates dashboard
   subscribeRealtime();
 });
 
@@ -1776,7 +1932,11 @@ function setMobActive(btnId) {
 <!-- ═══ MOBILE BOTTOM NAV ═══ -->
 <nav class="mobile-nav">
   <div class="mobile-nav-inner">
-    <button class="mob-nav-btn active" id="mob-btn-scores" onclick="showPanel('panel-scores',null);setMobActive('mob-btn-scores')">
+    <button class="mob-nav-btn active" id="mob-btn-dashboard" onclick="showPanel('panel-dashboard',null);setMobActive('mob-btn-dashboard')">
+      <span class="mob-icon">🖥</span>
+      <span>Dashboard</span>
+    </button>
+    <button class="mob-nav-btn" id="mob-btn-scores" onclick="showPanel('panel-scores',null);setMobActive('mob-btn-scores')">
       <span class="mob-icon">⚡</span>
       <span>Scores</span>
     </button>
