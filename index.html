@@ -3471,46 +3471,68 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script>
 // ═══════════════════════════════════════════════════════════════
-// PLAYOFF TEAM NAME RESOLUTION — index.html
-// Intercepte applyMatch / onStandingUpdated pour mettre à jour
-// dynamiquement les noms d'équipes dans les res-cards m7→m12
-// et dans l'arbre du bracket, en appliquant la même logique
-// que le dashboard (standings + résultats QF/DF).
+// PLAYOFF RESOLUTION — noms d'équipes + scores dans le bracket
 // ═══════════════════════════════════════════════════════════════
 (function () {
   'use strict';
 
-  /* ── Cache des données match Supabase ────────────────────── */
+  /* ── Cache Supabase ────────────────────────────────────────── */
   var _mc = {}; // matchId → row
 
-  /* ── Interception de applyMatch ──────────────────────────── */
+  /* ── Interceptions ─────────────────────────────────────────── */
   var _origAM = typeof applyMatch === 'function' ? applyMatch : null;
   window.applyMatch = function (row) {
     if (_origAM) _origAM(row);
     _mc[row.id] = row;
     _refresh();
   };
-
-  /* ── Interception de onStandingUpdated ───────────────────── */
   var _origOSU = typeof onStandingUpdated === 'function' ? onStandingUpdated : null;
   window.onStandingUpdated = function () {
     if (_origOSU) _origOSU();
     _refresh();
   };
 
-  /* ── Calcul du gagnant / perdant d'un match ─────────────── */
-  function _winner(mid, leftName, rightName) {
+  /* ── Gagnant / perdant d'un match ─────────────────────────── */
+  function _winner(mid, lName, rName) {
     var m = _mc[mid];
-    if (!m || m.status !== 'done' || !leftName || !rightName) return { w: null, l: null };
+    if (!m || m.status !== 'done' || !lName || !rName) return { w: null, l: null, ls: null, rs: null };
     var ls = parseInt(m.left_score)  || 0;
     var rs = parseInt(m.right_score) || 0;
-    if (ls === rs) return { w: null, l: null };
+    if (ls === rs) return { w: null, l: null, ls: ls, rs: rs };
     return ls > rs
-      ? { w: leftName,  l: rightName }
-      : { w: rightName, l: leftName  };
+      ? { w: lName, l: rName, ls: ls, rs: rs }
+      : { w: rName, l: lName, ls: ls, rs: rs };
   }
 
-  /* ── Mise à jour d'un .res-team span ─────────────────────── */
+  /* ── Score brut d'un match (même si pas fini) ─────────────── */
+  function _scores(mid) {
+    var m = _mc[mid];
+    if (!m || m.status === 'soon') return { ls: null, rs: null };
+    return {
+      ls: parseInt(m.left_score)  || 0,
+      rs: parseInt(m.right_score) || 0
+    };
+  }
+
+  /* ── Mettre à jour le .bt-score d'un slot ─────────────────── */
+  // selector : '[data-preview-slot="A3"]' ou '[data-bracket-slot="qf2-winner"]'
+  // score    : nombre ou null
+  // isWin    : true → couleur cyan (gagnant)
+  function _setScore(selector, score, isWin) {
+    var el = document.querySelector(selector);
+    if (!el) return;
+    var s = el.querySelector('.bt-score');
+    if (!s) return;
+    if (score !== null && score !== undefined) {
+      s.textContent = score;
+      s.className   = 'bt-score' + (isWin ? ' win' : '');
+    } else {
+      s.textContent = '-';
+      s.className   = 'bt-score';
+    }
+  }
+
+  /* ── Mettre à jour nom + visuel d'un .res-team ────────────── */
   function _setRes(mid, side, name, official) {
     var card = document.querySelector('[data-match="' + mid + '"]');
     if (!card) return;
@@ -3519,66 +3541,64 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!span) return;
     span.textContent = name;
     span.style.color = official ? 'var(--white)' : 'var(--muted)';
-
     if (!official || typeof TEAM_VISUALS === 'undefined') return;
     var vis = TEAM_VISUALS[name];
     if (!vis) return;
-
-    // Fond coloré sur le côté
     var sideEl = side === 'left'
       ? card.querySelector('.res-side:not(.right)')
       : card.querySelector('.res-side.right');
-    if (sideEl) {
-      var dir = side === 'left' ? 'to right' : 'to left';
-      sideEl.style.background = 'linear-gradient(' + dir + ',' + vis.color + ' 0%,transparent 100%)';
-      // Logo
-      var logoWrap = sideEl.querySelector('.res-logo');
-      if (logoWrap) {
-        var img = logoWrap.querySelector('img');
-        if (!img) { img = document.createElement('img'); logoWrap.appendChild(img); }
-        img.src = vis.logo; img.alt = name;
-      } else {
-        var ld = document.createElement('div');
-        ld.className = 'res-logo';
-        ld.innerHTML = '<img src="' + vis.logo + '" alt="' + name + '"/>';
-        var inner = sideEl.querySelector('.res-side-inner');
-        if (inner) inner.appendChild(ld);
-      }
+    if (!sideEl) return;
+    var dir = side === 'left' ? 'to right' : 'to left';
+    sideEl.style.background = 'linear-gradient(' + dir + ',' + vis.color + ' 0%,transparent 100%)';
+    var lw = sideEl.querySelector('.res-logo');
+    if (lw) {
+      var img = lw.querySelector('img');
+      if (!img) { img = document.createElement('img'); lw.appendChild(img); }
+      img.src = vis.logo; img.alt = name;
+    } else {
+      var ld = document.createElement('div');
+      ld.className = 'res-logo';
+      ld.innerHTML = '<img src="' + vis.logo + '" alt="' + name + '"/>';
+      var inner = sideEl.querySelector('.res-side-inner');
+      if (inner) inner.appendChild(ld);
     }
   }
 
-  /* ── Mise à jour d'un slot du bracket tree ───────────────── */
+  /* ── Mettre à jour nom + visuel d'un slot bracket (data-bracket-slot) */
   function _setSlot(attr, name, official) {
     var el = document.querySelector('[data-bracket-slot="' + attr + '"]');
     if (!el) return;
     var txt = el.querySelector('.bt-slot-text');
-    if (txt) {
-      txt.textContent = name;
-      txt.style.color = official ? 'var(--white)' : 'var(--muted)';
-    }
-    if (official) el.classList.remove('tbd');
-    else          el.classList.add('tbd');
-
+    if (txt) { txt.textContent = name; txt.style.color = official ? 'var(--white)' : 'var(--muted)'; }
+    if (official) el.classList.remove('tbd'); else el.classList.add('tbd');
     if (!official || typeof TEAM_VISUALS === 'undefined') return;
     var vis = TEAM_VISUALS[name];
     if (!vis) return;
-    var bg   = el.querySelector('.bt-slot-bg');
-    var logo = el.querySelector('.bt-slot-logo');
+    var bg = el.querySelector('.bt-slot-bg'); var logo = el.querySelector('.bt-slot-logo');
     if (bg)   bg.style.background = 'linear-gradient(to right,' + vis.color + ' 0%,transparent 80%)';
-    if (logo) {
-      var img = logo.querySelector('img');
-      if (img) { img.src = vis.logo; img.alt = name; }
-      logo.style.background = vis.logoBg || '#fff';
-      logo.style.display    = 'flex';
-    }
+    if (logo) { var img = logo.querySelector('img'); if (img) { img.src = vis.logo; img.alt = name; } logo.style.background = vis.logoBg || '#fff'; logo.style.display = 'flex'; }
   }
 
-  /* ── Fonction principale ─────────────────────────────────── */
+  /* ── Mettre à jour nom + visuel d'un slot bracket (data-preview-slot) */
+  function _setPreviewSlot(key, name, official) {
+    var el = document.querySelector('[data-preview-slot="' + key + '"]');
+    if (!el) return;
+    var txt = el.querySelector('.bt-slot-text');
+    if (txt) { txt.textContent = name; txt.style.color = official ? 'var(--white)' : 'var(--muted)'; }
+    if (official) el.classList.remove('tbd'); else el.classList.add('tbd');
+    if (!official || typeof TEAM_VISUALS === 'undefined') return;
+    var vis = TEAM_VISUALS[name];
+    if (!vis) return;
+    var bg = el.querySelector('.bt-slot-bg'); var logo = el.querySelector('.bt-slot-logo');
+    if (bg)   bg.style.background = 'linear-gradient(to right,' + vis.color + ' 0%,transparent 80%)';
+    if (logo) { var img = logo.querySelector('img'); if (img) { img.src = vis.logo; img.alt = name; } logo.style.background = vis.logoBg || '#fff'; logo.style.display = 'flex'; }
+  }
+
+  /* ── Rafraîchissement principal ───────────────────────────── */
   function _refresh() {
     var teams    = typeof getStandingsFromDOM === 'function' ? getStandingsFromDOM() : {};
     var finished = typeof checkPoolsFinished  === 'function' ? checkPoolsFinished()  : false;
 
-    /* Noms de base depuis les classements */
     var a1 = (finished && teams.A1) ? teams.A1 : '1er Poule A';
     var a2 = (finished && teams.A2) ? teams.A2 : '2e Poule A';
     var a3 = (finished && teams.A3) ? teams.A3 : '3e Poule A';
@@ -3586,66 +3606,93 @@ document.addEventListener('DOMContentLoaded', function() {
     var b2 = (finished && teams.B2) ? teams.B2 : '2e Poule B';
     var b3 = (finished && teams.B3) ? teams.B3 : '3e Poule B';
 
-    /* QF2 (m7) : B2 vs A3 */
-    _setRes('m7', 'left',  b2, finished);
+    /* ── QF2 (m7) : left=B2, right=A3 ── */
+    _setRes('m7', 'left', b2, finished);
     _setRes('m7', 'right', a3, finished);
+    // bracket QF2 : slot A3 (top) = right, slot B2 (bottom) = left
+    var sc7 = _scores('m7');
+    var m7done = _mc['m7'] && _mc['m7'].status === 'done';
+    _setPreviewSlot('A3', a3, finished);
+    _setScore('[data-preview-slot="A3"]', sc7.rs, m7done && sc7.rs > sc7.ls);
+    _setPreviewSlot('B2', b2, finished);
+    _setScore('[data-preview-slot="B2"]', sc7.ls, m7done && sc7.ls > sc7.rs);
 
-    /* QF1 (m8) : A2 vs B3 */
-    _setRes('m8', 'left',  a2, finished);
+    /* ── QF1 (m8) : left=A2, right=B3 ── */
+    _setRes('m8', 'left', a2, finished);
     _setRes('m8', 'right', b3, finished);
+    // bracket QF1 : slot B3 (top) = right, slot A2 (bottom) = left
+    var sc8 = _scores('m8');
+    var m8done = _mc['m8'] && _mc['m8'].status === 'done';
+    _setPreviewSlot('B3', b3, finished);
+    _setScore('[data-preview-slot="B3"]', sc8.rs, m8done && sc8.rs > sc8.ls);
+    _setPreviewSlot('A2', a2, finished);
+    _setScore('[data-preview-slot="A2"]', sc8.ls, m8done && sc8.ls > sc8.rs);
 
-    /* Gagnants QF */
+    /* ── Gagnants QF ── */
     var qf2 = _winner('m7', b2, a3);
     var qf1 = _winner('m8', a2, b3);
 
-    /* DF1 (m9) : A1 vs Gagnant QF2 */
+    /* ── DF1 (m9) : left=A1, right=Gagnant QF2 ── */
     var df1R = qf2.w || 'Gagnant QF2';
-    _setRes('m9', 'left',  a1,   finished);
+    _setRes('m9', 'left', a1, finished);
     _setRes('m9', 'right', df1R, qf2.w !== null);
+    // bracket DF1 : slot qf2-winner (top) = right, slot A1 (bottom) = left
+    var sc9 = _scores('m9');
+    var m9done = _mc['m9'] && _mc['m9'].status === 'done';
+    _setSlot('qf2-winner', qf2.w || 'Gagnant QF2', qf2.w !== null);
+    _setScore('[data-bracket-slot="qf2-winner"]', sc9.rs, m9done && sc9.rs > sc9.ls);
+    _setPreviewSlot('A1', a1, finished);
+    _setScore('[data-preview-slot="A1"]', sc9.ls, m9done && sc9.ls > sc9.rs);
 
-    /* DF2 (m10) : B1 vs Gagnant QF1 */
+    /* ── DF2 (m10) : left=B1, right=Gagnant QF1 ── */
     var df2R = qf1.w || 'Gagnant QF1';
-    _setRes('m10', 'left',  b1,   finished);
+    _setRes('m10', 'left', b1, finished);
     _setRes('m10', 'right', df2R, qf1.w !== null);
+    // bracket DF2 : slot qf1-winner (top) = right, slot B1 (bottom) = left
+    var sc10 = _scores('m10');
+    var m10done = _mc['m10'] && _mc['m10'].status === 'done';
+    _setSlot('qf1-winner', qf1.w || 'Gagnant QF1', qf1.w !== null);
+    _setScore('[data-bracket-slot="qf1-winner"]', sc10.rs, m10done && sc10.rs > sc10.ls);
+    _setPreviewSlot('B1', b1, finished);
+    _setScore('[data-preview-slot="B1"]', sc10.ls, m10done && sc10.ls > sc10.rs);
 
-    /* Gagnants / perdants DF */
+    /* ── Gagnants / perdants DF ── */
     var df1 = _winner('m9',  a1, df1R);
     var df2 = _winner('m10', b1, df2R);
 
-    /* Petite finale (m11) */
-    _setRes('m11', 'left',  df1.l || 'Perdant DF1',   df1.l !== null);
-    _setRes('m11', 'right', df2.l || 'Perdant DF2',   df2.l !== null);
+    /* ── Petite finale (m11) : left=Perdant DF1, right=Perdant DF2 ── */
+    _setRes('m11', 'left',  df1.l || 'Perdant DF1', df1.l !== null);
+    _setRes('m11', 'right', df2.l || 'Perdant DF2', df2.l !== null);
+    // bracket PF : slot df2-loser (top) = right, slot df1-loser (bottom) = left
+    var sc11 = _scores('m11');
+    var m11done = _mc['m11'] && _mc['m11'].status === 'done';
+    _setSlot('df2-loser', df2.l || 'Perdant DF2', df2.l !== null);
+    _setScore('[data-bracket-slot="df2-loser"]', sc11.rs, m11done && sc11.rs > sc11.ls);
+    _setSlot('df1-loser', df1.l || 'Perdant DF1', df1.l !== null);
+    _setScore('[data-bracket-slot="df1-loser"]', sc11.ls, m11done && sc11.ls > sc11.rs);
 
-    /* Grande finale (m12) */
+    /* ── Grande finale (m12) : left=Vainqueur DF1, right=Vainqueur DF2 ── */
     _setRes('m12', 'left',  df1.w || 'Vainqueur DF1', df1.w !== null);
     _setRes('m12', 'right', df2.w || 'Vainqueur DF2', df2.w !== null);
-
-    /* ── Bracket tree ── */
-    _setSlot('qf2-winner', qf2.w || 'Gagnant QF2',   qf2.w !== null);
-    _setSlot('qf1-winner', qf1.w || 'Gagnant QF1',   qf1.w !== null);
-    _setSlot('df1-winner', df1.w || 'Vainqueur DF1', df1.w !== null);
+    // bracket GF : slot df2-winner (top) = right, slot df1-winner (bottom) = left
+    var sc12 = _scores('m12');
+    var m12done = _mc['m12'] && _mc['m12'].status === 'done';
     _setSlot('df2-winner', df2.w || 'Vainqueur DF2', df2.w !== null);
-    _setSlot('df1-loser',  df1.l || 'Perdant DF1',   df1.l !== null);
-    _setSlot('df2-loser',  df2.l || 'Perdant DF2',   df2.l !== null);
+    _setScore('[data-bracket-slot="df2-winner"]', sc12.rs, m12done && sc12.rs > sc12.ls);
+    _setSlot('df1-winner', df1.w || 'Vainqueur DF1', df1.w !== null);
+    _setScore('[data-bracket-slot="df1-winner"]', sc12.ls, m12done && sc12.ls > sc12.rs);
 
-    /* Champion */
+    /* ── Champion ── */
     var champEl = document.getElementById('bt-champ-name');
     if (champEl) {
       var champ = null;
-      if (df1.w && df2.w) {
-        var m12r = _winner('m12', df1.w, df2.w);
-        champ = m12r.w;
-      }
+      if (df1.w && df2.w) { var m12r = _winner('m12', df1.w, df2.w); champ = m12r.w; }
       champEl.textContent = champ || 'À couronner';
       champEl.style.color = champ ? 'var(--gold)' : '';
     }
   }
 
-  /* Passe initiale après chargement DOM (au cas où loadData() serait
-     déjà terminé quand ce script s'exécute) */
-  document.addEventListener('DOMContentLoaded', function () {
-    setTimeout(_refresh, 300);
-  });
+  document.addEventListener('DOMContentLoaded', function () { setTimeout(_refresh, 300); });
 })();
 </script>
 </body>
