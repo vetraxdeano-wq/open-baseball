@@ -3022,6 +3022,7 @@ function showSection(id, tab) {
   const sec = document.getElementById(id);
   if (sec) { sec.classList.add('active'); window.scrollTo(0,0); }
   if (tab) tab.classList.add('active');
+  if (id === 'sec-bracket') { setTimeout(scaleBracket, 30); setTimeout(scaleBracket, 150); }
 }
 
 // ── DAY TABS (Programme) ──
@@ -3384,20 +3385,22 @@ function scaleBracket() {
   var inner = document.querySelector('.bracket-tree-inner');
   if (!tree || !inner) return;
 
-  // Reset
+  // Reset transform pour mesurer la taille naturelle
   inner.style.transform = '';
   inner.style.transformOrigin = '';
   tree.style.height = '';
 
-  var naturalW = inner.offsetWidth;
+  var naturalW = inner.scrollWidth;
   var naturalH = inner.offsetHeight;
-  var containerW = tree.clientWidth - 8;
+  var containerW = tree.clientWidth - 4;
 
-  if (naturalW > containerW && containerW > 50) {
+  if (containerW < 50) return; // pas encore rendu
+
+  if (naturalW > containerW) {
     var scale = containerW / naturalW;
     inner.style.transform = 'scale(' + scale + ')';
     inner.style.transformOrigin = 'top left';
-    tree.style.height = Math.ceil(naturalH * scale + 20) + 'px';
+    tree.style.height = Math.ceil(naturalH * scale + 12) + 'px';
   }
 }
 
@@ -3463,14 +3466,6 @@ function toggleBracketPreview() {
 // ── Init ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   updateBracketUI();
-  // Rescale si l'onglet bracket devient actif
-  document.querySelectorAll('.bot-tab').forEach(function(tab) {
-    tab.addEventListener('click', function() {
-      if (document.getElementById('sec-bracket')?.classList.contains('active')) {
-        setTimeout(scaleBracket, 80);
-      }
-    });
-  });
   window.addEventListener('resize', scaleBracket);
 });
 </script>
