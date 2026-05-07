@@ -640,17 +640,73 @@ body{
 
 /* ── BRACKET TOURNAMENT TREE ── */
 .bracket-tree{
-  overflow-x:auto;
+  overflow:hidden;
   padding:1rem 0 1.5rem;
-  -webkit-overflow-scrolling:touch;
 }
 .bracket-tree-inner{
   display:flex;
   align-items:center;
   gap:0;
-  min-width:480px;
   padding:0 .5rem;
+  transform-origin:top left;
 }
+
+/* ── BRACKET SLOT TEAM CARD ── */
+.bt-slot{
+  position:relative;
+  overflow:hidden;
+}
+.bt-slot-bg{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  transition:background .25s;
+}
+.bt-slot-logo{
+  width:20px;height:20px;
+  border-radius:50%;
+  background:#fff;
+  border:1.5px solid rgba(255,255,255,0.3);
+  overflow:hidden;
+  flex-shrink:0;
+  display:none;
+  align-items:center;justify-content:center;
+  position:relative;z-index:1;
+}
+.bt-slot-logo img{width:100%;height:100%;object-fit:contain;display:block;}
+.bt-slot.has-team .bt-slot-logo{display:flex;}
+.bt-slot-text{position:relative;z-index:1;}
+.bt-seed{position:relative;z-index:1;}
+.bt-score{position:relative;z-index:1;}
+
+/* ── POOL BOX ROW TEAM CARD ── */
+.pool-box-row{
+  position:relative;
+  overflow:hidden;
+}
+.pb-team-bg{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  transition:background .25s;
+}
+.pb-team-logo{
+  width:24px;height:24px;
+  border-radius:50%;
+  background:#fff;
+  border:1.5px solid rgba(255,255,255,0.25);
+  overflow:hidden;
+  flex-shrink:0;
+  display:none;
+  align-items:center;justify-content:center;
+  position:relative;z-index:1;
+  margin-right:2px;
+}
+.pb-team-logo img{width:100%;height:100%;object-fit:contain;display:block;}
+.pool-box-row.has-team .pb-team-logo{display:flex;}
+.pb-team-text{position:relative;z-index:1;flex:1;}
+.pool-rank{position:relative;z-index:1;}
+.qualif-arrow{position:relative;z-index:1;}
 .bt-col{
   display:flex;
   flex-direction:column;
@@ -2748,13 +2804,13 @@ footer{
 <div class="bt-col-label">Quarts<br/>Dim. 24/05</div>
 <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin:0 0 6px;text-align:center;">QF2</div>
 <div class="bt-match" style="margin-bottom:20px;">
-<div class="bt-slot tbd" data-preview-slot="A3"><span class="bt-seed">QF2</span><span class="bt-slot-text">3e Poule A</span><span class="bt-score">-</span></div>
-<div class="bt-slot tbd" data-preview-slot="B2"><span class="bt-seed">B2</span><span class="bt-slot-text">2e Poule B</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-preview-slot="A3"><div class="bt-slot-bg"></div><span class="bt-seed">QF2</span><span class="bt-slot-logo"><img src="" alt=""/></span><span class="bt-slot-text">3e Poule A</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-preview-slot="B2"><div class="bt-slot-bg"></div><span class="bt-seed">B2</span><span class="bt-slot-logo"><img src="" alt=""/></span><span class="bt-slot-text">2e Poule B</span><span class="bt-score">-</span></div>
 </div>
 <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin:0 0 6px;text-align:center;">QF1</div>
 <div class="bt-match">
-<div class="bt-slot tbd" data-preview-slot="B3"><span class="bt-seed">QF1</span><span class="bt-slot-text">3e Poule B</span><span class="bt-score">-</span></div>
-<div class="bt-slot tbd" data-preview-slot="A2"><span class="bt-seed">A2</span><span class="bt-slot-text">2e Poule A</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-preview-slot="B3"><div class="bt-slot-bg"></div><span class="bt-seed">QF1</span><span class="bt-slot-logo"><img src="" alt=""/></span><span class="bt-slot-text">3e Poule B</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-preview-slot="A2"><div class="bt-slot-bg"></div><span class="bt-seed">A2</span><span class="bt-slot-logo"><img src="" alt=""/></span><span class="bt-slot-text">2e Poule A</span><span class="bt-score">-</span></div>
 </div>
 </div>
 <div class="bt-connectors"><div class="bt-conn-pair"><div class="bt-conn-top"></div><div class="bt-conn-bot"></div></div><div class="bt-conn-mid"></div><div class="bt-conn-pair"><div class="bt-conn-top"></div><div class="bt-conn-bot"></div></div></div>
@@ -2762,11 +2818,11 @@ footer{
 <div class="bt-col-label">Demi-finales<br/>Dim. 24/05</div>
 <div class="bt-match" style="margin-bottom:32px;">
 <div class="bt-slot tbd"><span class="bt-seed">DF1</span><span class="bt-slot-text">Gagnant QF2</span><span class="bt-score">-</span></div>
-<div class="bt-slot tbd" data-preview-slot="A1"><span class="bt-seed">A1</span><span class="bt-slot-text">1er Poule A</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-preview-slot="A1"><div class="bt-slot-bg"></div><span class="bt-seed">A1</span><span class="bt-slot-logo"><img src="" alt=""/></span><span class="bt-slot-text">1er Poule A</span><span class="bt-score">-</span></div>
 </div>
 <div class="bt-match">
 <div class="bt-slot tbd"><span class="bt-seed">DF2</span><span class="bt-slot-text">Gagnant QF1</span><span class="bt-score">-</span></div>
-<div class="bt-slot tbd" data-preview-slot="B1"><span class="bt-seed">B1</span><span class="bt-slot-text">1er Poule B</span><span class="bt-score">-</span></div>
+<div class="bt-slot tbd" data-preview-slot="B1"><div class="bt-slot-bg"></div><span class="bt-seed">B1</span><span class="bt-slot-logo"><img src="" alt=""/></span><span class="bt-slot-text">1er Poule B</span><span class="bt-score">-</span></div>
 </div>
 </div>
 <div class="bt-connectors"><div class="bt-conn-pair"><div class="bt-conn-top"></div><div class="bt-conn-bot"></div></div><div class="bt-conn-mid"></div><div class="bt-conn-pair"><div class="bt-conn-top"></div><div class="bt-conn-bot"></div></div></div>
@@ -2794,8 +2850,8 @@ footer{
 <div style="margin-top:1.5rem;">
 <div class="bt-round-title">Qualifications depuis les poules</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-<div class="pool-box"><div class="pool-box-head">Poule A</div><div class="pool-box-row qualif" data-preview-slot="A1"><span class="pool-rank q">1</span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ DF1</span></div><div class="pool-box-row qualif" data-preview-slot="A2"><span class="pool-rank q">2</span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ QF1</span></div><div class="pool-box-row qualif" data-preview-slot="A3"><span class="pool-rank q">3</span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ QF2</span></div></div>
-<div class="pool-box"><div class="pool-box-head" style="color:var(--cyan);">Poule B</div><div class="pool-box-row qualif" data-preview-slot="B1"><span class="pool-rank q">1</span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ DF2</span></div><div class="pool-box-row qualif" data-preview-slot="B2"><span class="pool-rank q">2</span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ QF2</span></div><div class="pool-box-row qualif" data-preview-slot="B3"><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ QF1</span></div></div>
+<div class="pool-box"><div class="pool-box-head">Poule A</div><div class="pool-box-row qualif" data-preview-slot="A1"><div class="pb-team-bg"></div><span class="pool-rank q">1</span><span class="pb-team-logo"><img src="" alt=""/></span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ DF1</span></div><div class="pool-box-row qualif" data-preview-slot="A2"><div class="pb-team-bg"></div><span class="pool-rank q">2</span><span class="pb-team-logo"><img src="" alt=""/></span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ QF1</span></div><div class="pool-box-row qualif" data-preview-slot="A3"><div class="pb-team-bg"></div><span class="pool-rank q">3</span><span class="pb-team-logo"><img src="" alt=""/></span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ QF2</span></div></div>
+<div class="pool-box"><div class="pool-box-head" style="color:var(--cyan);">Poule B</div><div class="pool-box-row qualif" data-preview-slot="B1"><div class="pb-team-bg"></div><span class="pool-rank q">1</span><span class="pb-team-logo"><img src="" alt=""/></span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ DF2</span></div><div class="pool-box-row qualif" data-preview-slot="B2"><div class="pb-team-bg"></div><span class="pool-rank q">2</span><span class="pb-team-logo"><img src="" alt=""/></span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ QF2</span></div><div class="pool-box-row qualif" data-preview-slot="B3"><div class="pb-team-bg"></div><span class="pool-rank q">3</span><span class="pb-team-logo"><img src="" alt=""/></span><span class="pb-team-text">À déterminer</span><span class="qualif-arrow">→ QF1</span></div></div>
 </div>
 </div>
 </div></div>
@@ -3212,29 +3268,22 @@ document.addEventListener('DOMContentLoaded', ()=>{
 </script>
 <script>
 // ── BRACKET PREVIEW / OFFICIEL MODE ──────────────────────────
-//
-// Deux états possibles selon les données Supabase :
-//
-// [POULES EN COURS]  Toutes les équipes n'ont pas encore atteint 2 matchs joués.
-//   → Bouton "Aperçu si les poules finissaient maintenant" / "Revenir à l'original"
-//   → Comportement toggle manuel, identique à l'ancienne logique.
-//
-// [POULES TERMINÉES] Toutes les 6 équipes ont j >= 2 dans standings.
-//   → Le bracket affiche automatiquement les vraies équipes (bracket officiel).
-//   → Bannière différente : "Bracket officiel des play-offs".
-//   → Le bouton toggle disparaît (les poules sont finies, plus de mode "aperçu").
-//
-// Si on repasse en dessous de 6 équipes à 2 matchs (ex: reset Supabase pour les tests),
-// on revient au comportement avec bouton toggle.
-// ─────────────────────────────────────────────────────────────
+var _bracketPreviewActive = false;
+var _poolsFinished = false;
 
-var _bracketPreviewActive = false;  // état du toggle (mode poules en cours seulement)
-var _poolsFinished = false;          // true quand toutes les équipes ont j>=2
-
-// Libellés génériques par défaut
 var BRACKET_DEFAULTS = {
   A1: '1er Poule A', A2: '2e Poule A', A3: '3e Poule A',
   B1: '1er Poule B', B2: '2e Poule B', B3: '3e Poule B'
+};
+
+// Données visuelles par équipe (logos depuis standings)
+var TEAM_VISUALS = {
+  'Wildcats':  { logo:'https://i.goopics.net/31c1r9.png', color:'rgba(113,122,213,0.28)', logoBg:'#fff'    },
+  'Comanches': { logo:'https://i.goopics.net/cyng3i.png', color:'rgba(176,183,197,0.18)', logoBg:'#20212b' },
+  'Grizzlys':  { logo:'https://i.goopics.net/7hjqer.png', color:'rgba(216,226,252,0.15)', logoBg:'#fff'    },
+  'Cavigal':   { logo:'https://i.goopics.net/jnbdbw.png', color:'rgba(165,0,22,0.28)',    logoBg:'#050810' },
+  'Panthères': { logo:'https://i.goopics.net/tjm4s1.png', color:'rgba(248,205,92,0.22)',  logoBg:'#1a1a1a' },
+  'Pharaons':  { logo:'https://i.goopics.net/4bcdyc.png', color:'rgba(107,0,1,0.28)',     logoBg:'#2a0001' }
 };
 
 // ── Lire les classements depuis le DOM ───────────────────────
@@ -3258,25 +3307,46 @@ function getStandingsFromDOM() {
 // ── Vérifier si toutes les équipes ont j >= 2 ───────────────
 function checkPoolsFinished() {
   var rows = Array.from(document.querySelectorAll('.stand-row'));
-  if (rows.length < 6) return false; // pas encore toutes chargées
+  if (rows.length < 6) return false;
   return rows.every(function(row) {
     var jStat = row.querySelector('.stand-stat[data-stat="j"]');
     return jStat && parseInt(jStat.textContent) >= 2;
   });
 }
 
-// ── Appliquer les noms d'équipes dans les slots ──────────────
+// ── Appliquer les noms + visuels dans les slots ──────────────
 function applyTeamsToSlots(teams, isOfficial) {
   document.querySelectorAll('[data-preview-slot]').forEach(function(el) {
     var key = el.getAttribute('data-preview-slot');
     var team = teams[key];
     if (!team) return;
+
     var textSpan = el.querySelector('.bt-slot-text') || el.querySelector('.pb-team-text');
+    var bgEl     = el.querySelector('.bt-slot-bg')   || el.querySelector('.pb-team-bg');
+    var logoEl   = el.querySelector('.bt-slot-logo') || el.querySelector('.pb-team-logo');
+    var logoImg  = logoEl ? logoEl.querySelector('img') : null;
+
+    var vis = TEAM_VISUALS[team];
+
     if (textSpan) {
       textSpan.textContent = team;
       textSpan.style.color = 'var(--white)';
       textSpan.style.fontStyle = 'normal';
     }
+
+    if (vis) {
+      if (bgEl) {
+        bgEl.style.background = 'linear-gradient(to right,' + vis.color + ' 0%,transparent 80%)';
+      }
+      if (logoImg && logoEl) {
+        logoImg.src = vis.logo;
+        logoImg.alt = team;
+        logoEl.style.background = vis.logoBg;
+        logoEl.style.display = 'flex';
+      }
+    }
+    el.classList.add('has-team');
+
     if (isOfficial) {
       el.style.borderLeft = '3px solid rgba(0,212,255,0.7)';
       el.style.paddingLeft = '.35rem';
@@ -3292,43 +3362,64 @@ function resetSlots() {
   document.querySelectorAll('[data-preview-slot]').forEach(function(el) {
     var key = el.getAttribute('data-preview-slot');
     var textSpan = el.querySelector('.bt-slot-text') || el.querySelector('.pb-team-text');
+    var bgEl     = el.querySelector('.bt-slot-bg')   || el.querySelector('.pb-team-bg');
+    var logoEl   = el.querySelector('.bt-slot-logo') || el.querySelector('.pb-team-logo');
+
     if (textSpan) {
       textSpan.textContent = BRACKET_DEFAULTS[key] || '';
       textSpan.style.color = '';
       textSpan.style.fontStyle = '';
     }
+    if (bgEl)   bgEl.style.background = '';
+    if (logoEl) logoEl.style.display = 'none';
+    el.classList.remove('has-team');
     el.style.borderLeft = '';
     el.style.paddingLeft = '';
   });
 }
 
+// ── Redimensionner le bracket pour tenir sur l'écran ────────
+function scaleBracket() {
+  var tree  = document.querySelector('.bracket-tree');
+  var inner = document.querySelector('.bracket-tree-inner');
+  if (!tree || !inner) return;
+
+  // Reset
+  inner.style.transform = '';
+  inner.style.transformOrigin = '';
+  tree.style.height = '';
+
+  var naturalW = inner.offsetWidth;
+  var naturalH = inner.offsetHeight;
+  var containerW = tree.clientWidth - 8;
+
+  if (naturalW > containerW && containerW > 50) {
+    var scale = containerW / naturalW;
+    inner.style.transform = 'scale(' + scale + ')';
+    inner.style.transformOrigin = 'top left';
+    tree.style.height = Math.ceil(naturalH * scale + 20) + 'px';
+  }
+}
+
 // ── Mettre à jour l'UI du bouton et bannière ─────────────────
 function updateBracketUI() {
-  var btn    = document.getElementById('btn-preview-bracket');
-  var banner = document.getElementById('bracket-preview-banner');
-  var bannerTitle = document.getElementById('bracket-banner-title');
-  var bannerText  = document.getElementById('bracket-banner-text');
+  var btn        = document.getElementById('btn-preview-bracket');
+  var banner     = document.getElementById('bracket-preview-banner');
+  var bannerTitle= document.getElementById('bracket-banner-title');
+  var bannerText = document.getElementById('bracket-banner-text');
   if (!btn || !banner) return;
 
   if (_poolsFinished) {
-    // ── Mode officiel : bracket figé, pas de toggle ──────────
     var teams = getStandingsFromDOM();
     applyTeamsToSlots(teams, true);
-
-    // Bouton masqué (poules terminées, plus besoin d'un aperçu)
     btn.style.display = 'none';
-
-    // Bannière officielle (cyan)
     banner.style.display = 'flex';
     banner.style.background = 'rgba(0,212,255,0.07)';
     banner.style.borderBottomColor = 'rgba(0,212,255,0.35)';
     if (bannerTitle) { bannerTitle.textContent = 'Bracket officiel des play-offs'; bannerTitle.style.color = 'var(--cyan)'; }
-    if (bannerText)  { bannerText.innerHTML = 'Les poules sont terminées. Les affrontements du bracket reflètent les <strong style="color:var(--white);">classements officiels finaux</strong>. Les gagnants des QF et DF seront déterminés lors des matchs.'; }
-
+    if (bannerText)  { bannerText.innerHTML = 'Les poules sont terminées. Les affrontements du bracket reflètent les <strong style="color:var(--white);">classements officiels finaux</strong>.'; }
   } else {
-    // ── Mode poules en cours : toggle manuel ─────────────────
     btn.style.display = 'flex';
-
     if (_bracketPreviewActive) {
       var teams2 = getStandingsFromDOM();
       applyTeamsToSlots(teams2, false);
@@ -3336,48 +3427,51 @@ function updateBracketUI() {
       banner.style.background = 'rgba(245,201,58,0.08)';
       banner.style.borderBottomColor = 'rgba(245,201,58,0.3)';
       if (bannerTitle) { bannerTitle.textContent = 'Mode aperçu activé'; bannerTitle.style.color = 'var(--gold)'; }
-      if (bannerText)  { bannerText.innerHTML = 'Les équipes affichées correspondent aux classements <strong style="color:var(--white);">actuels des poules</strong>. Les poules ne sont pas encore terminées et les classements peuvent encore évoluer. Les gagnants des QF et DF ne peuvent pas être prédits — ces cases restent à déterminer.'; }
-      btn.style.background   = 'rgba(245,201,58,0.15)';
-      btn.style.borderColor  = 'rgba(245,201,58,0.6)';
-      btn.style.color        = 'var(--gold)';
+      if (bannerText)  { bannerText.innerHTML = 'Les équipes affichées correspondent aux classements <strong style="color:var(--white);">actuels des poules</strong>. Les poules ne sont pas encore terminées.'; }
+      btn.style.background  = 'rgba(245,201,58,0.15)';
+      btn.style.borderColor = 'rgba(245,201,58,0.6)';
+      btn.style.color       = 'var(--gold)';
       btn.innerHTML = '<span style="font-size:13px;">↩</span> Revenir à la version originale';
     } else {
       resetSlots();
       banner.style.display = 'none';
-      btn.style.background   = 'rgba(0,212,255,0.1)';
-      btn.style.borderColor  = 'rgba(0,212,255,0.35)';
-      btn.style.color        = 'var(--cyan)';
+      btn.style.background  = 'rgba(0,212,255,0.1)';
+      btn.style.borderColor = 'rgba(0,212,255,0.35)';
+      btn.style.color       = 'var(--cyan)';
       btn.innerHTML = '<span style="font-size:13px;">🔮</span> Aperçu "Si les poules finissaient maintenant"';
     }
   }
+  // Rescale après mise à jour des contenus
+  setTimeout(scaleBracket, 50);
 }
 
 // ── Réévaluer l'état à chaque mise à jour standings ──────────
-// Appelée depuis applyStanding (existant) après chaque update Supabase
 function onStandingUpdated() {
   var wasFinished = _poolsFinished;
   _poolsFinished = checkPoolsFinished();
-
-  if (!_poolsFinished && wasFinished) {
-    // Retour en arrière (ex: reset Supabase pour tests) → reset complet
-    _bracketPreviewActive = false;
-  }
-
-  // Si le mode officiel vient de s'activer, on force la mise à jour
+  if (!_poolsFinished && wasFinished) _bracketPreviewActive = false;
   updateBracketUI();
 }
 
-// ── Toggle manuel (bouton cliqué) ────────────────────────────
+// ── Toggle manuel ────────────────────────────────────────────
 function toggleBracketPreview() {
-  if (_poolsFinished) return; // ne rien faire si officiel
+  if (_poolsFinished) return;
   _bracketPreviewActive = !_bracketPreviewActive;
   updateBracketUI();
 }
 
-// ── Initialisation au chargement ────────────────────────────
+// ── Init ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
-  // L'état sera réévalué dès que Supabase renverra les standings via loadData()
   updateBracketUI();
+  // Rescale si l'onglet bracket devient actif
+  document.querySelectorAll('.bot-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      if (document.getElementById('sec-bracket')?.classList.contains('active')) {
+        setTimeout(scaleBracket, 80);
+      }
+    });
+  });
+  window.addEventListener('resize', scaleBracket);
 });
 </script>
 </body>
