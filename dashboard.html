@@ -594,12 +594,55 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .qm-team.right{text-align:right;}
 .qm-sep{font-family:'Anton',sans-serif;color:var(--muted);text-align:center;}
 
+/* ── MOBILE BOTTOM NAV ── */
+.mobile-nav{
+  display:none;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:200;
+  background:rgba(10,24,41,0.98);
+  border-top:1px solid var(--border2);
+  box-shadow:0 -4px 20px rgba(0,0,0,0.4);
+  padding:0;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.mobile-nav-inner{
+  display:flex;
+  align-items:stretch;
+}
+.mob-nav-btn{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  padding:.65rem .4rem;
+  background:transparent;
+  border:none;
+  color:var(--muted);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:all .18s;
+  border-top:2px solid transparent;
+}
+.mob-nav-btn .mob-icon{font-size:20px;line-height:1;}
+.mob-nav-btn.active{color:var(--cyan);border-top-color:var(--cyan);}
+.mob-nav-btn:not(.active):hover{color:var(--white);}
+
 /* Mobile */
 @media(max-width:768px){
   .admin-main{grid-template-columns:1fr;}
   .sidebar{display:none;}
+  .mobile-nav{display:block;}
   .grid-2,.grid-3{grid-template-columns:1fr;}
-  .content{padding:1rem;}
+  .content{padding:1rem;padding-bottom:90px;}
   .match-row{grid-template-columns:1fr;gap:.6rem;}
   .match-controls{flex-wrap:wrap;}
   .qm-teams{grid-template-columns:1fr;gap:.4rem;}
@@ -1596,6 +1639,34 @@ document.addEventListener('DOMContentLoaded', () => {
   refreshBracket();
   subscribeRealtime();
 });
+
+function setMobActive(btnId) {
+  document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById(btnId);
+  if(btn) btn.classList.add('active');
+}
 </script>
+
+<!-- ═══ MOBILE BOTTOM NAV ═══ -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mob-nav-btn active" id="mob-btn-scores" onclick="showPanel('panel-scores',null);setMobActive('mob-btn-scores')">
+      <span class="mob-icon">⚡</span>
+      <span>Scores</span>
+    </button>
+    <button class="mob-nav-btn" id="mob-btn-standings" onclick="showPanel('panel-standings',null);setMobActive('mob-btn-standings')">
+      <span class="mob-icon">📊</span>
+      <span>Classement</span>
+    </button>
+    <button class="mob-nav-btn" id="mob-btn-bracket" onclick="showPanel('panel-bracket',null);setMobActive('mob-btn-bracket')">
+      <span class="mob-icon">🏆</span>
+      <span>Bracket</span>
+    </button>
+    <button class="mob-nav-btn" id="mob-btn-refresh" onclick="refreshAll()">
+      <span class="mob-icon">🔄</span>
+      <span>Refresh</span>
+    </button>
+  </div>
+</nav>
 </body>
 </html>
