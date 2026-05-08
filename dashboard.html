@@ -1407,6 +1407,17 @@ function stepScore(matchId, side, delta) {
 }
 
 // ══════════════════════════════════════════════
+// STANDINGS: STEPPER
+// ══════════════════════════════════════════════
+function stepStanding(inputId, delta) {
+  const el = document.getElementById(inputId);
+  if(!el) return;
+  let val = parseInt(el.value)||0;
+  val = Math.max(0, val + delta);
+  el.value = val;
+}
+
+// ══════════════════════════════════════════════
 // STATUS BUTTON
 // ══════════════════════════════════════════════
 const STATUS_CLASSES = { soon:'active-soon', live:'active-live', done:'active-done' };
@@ -1944,7 +1955,7 @@ function setMobActive(btnId) {
       <span class="mob-icon">📊</span>
       <span>Classement</span>
     </button>
-    <button class="mob-nav-btn" id="mob-btn-bracket" onclick="showPanel('panel-bracket',null);setMobActive('mob-btn-bracket')">
+    <button class="mob-nav-btn" id="mob-btn-bracket" onclick="showPanel('panel-bracket',null);setMobActive('mob-btn-bracket');refreshBracket()">
       <span class="mob-icon">🏆</span>
       <span>Bracket</span>
     </button>
