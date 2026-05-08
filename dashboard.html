@@ -1552,8 +1552,6 @@ async function loadStandings() {
   try {
     const { data, error } = await db.from('standings').select('*');
     if(error) throw error;
-    document.getElementById('standings-loading').style.display = 'none';
-    document.getElementById('standings-content').style.display = '';
     (data || []).forEach(row => {
       const prefix = row.pool + '-' + row.team + '-';
       const set = (field, val) => {
@@ -1566,7 +1564,11 @@ async function loadStandings() {
       set('d', row.d);
     });
   } catch(e) {
-    document.getElementById('standings-loading').innerHTML = '❌ Erreur : ' + e.message;
+    // non-blocking: show a toast but still display the table
+    toast('Classements : ' + e.message, 'error');
+  } finally {
+    document.getElementById('standings-loading').style.display = 'none';
+    document.getElementById('standings-content').style.display = '';
   }
 }
 
