@@ -716,7 +716,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
       <div class="nav-item active" id="nav-dashboard" onclick="showPanel('panel-dashboard',this)"><span class="nav-icon">🖥</span>Dashboard</div>
       <div class="nav-item" onclick="showPanel('panel-scores',this)"><span class="nav-icon">⚡</span>Scores en direct</div>
       <div class="nav-item" onclick="showPanel('panel-standings',this)"><span class="nav-icon">📊</span>Classements</div>
-      <div class="nav-item" onclick="showPanel('panel-bracket',this)"><span class="nav-icon">🏆</span>Bracket</div>
+      <div class="nav-item" onclick="showPanel('panel-bracket',this);refreshBracket()"><span class="nav-icon">🏆</span>Bracket</div>
     </div>
     <div class="sidebar-divider"></div>
     <div class="sidebar-section">
