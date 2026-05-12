@@ -1381,32 +1381,71 @@ body{
 }
 /* ── PALMARÈS ── */
 .palmares-row{
-  display:flex;align-items:center;gap:8px;
+  display:flex;align-items:center;
   background:var(--card);
   border:1px solid var(--border);
-  border-radius:8px;
-  padding:.55rem .9rem;
+  border-radius:10px;
+  overflow:hidden;
   text-decoration:none;
-  transition:background .15s,border-color .15s;
+  transition:border-color .15s,filter .15s;
+  min-height:52px;
+  position:relative;
 }
-.palmares-row:hover{background:var(--card2);border-color:var(--border2);}
-.palmares-gold{background:rgba(245,201,58,0.07)!important;border-color:rgba(245,201,58,0.25)!important;}
-.palmares-gold:hover{background:rgba(245,201,58,0.12)!important;}
+.palmares-row:hover{border-color:var(--border2);filter:brightness(1.08);}
+.palmares-gold{border-color:rgba(245,201,58,0.35)!important;}
 .palmares-year{
-  font-family:'Anton',sans-serif;font-size:.95rem;
-  color:var(--muted);min-width:40px;flex-shrink:0;
+  font-family:'Anton',sans-serif;font-size:1rem;
+  color:var(--muted);
+  padding:0 .7rem;
+  flex-shrink:0;
+  z-index:2;
+  min-width:44px;
+  text-align:center;
 }
 .palmares-gold .palmares-year{color:var(--gold);}
-.palmares-trophy{font-size:1rem;flex-shrink:0;}
+.palmares-sep{width:1px;background:var(--border);align-self:stretch;flex-shrink:0;}
+.palmares-team-zone{
+  flex:1;display:flex;align-items:center;
+  position:relative;overflow:hidden;
+  padding:.55rem .8rem;
+}
+.palmares-team-bg{
+  position:absolute;inset:0;
+  transition:background .2s;
+}
+.palmares-team-inner{
+  display:flex;align-items:center;gap:8px;
+  position:relative;z-index:1;
+}
+.palmares-logo{
+  width:32px;height:32px;flex-shrink:0;
+  border-radius:50%;
+  background:#fff;
+  border:1.5px solid rgba(255,255,255,0.2);
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.palmares-logo img{width:100%;height:100%;object-fit:contain;display:block;}
+.palmares-name-wrap{display:flex;flex-direction:column;min-width:0;}
 .palmares-winner{
-  flex:1;font-size:12px;
-  color:rgba(232,241,255,.8);
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:.88rem;
+  color:var(--white);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  line-height:1.2;
+}
+.palmares-city{
+  font-size:9px;color:rgba(180,200,230,0.5);
   font-family:'Barlow Condensed',sans-serif;font-weight:600;
+  letter-spacing:.03em;text-transform:uppercase;
+  white-space:nowrap;
 }
-.palmares-gold .palmares-winner{color:var(--white);}
-.palmares-link{
-  font-size:11px;color:var(--muted);flex-shrink:0;
+.palmares-right{
+  display:flex;align-items:center;gap:6px;
+  padding:0 .75rem;flex-shrink:0;z-index:2;
 }
+.palmares-trophy{font-size:1.1rem;flex-shrink:0;}
+.palmares-link{font-size:11px;color:var(--muted);flex-shrink:0;}
 .palmares-gold .palmares-link{color:var(--gold);}
 
 /* ── PLAYER HORIZONTAL SCROLL STRIP ── */
@@ -1682,36 +1721,107 @@ footer{
 <div style="margin-top:1.2rem;">
 <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;">Palmarès — Challenge de France Féminin</div>
 <div style="display:flex;flex-direction:column;gap:5px;">
+
+<!-- 2025 · Comanches -->
 <a class="palmares-row palmares-gold" href="https://ffbs.fr/les-comanches-de-saint-raphael-decrochent-leur-3e-challenge-de-france-de-softball/" rel="noopener" target="_blank">
-<span class="palmares-year">2025</span>
-<span class="palmares-trophy">🏆</span>
-<span class="palmares-winner">Comanches de Saint-Raphaël</span>
-<span class="palmares-link">↗</span>
+  <span class="palmares-year">2025</span>
+  <span class="palmares-sep"></span>
+  <div class="palmares-team-zone">
+    <div class="palmares-team-bg" style="background:linear-gradient(to right,rgba(176,183,197,0.22) 0%,transparent 100%);"></div>
+    <div class="palmares-team-inner">
+      <div class="palmares-logo" style="background:#20212b;"><img src="https://i.goopics.net/cyng3i.png" alt="Comanches"/></div>
+      <div class="palmares-name-wrap">
+        <span class="palmares-winner">Comanches</span>
+        <span class="palmares-city">Saint-Raphaël</span>
+      </div>
+    </div>
+  </div>
+  <div class="palmares-right">
+    <span class="palmares-trophy">🏆</span>
+    <span class="palmares-link">↗</span>
+  </div>
 </a>
+
+<!-- 2024 · Pharaons -->
 <a class="palmares-row" href="https://ffbs.wbsc.org/fr/events/2024-challenge-de-france-feminin-de-softball-2024/schedule-and-results" rel="noopener" target="_blank">
-<span class="palmares-year">2024</span>
-<span class="palmares-trophy">🥇</span>
-<span class="palmares-winner">Pharaons d'Évry-Courcouronnes</span>
-<span class="palmares-link">↗</span>
+  <span class="palmares-year">2024</span>
+  <span class="palmares-sep"></span>
+  <div class="palmares-team-zone">
+    <div class="palmares-team-bg" style="background:linear-gradient(to right,rgba(107,0,1,0.28) 0%,transparent 100%);"></div>
+    <div class="palmares-team-inner">
+      <div class="palmares-logo" style="background:#2a0001;"><img src="https://i.goopics.net/4bcdyc.png" alt="Pharaons"/></div>
+      <div class="palmares-name-wrap">
+        <span class="palmares-winner">Pharaons</span>
+        <span class="palmares-city">Évry-Courcouronnes</span>
+      </div>
+    </div>
+  </div>
+  <div class="palmares-right">
+    <span class="palmares-trophy">🥇</span>
+    <span class="palmares-link">↗</span>
+  </div>
 </a>
+
+<!-- 2023 · Pharaons -->
 <div class="palmares-row">
-<span class="palmares-year">2023</span>
-<span class="palmares-trophy">🥇</span>
-<span class="palmares-winner">Pharaons d'Évry-Courcouronnes</span>
-<span class="palmares-link" style="color:rgba(77,120,170,0.4);font-size:10px;">–</span>
+  <span class="palmares-year">2023</span>
+  <span class="palmares-sep"></span>
+  <div class="palmares-team-zone">
+    <div class="palmares-team-bg" style="background:linear-gradient(to right,rgba(107,0,1,0.28) 0%,transparent 100%);"></div>
+    <div class="palmares-team-inner">
+      <div class="palmares-logo" style="background:#2a0001;"><img src="https://i.goopics.net/4bcdyc.png" alt="Pharaons"/></div>
+      <div class="palmares-name-wrap">
+        <span class="palmares-winner">Pharaons</span>
+        <span class="palmares-city">Évry-Courcouronnes</span>
+      </div>
+    </div>
+  </div>
+  <div class="palmares-right">
+    <span class="palmares-trophy">🥇</span>
+    <span class="palmares-link" style="color:rgba(77,120,170,0.3);">–</span>
+  </div>
 </div>
+
+<!-- 2022 · Grizzlys -->
 <div class="palmares-row">
-<span class="palmares-year">2022</span>
-<span class="palmares-trophy">🥇</span>
-<span class="palmares-winner">Grenoble Grizzlys</span>
-<span class="palmares-link" style="color:rgba(77,120,170,0.4);font-size:10px;">–</span>
+  <span class="palmares-year">2022</span>
+  <span class="palmares-sep"></span>
+  <div class="palmares-team-zone">
+    <div class="palmares-team-bg" style="background:linear-gradient(to right,rgba(216,226,252,0.15) 0%,transparent 100%);"></div>
+    <div class="palmares-team-inner">
+      <div class="palmares-logo" style="background:#fff;"><img src="https://i.goopics.net/7hjqer.png" alt="Grizzlys"/></div>
+      <div class="palmares-name-wrap">
+        <span class="palmares-winner">Grizzlys</span>
+        <span class="palmares-city">Grenoble</span>
+      </div>
+    </div>
+  </div>
+  <div class="palmares-right">
+    <span class="palmares-trophy">🥇</span>
+    <span class="palmares-link" style="color:rgba(77,120,170,0.3);">–</span>
+  </div>
 </div>
+
+<!-- 2021 · Pharaons -->
 <a class="palmares-row" href="https://ffbs.wbsc.org/fr/events/2021-challenge-de-france-de-softball-feminin/schedule-and-results" rel="noopener" target="_blank">
-<span class="palmares-year">2021</span>
-<span class="palmares-trophy">🥇</span>
-<span class="palmares-winner">Pharaons d'Évry-Courcouronnes</span>
-<span class="palmares-link">↗</span>
+  <span class="palmares-year">2021</span>
+  <span class="palmares-sep"></span>
+  <div class="palmares-team-zone">
+    <div class="palmares-team-bg" style="background:linear-gradient(to right,rgba(107,0,1,0.28) 0%,transparent 100%);"></div>
+    <div class="palmares-team-inner">
+      <div class="palmares-logo" style="background:#2a0001;"><img src="https://i.goopics.net/4bcdyc.png" alt="Pharaons"/></div>
+      <div class="palmares-name-wrap">
+        <span class="palmares-winner">Pharaons</span>
+        <span class="palmares-city">Évry-Courcouronnes</span>
+      </div>
+    </div>
+  </div>
+  <div class="palmares-right">
+    <span class="palmares-trophy">🥇</span>
+    <span class="palmares-link">↗</span>
+  </div>
 </a>
+
 </div>
 <div class="home-format-grid" style="margin-top:1.2rem;">
 <div class="home-format-card">
