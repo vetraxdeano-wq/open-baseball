@@ -1844,6 +1844,19 @@ footer{
 <div class="home-format-desc">Grande finale · 14h00</div>
 </div>
 </div>
+<!-- ── Boutons d'accès rapide ── -->
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:1.2rem;margin-bottom:.5rem;">
+  <button onclick="showSection('sec-bracket',document.querySelectorAll('.bot-tab')[3])" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(65,105,225,0.12);border:1.5px solid rgba(65,105,225,0.45);border-radius:12px;padding:.9rem 1.2rem;cursor:pointer;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;transition:background .2s,border-color .2s;">
+    <span style="font-size:1.3rem;">🏆</span>
+    <span>Cliquer pour accéder au bracket</span>
+    <span style="margin-left:auto;font-size:1rem;opacity:.6;">›</span>
+  </button>
+  <button onclick="showSection('sec-resultats',document.querySelectorAll('.bot-tab')[2])" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(200,16,46,0.1);border:1.5px solid rgba(200,16,46,0.4);border-radius:12px;padding:.9rem 1.2rem;cursor:pointer;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;transition:background .2s,border-color .2s;">
+    <span style="font-size:1.3rem;">📊</span>
+    <span>Cliquer pour accéder au programme et aux résultats</span>
+    <span style="margin-left:auto;font-size:1rem;opacity:.6;">›</span>
+  </button>
+</div>
 <!-- Poules — flat grid: les rangées s'alignent naturellement entre colonnes -->
 <div class="pools-layout" style="align-items:stretch;">
 <!-- ── En-têtes ── -->
@@ -3155,7 +3168,7 @@ footer{
 <span class="tab-icon">⚾</span>Équipes
   </button>
 <button class="bot-tab" onclick="showSection('sec-resultats',this)">
-<span class="tab-icon">📊</span>Résultats
+<span class="tab-icon">📊</span>Programme &amp; résultats
   </button>
 <button class="bot-tab" onclick="showSection('sec-bracket',this)">
 <span class="tab-icon">🏆</span>Bracket
