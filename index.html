@@ -3307,17 +3307,27 @@ function applyMatch(row) {
 
 // ── Sort standings rows by rank (ascending) ─────────────────
 function sortStandingsTable(pool) {
+  // Les stand-row sont placées directement après le conteneur #stand-pool-X
+  // dans le DOM (siblings), pas à l'intérieur. On les cherche donc dans
+  // le parent commun (sec-resultats body).
   const containerId = pool === 'A' ? 'stand-pool-a' : 'stand-pool-b';
   const container = document.getElementById(containerId);
   if (!container) return;
-  const rows = Array.from(container.querySelectorAll('.stand-row[data-pool="' + pool + '"]'));
+  const parent = container.parentNode;
+  if (!parent) return;
+  const rows = Array.from(parent.querySelectorAll('.stand-row[data-pool="' + pool + '"]'));
   if (!rows.length) return;
   rows.sort((a, b) => {
     const ra = parseInt(a.querySelector('.rk')?.textContent) || 99;
     const rb = parseInt(b.querySelector('.rk')?.textContent) || 99;
     return ra - rb;
   });
-  rows.forEach(r => container.appendChild(r));
+  // Insère les lignes triées juste après le conteneur (ancre de référence)
+  let anchor = container;
+  rows.forEach(r => {
+    anchor.after(r);
+    anchor = r;
+  });
 }
 
 // ── Apply standings row ──────────────────────────────────────
