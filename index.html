@@ -3894,6 +3894,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function _slotName(slots, pos, defaultLabel) {
       if (!slots) return defaultLabel;
+      if (!slots[pos].locked) return defaultLabel;
       return slots[pos].name || defaultLabel;
     }
     function _slotLocked(slots, pos) {
