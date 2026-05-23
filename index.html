@@ -3665,6 +3665,7 @@ function updateBracketUI() {
       btn.style.color       = 'var(--gold)';
       btn.innerHTML = '<span style="font-size:13px;">↩</span> Revenir à la version originale';
     } else {
+      resetSlots();
       btn.style.background  = 'rgba(200,16,46,0.1)';
       btn.style.borderColor = 'rgba(200,16,46,0.35)';
       btn.style.color       = 'var(--cyan)';
