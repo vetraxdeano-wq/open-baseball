@@ -3566,9 +3566,22 @@ function applyTeamsToSlots(teams, isOfficial) {
 }
 
 // ── Réinitialiser les slots aux libellés génériques ──────────
+// Respecte les places mathématiquement verrouillées (ne les efface pas)
 function resetSlots() {
+  // Calculer les places verrouillées avant de toucher quoi que ce soit
+  var lockedA = typeof _getPoolSlots === 'function' ? _getPoolSlots('A') : null;
+  var lockedB = typeof _getPoolSlots === 'function' ? _getPoolSlots('B') : null;
+  var lockedMap = {};
+  if (lockedA) { lockedMap['A1'] = lockedA[1]; lockedMap['A2'] = lockedA[2]; lockedMap['A3'] = lockedA[3]; }
+  if (lockedB) { lockedMap['B1'] = lockedB[1]; lockedMap['B2'] = lockedB[2]; lockedMap['B3'] = lockedB[3]; }
+
   document.querySelectorAll('[data-preview-slot]').forEach(function(el) {
     var key = el.getAttribute('data-preview-slot');
+    var locked = lockedMap[key];
+
+    // Si ce slot est verrouillé mathématiquement, on le laisse intact
+    if (locked && locked.locked && locked.name) return;
+
     var textSpan = el.querySelector('.bt-slot-text') || el.querySelector('.pb-team-text');
     var bgEl     = el.querySelector('.bt-slot-bg')   || el.querySelector('.pb-team-bg');
     var logoEl   = el.querySelector('.bt-slot-logo') || el.querySelector('.pb-team-logo');
@@ -3619,6 +3632,14 @@ function updateBracketUI() {
   var bannerText = document.getElementById('bracket-banner-text');
   if (!btn || !banner) return;
 
+  // Compter les places verrouillées
+  var slotsA = typeof _getPoolSlots === 'function' ? _getPoolSlots('A') : null;
+  var slotsB = typeof _getPoolSlots === 'function' ? _getPoolSlots('B') : null;
+  var lockedCount = 0;
+  if (slotsA) [1,2,3].forEach(function(i) { if (slotsA[i] && slotsA[i].locked) lockedCount++; });
+  if (slotsB) [1,2,3].forEach(function(i) { if (slotsB[i] && slotsB[i].locked) lockedCount++; });
+  var somePartiallyLocked = lockedCount > 0 && !_poolsFinished;
+
   if (_poolsFinished) {
     var teams = getStandingsFromDOM();
     applyTeamsToSlots(teams, true);
@@ -3628,11 +3649,32 @@ function updateBracketUI() {
     banner.style.borderBottomColor = 'rgba(200,16,46,0.35)';
     if (bannerTitle) { bannerTitle.textContent = 'Bracket officiel des play-offs'; bannerTitle.style.color = 'var(--cyan)'; }
     if (bannerText)  { bannerText.innerHTML = 'Les poules sont terminées. Les affrontements du bracket reflètent les <strong style="color:var(--white);">classements officiels finaux</strong>.'; }
-  } else {
+  } else if (somePartiallyLocked) {
+    // Des places sont mathématiquement assurées même si les poules ne sont pas finies
     btn.style.display = 'flex';
+    banner.style.display = 'flex';
+    banner.style.background = 'rgba(200,16,46,0.07)';
+    banner.style.borderBottomColor = 'rgba(200,16,46,0.35)';
+    if (bannerTitle) { bannerTitle.textContent = lockedCount + ' place' + (lockedCount > 1 ? 's' : '') + ' mathématiquement assurée' + (lockedCount > 1 ? 's' : ''); bannerTitle.style.color = 'var(--cyan)'; }
+    if (bannerText)  { bannerText.innerHTML = 'Certaines places dans le bracket sont déjà <strong style="color:var(--white);">100% verrouillées</strong> — elles s\'affichent automatiquement. Les autres attendent la fin des poules.'; }
     if (_bracketPreviewActive) {
       var teams2 = getStandingsFromDOM();
       applyTeamsToSlots(teams2, false);
+      btn.style.background  = 'rgba(245,201,58,0.15)';
+      btn.style.borderColor = 'rgba(245,201,58,0.6)';
+      btn.style.color       = 'var(--gold)';
+      btn.innerHTML = '<span style="font-size:13px;">↩</span> Revenir à la version originale';
+    } else {
+      btn.style.background  = 'rgba(200,16,46,0.1)';
+      btn.style.borderColor = 'rgba(200,16,46,0.35)';
+      btn.style.color       = 'var(--cyan)';
+      btn.innerHTML = '<span style="font-size:13px;">🔮</span> Aperçu "Si les poules finissaient maintenant"';
+    }
+  } else {
+    btn.style.display = 'flex';
+    if (_bracketPreviewActive) {
+      var teams3 = getStandingsFromDOM();
+      applyTeamsToSlots(teams3, false);
       banner.style.display = 'flex';
       banner.style.background = 'rgba(245,201,58,0.08)';
       banner.style.borderBottomColor = 'rgba(245,201,58,0.3)';
@@ -3801,38 +3843,91 @@ document.addEventListener('DOMContentLoaded', function() {
     if (logo) { var img = logo.querySelector('img'); if (img) { img.src = vis.logo; img.alt = name; } logo.style.background = vis.logoBg || '#fff'; logo.style.display = 'flex'; }
   }
 
+  /* ── Détection des places mathématiquement verrouillées par poule ── */
+  // Retourne un objet { 1: {name, locked}, 2: {name, locked}, 3: {name, locked} }
+  // "locked" = true si la place est 100% assurée mathématiquement
+  function _getPoolSlots(pool) {
+    var rows = Array.from(document.querySelectorAll('.stand-row[data-pool="' + pool + '"]'));
+    if (rows.length < 3) return null;
+
+    // Lire les stats de chaque équipe depuis le DOM
+    var teams = rows.map(function(row) {
+      var stats = row.querySelectorAll('.stand-stat');
+      var j = stats.length >= 1 ? (parseInt(stats[0].textContent) || 0) : 0;
+      var v = stats.length >= 2 ? (parseInt(stats[1].textContent) || 0) : 0;
+      var d = stats.length >= 3 ? (parseInt(stats[2].textContent) || 0) : 0;
+      var name = row.querySelector('.stand-team-name') ? row.querySelector('.stand-team-name').textContent.trim() : '';
+      var rk = parseInt(row.querySelector('.rk') ? row.querySelector('.rk').textContent : '99') || 99;
+      return { name: name, j: j, v: v, d: d, rk: rk };
+    });
+
+    // Trier par classement DOM actuel
+    var sorted = teams.slice().sort(function(a, b) { return a.rk - b.rk; });
+    var t1 = sorted[0], t2 = sorted[1], t3 = sorted[2];
+
+    // Calcul du verrouillage :
+    // Place 1 verrouillée : t1 est 2-0 ET t2 et t3 ont chacun ≥ 1 défaite
+    var lock1 = (t1.v >= 2 && t2.d >= 1 && t3.d >= 1);
+    // Place 3 verrouillée : t3 est 0-2 ET t1 et t2 ont chacun ≥ 1 victoire
+    var lock3 = (t3.d >= 2 && t1.v >= 1 && t2.v >= 1);
+    // Place 2 verrouillée : les deux autres sont verrouillées, ou poule terminée (j>=2 pour tous)
+    var allPlayed2 = teams.every(function(t) { return t.j >= 2; });
+    var lock2 = allPlayed2 || (lock1 && lock3);
+
+    return {
+      1: { name: t1.name, locked: lock1 },
+      2: { name: t2.name, locked: lock2 },
+      3: { name: t3.name, locked: lock3 }
+    };
+  }
+  // Exposition globale pour resetSlots()
+  window._getPoolSlots = _getPoolSlots;
+
   /* ── Rafraîchissement principal ───────────────────────────── */
   function _refresh() {
     var teams    = typeof getStandingsFromDOM === 'function' ? getStandingsFromDOM() : {};
     var finished = typeof checkPoolsFinished  === 'function' ? checkPoolsFinished()  : false;
 
-    var a1 = (finished && teams.A1) ? teams.A1 : '1er Poule A';
-    var a2 = (finished && teams.A2) ? teams.A2 : '2e Poule A';
-    var a3 = (finished && teams.A3) ? teams.A3 : '3e Poule A';
-    var b1 = (finished && teams.B1) ? teams.B1 : '1er Poule B';
-    var b2 = (finished && teams.B2) ? teams.B2 : '2e Poule B';
-    var b3 = (finished && teams.B3) ? teams.B3 : '3e Poule B';
+    // Détection par slot individuel (places mathématiquement assurées)
+    var slotsA = _getPoolSlots('A');
+    var slotsB = _getPoolSlots('B');
+
+    function _slotName(slots, pos, defaultLabel) {
+      if (!slots) return defaultLabel;
+      return slots[pos].name || defaultLabel;
+    }
+    function _slotLocked(slots, pos) {
+      if (!slots) return false;
+      return !!slots[pos].locked;
+    }
+
+    var a1 = _slotName(slotsA, 1, '1er Poule A'); var a1ok = _slotLocked(slotsA, 1);
+    var a2 = _slotName(slotsA, 2, '2e Poule A');  var a2ok = _slotLocked(slotsA, 2);
+    var a3 = _slotName(slotsA, 3, '3e Poule A');  var a3ok = _slotLocked(slotsA, 3);
+    var b1 = _slotName(slotsB, 1, '1er Poule B'); var b1ok = _slotLocked(slotsB, 1);
+    var b2 = _slotName(slotsB, 2, '2e Poule B');  var b2ok = _slotLocked(slotsB, 2);
+    var b3 = _slotName(slotsB, 3, '3e Poule B');  var b3ok = _slotLocked(slotsB, 3);
 
     /* ── QF2 (m7) : left=B2, right=A3 ── */
-    _setRes('m7', 'left', b2, finished);
-    _setRes('m7', 'right', a3, finished);
+    _setRes('m7', 'left', b2, b2ok);
+    _setRes('m7', 'right', a3, a3ok);
     // bracket QF2 : slot A3 (top) = right, slot B2 (bottom) = left
     var sc7 = _scores('m7');
     var m7done = _mc['m7'] && _mc['m7'].status === 'done';
-    _setPreviewSlot('A3', a3, finished);
+    _setPreviewSlot('A3', a3, a3ok);
     _setScore('[data-preview-slot="A3"]', sc7.rs, m7done && sc7.rs > sc7.ls);
-    _setPreviewSlot('B2', b2, finished);
+    _setPreviewSlot('B2', b2, b2ok);
     _setScore('[data-preview-slot="B2"]', sc7.ls, m7done && sc7.ls > sc7.rs);
 
     /* ── QF1 (m8) : left=A2, right=B3 ── */
-    _setRes('m8', 'left', a2, finished);
-    _setRes('m8', 'right', b3, finished);
+    _setRes('m8', 'left', a2, a2ok);
+    _setRes('m8', 'right', b3, b3ok);
     // bracket QF1 : slot B3 (top) = right, slot A2 (bottom) = left
     var sc8 = _scores('m8');
     var m8done = _mc['m8'] && _mc['m8'].status === 'done';
-    _setPreviewSlot('B3', b3, finished);
+    _setPreviewSlot('B3', b3, b3ok);
     _setScore('[data-preview-slot="B3"]', sc8.rs, m8done && sc8.rs > sc8.ls);
-    _setPreviewSlot('A2', a2, finished);
+    _setPreviewSlot('A2', a2, a2ok);
     _setScore('[data-preview-slot="A2"]', sc8.ls, m8done && sc8.ls > sc8.rs);
 
     /* ── Gagnants QF ── */
@@ -3841,26 +3936,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     /* ── DF1 (m9) : left=A1, right=Gagnant QF2 ── */
     var df1R = qf2.w || 'Gagnant QF2';
-    _setRes('m9', 'left', a1, finished);
+    _setRes('m9', 'left', a1, a1ok);
     _setRes('m9', 'right', df1R, qf2.w !== null);
     // bracket DF1 : slot qf2-winner (top) = right, slot A1 (bottom) = left
     var sc9 = _scores('m9');
     var m9done = _mc['m9'] && _mc['m9'].status === 'done';
     _setSlot('qf2-winner', qf2.w || 'Gagnant QF2', qf2.w !== null);
     _setScore('[data-bracket-slot="qf2-winner"]', sc9.rs, m9done && sc9.rs > sc9.ls);
-    _setPreviewSlot('A1', a1, finished);
+    _setPreviewSlot('A1', a1, a1ok);
     _setScore('[data-preview-slot="A1"]', sc9.ls, m9done && sc9.ls > sc9.rs);
 
     /* ── DF2 (m10) : left=B1, right=Gagnant QF1 ── */
     var df2R = qf1.w || 'Gagnant QF1';
-    _setRes('m10', 'left', b1, finished);
+    _setRes('m10', 'left', b1, b1ok);
     _setRes('m10', 'right', df2R, qf1.w !== null);
     // bracket DF2 : slot qf1-winner (top) = right, slot B1 (bottom) = left
     var sc10 = _scores('m10');
     var m10done = _mc['m10'] && _mc['m10'].status === 'done';
     _setSlot('qf1-winner', qf1.w || 'Gagnant QF1', qf1.w !== null);
     _setScore('[data-bracket-slot="qf1-winner"]', sc10.rs, m10done && sc10.rs > sc10.ls);
-    _setPreviewSlot('B1', b1, finished);
+    _setPreviewSlot('B1', b1, b1ok);
     _setScore('[data-preview-slot="B1"]', sc10.ls, m10done && sc10.ls > sc10.rs);
 
     /* ── Gagnants / perdants DF ── */
